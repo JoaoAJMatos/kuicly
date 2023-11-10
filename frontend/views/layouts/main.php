@@ -25,7 +25,7 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-<header>
+
     <?php
     /*NavBar::begin([
         'brandLabel' => Yii::$app->name,
@@ -70,29 +70,89 @@ AppAsset::register($this);
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+       <!-- <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        </a>-->
+        <?= Html::a('<i class="fa fa-book me-3"></i>Kuilcy', ['site/index'], ['class'=> 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
+
+            <!--<div class="container-fluid">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+
+                </form>
+            </div>-->
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="courses.html" class="nav-item nav-link">Courses</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
-                    </div>
-                </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                       data-mdb-toggle="dropdown" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="#">Action</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Another action</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Submenu &raquo;
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu">
+                                <li>
+                                    <a class="dropdown-item" href="#">Submenu item 1</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Submenu item 2</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
+                                    <ul class="dropdown-menu dropdown-submenu">
+                                        <li>
+                                            <a class="dropdown-item" href="#">Multi level 1</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Multi level 2</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Submenu item 4</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Submenu item 5</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
             </div>
-            <a href="" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+            <div class="input-group rounded">
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+
+            </div>
         </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+
+                <?= Html::a('Courses', ['site/courses'], ['class'=> 'nav-item nav-link']) ?>
+                <div>
+                    <?= Html::a('<i class="bi bi-cart4"></i>', ['site/cart'], ['class'=> 'nav-item nav-link ']) ?>
+                </div>
+
+
+            </div>
+
+        </div>
+            <?= Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/login'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block ']) ?>
     </nav>
     <!-- Navbar End -->
 </header>
@@ -100,9 +160,8 @@ AppAsset::register($this);
 <main role="main" class="">
     <div class="">
 
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+
+        <?= Alert::widget() ?>
         <?= $content ?>
     </div>
 </main>
