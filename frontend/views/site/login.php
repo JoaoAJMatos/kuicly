@@ -13,30 +13,30 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="container">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <!--<div class="row">
+    <div class="row">
         <div class="col-lg-5">
-            <?php /*$form = ActiveForm::begin(['id' => 'login-form']); */?>
+            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                <?php /*= $form->field($model, 'username')->textInput(['autofocus' => true]) */?>
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?php /*= $form->field($model, 'password')->passwordInput() */?>
+                <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?php /*= $form->field($model, 'rememberMe')->checkbox() */?>
+                <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                 <div class="my-1 mx-0" style="color:#999;">
-                    If you forgot your password you can <?php /*= Html::a('reset it', ['site/request-password-reset']) */?>.
+                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
                     <br>
-                    Need new verification email? <?php /*= Html::a('Resend', ['site/resend-verification-email']) */?>
+                    Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
                 </div>
 
                 <div class="form-group">
-                    <?php /*= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) */?>
+                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
 
-            <?php /*ActiveForm::end(); */?>
+            <?php ActiveForm::end(); ?>
         </div>
-    </div>-->
-    <form>
+    </div>
+    <!--<form>
         <div class="col-sm-4">
             <label for="exampleInputtext1" class="form-label">Username</label>
             <input type="text" class="form-control" id="exampleInputtext1" >
@@ -52,12 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="my-1 mx-0" style="color:#999;">
             If you forgot your password you can
-            <?= Html::a('reset it', ['site/request-password-reset'], ['']) ?>
+            <?php /*= Html::a('reset it', ['site/request-password-reset'], ['']) */?>
             <br>
             Need new verification email?
-            <?= Html::a('Resend', ['site/resend-verification-email'], ['']) ?>
+            <?php /*= Html::a('Resend', ['site/resend-verification-email'], ['']) */?>
 
         </div>
         <button type="submit" class="btn btn-primary d-none d-lg-block ">Submit</button>
-    </form>
+    </form>-->
 </div>

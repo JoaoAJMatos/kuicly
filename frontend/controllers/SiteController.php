@@ -32,7 +32,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['error','signup','login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -86,6 +86,8 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
+           /* var_dump(Yii::$app->user->isGuest);
+            die();*/
             return $this->goHome();
         }
 

@@ -152,7 +152,25 @@ AppAsset::register($this);
             </div>
 
         </div>
-            <?= Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/login'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block ']) ?>
+
+            <?php if (!Yii::$app->user->isGuest){?>
+
+                <form action="" method="post" class="d-flex">
+                    <button type="submit" class="btn btn-link logout text-decoration-none">
+                        Logout (<?= Yii::$app->user->identity->username ?>)
+                    </button>
+                </form>
+            <?php }else{?>
+                <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/signup'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
+            <?php } ?>
+
+
+
+
+
+
+
+
     </nav>
     <!-- Navbar End -->
 </header>
