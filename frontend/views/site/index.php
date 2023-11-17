@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+use yii\bootstrap5\Html;
 
 $this->title = 'My Yii Application';
 ?>
@@ -31,8 +32,7 @@ $this->title = 'My Yii Application';
                             <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Kuicly</h5>
                             <h1 class="display-3 text-white animated slideInDown">Get Educated Online From Your Home</h1>
                             <p class="fs-5 text-white mb-4 pb-2">Para de ser um brokie e junta-te a nós.</p>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@ $this->title = 'My Yii Application';
 
 
 <!-- Categories Start -->
-<!--<div class="container-xxl py-5 category">
+<div class="container-xxl py-5 category">
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
             <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
@@ -102,7 +102,8 @@ $this->title = 'My Yii Application';
                 <div class="card h-100">
                     <img src="img/creativity.png" class="img-categorias card-img-top " alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Design</h5>
+                        <h5 class="card-title"><?= Html::a('Design', ['site/courses'], ['class'=> ' stretched-link']) ?></h5>
+
                     </div>
                 </div>
             </div>
@@ -110,7 +111,7 @@ $this->title = 'My Yii Application';
                 <div class="card h-100">
                     <img src="img/digital-marketing.png" class="img-categorias card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Marketing</h5>
+                        <h5 class="card-title"><?= Html::a('Marketing', ['site/courses'], ['class'=> ' stretched-link']) ?></h5>
 
                     </div>
                 </div>
@@ -119,7 +120,7 @@ $this->title = 'My Yii Application';
                 <div class="card h-100">
                     <img src="img/guitar.png" class="img-categorias card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Musica</h5>
+                        <h5 class="card-title"><?= Html::a('Music', ['site/courses'], ['class'=> ' stretched-link']) ?></h5>
 
                     </div>
                 </div>
@@ -128,70 +129,15 @@ $this->title = 'My Yii Application';
                 <div class="card h-100">
                     <img src="img/handshake.png" class="img-categorias card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Negócios</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
-<!-- Categories Start -->
-<!-- Team Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Categorias</h6>
-            <h1 class="mb-5">Categorias</h1>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="team-item bg-light">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid " src="" alt="">
-                    </div>
-
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Design</h5>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="team-item bg-light">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="" alt="">
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Marketing</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="team-item bg-light">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="" alt="">
-                    </div>
-
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Software</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="team-item bg-light">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="" alt="">
-                    </div>
-
-                    <div class="text-center p-4">
-                        <h5 class="mb-0">Music</h5>
+                        <h5 class="card-title"><?= Html::a('Business', ['site/courses'], ['class'=> ' stretched-link']) ?></h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Team End -->
+<!-- Categories end -->
+
 
 <!-- Courses Start -->
 <div class="container-xxl py-5">

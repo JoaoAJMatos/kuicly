@@ -81,12 +81,33 @@ AppAsset::register($this);
 
                 </form>
             </div>-->
-
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+        </ul>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <div class="input-group">
 
+                            <input type="hidden" name="search_param" value="all" id="search_param">
+                            <input type="text" class="form-control" name="x" placeholder="Search term...">
+                            <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+                </span>
+                        </div>
+                    </div>
                 <!-- Dropdown -->
-                <li class="nav-item dropdown">
+                <!--<li class="nav-item dropdown">
                     <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                        data-mdb-toggle="dropdown" aria-expanded="false">
                         Categorias
@@ -129,16 +150,16 @@ AppAsset::register($this);
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li>-->
 
             </div>
-            <div class="input-group rounded">
+           <!-- <div class="input-group rounded">
                     <span class="input-group-text border-0" id="search-addon">
                         <i class="fas fa-search"></i>
                     </span>
                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
-            </div>
+            </div>-->
         </div>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
@@ -155,11 +176,8 @@ AppAsset::register($this);
 
             <?php if (!Yii::$app->user->isGuest){?>
 
-                <form action="" method="post" class="d-flex">
-                    <button type="submit" class="btn btn-link logout text-decoration-none">
-                        Logout (<?= Yii::$app->user->identity->username ?>)
-                    </button>
-                </form>
+
+                <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default ']) ?>
             <?php }else{?>
                 <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/signup'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
             <?php } ?>

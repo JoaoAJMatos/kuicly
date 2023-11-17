@@ -125,7 +125,11 @@ class SiteController extends Controller
 
         return $this->render('cart');
     }
+    public function actionCourseDetail()
+    {
 
+        return $this->render('courseDetail');
+    }
     /**
      * Displays about page.
      *

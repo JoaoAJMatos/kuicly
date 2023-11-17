@@ -461,3 +461,7 @@
     /*Without this, clicking will make it sticky*/
     pointer-events: none;
 }
+
+.courses {
+    padding-right: 20px;
+}
