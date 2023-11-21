@@ -9,8 +9,33 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="container-xxl py-5">
+    <div class="btn-group">
     <!-- Example single danger button -->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Category
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Music</a></li>
+            <li><a class="dropdown-item" href="#">Marketing</a></li>
+            <li><a class="dropdown-item" href="#">Business</a></li>
+        </ul>
+        </div>
+    </div>
 
+    <div class="btn-group">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Dificulty
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">1</a></li>
+                <li><a class="dropdown-item" href="#">2</a></li>
+                <li><a class="dropdown-item" href="#">3</a></li>
+            </ul>
+        </div>
+    </div>
+    
     <br>
     <br>
 
