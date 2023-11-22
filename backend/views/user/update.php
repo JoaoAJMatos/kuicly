@@ -1,21 +1,38 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var common\models\User $model */
+/** @var common\models\User $user */
+/** @var common\models\Profile $profile */
 
-$this->title = 'Update User: ' . $model->id;
+
+$this->title = 'Update User: ' . $user->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $user->id, 'url' => ['view', 'id' => $user->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="user-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?= $form->field($user, 'username')->textInput() ?>
+
+    <?= $form->field($profile, 'name')->textInput() ?>
+
+    <?= $form->field($profile, 'address')->textInput() ?>
+
+    <?= $form->field($profile, 'phone_number')->textInput() ?>
+
+    <?= $form->field($user, 'email')->textInput() ?>
+
+    <?php /*= $form->field($user, 'password')->passwordInput() */?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

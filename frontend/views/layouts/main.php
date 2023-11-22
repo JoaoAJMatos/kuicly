@@ -163,6 +163,9 @@ AppAsset::register($this);
         </div>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <?php if (Yii::$app->user->can('instrutor')){?>
+                    <?= Html::a('Create Courses', ['site/create_courses'], ['class'=> 'nav-item nav-link']) ?>
+                <?php }?>
 
                 <?= Html::a('Courses', ['site/courses'], ['class'=> 'nav-item nav-link']) ?>
                 <div>
@@ -179,15 +182,8 @@ AppAsset::register($this);
 
                 <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default ']) ?>
             <?php }else{?>
-                <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/signup'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
+                <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/login'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
             <?php } ?>
-
-
-
-
-
-
-
 
     </nav>
     <!-- Navbar End -->

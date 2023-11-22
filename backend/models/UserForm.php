@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use common\models\User;
 use common\models\Profile;
+use yii\db\ActiveRecord;
 
 /**
  * Signup form
@@ -18,7 +19,7 @@ class UserForm extends Model
     public $password;
     public $name;
     public $address;
-    public $phonenumber;
+    public $phone_number;
 
 
 
@@ -41,10 +42,10 @@ class UserForm extends Model
             ['address', 'required'],
             ['address', 'string', 'max' => 100],
 
-            ['phonenumber', 'trim'],
-            ['phonenumber', 'required'],
-            ['phonenumber', 'integer'],
-            ['phonenumber', 'string', 'max' => 9],
+            ['phone_number', 'trim'],
+            ['phone_number', 'required'],
+            ['phone_number', 'integer'],
+            ['phone_number', 'string', 'max' => 9],
 
 
             ['email', 'trim'],
@@ -72,6 +73,8 @@ class UserForm extends Model
             $user->generateAuthKey();
             $user->save();
             $profile->name = $this->name;
+            $profile->address = $this->address;
+            $profile->phone_number = $this->phone_number;
             $profile->user_id = $user->getId();
             $this->id = $user->getId();
 
@@ -84,6 +87,25 @@ class UserForm extends Model
         }
 
         return null;
+    }
+
+    public function updateFormUser($id)
+    {
+            $user = User::findOne($id);
+            $profile = Profile::findOne(['user_id' => $id]);
+
+            $this->username = $user->username;
+            $this->email = $user->email;
+            $this->password = $user->password_hash;
+            $this->name = $profile->name;
+            $this->address = $profile->address;
+            $this->phone_number = $profile->phone_number;
+
+            $user->save();
+
+            return $profile->save();
+
+
     }
 
 

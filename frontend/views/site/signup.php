@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'address')->textInput() ?>
 
-                 <?= $form->field($model, 'phonenumber')->textInput() ?>
+                 <?= $form->field($model, 'phone_number')->textInput() ?>
 
                 <?= $form->field($model, 'email')->textInput() ?>
 

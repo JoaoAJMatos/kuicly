@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\User;
+use common\models\Profile;
 use backend\models\UserForm;
 use app\models\UserSearch;
 use yii\web\Controller;
@@ -68,15 +69,15 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new UserForm();
+        $userForm = new UserForm();
 
 
-        if ($model->load($this->request->post()) && $model->createFormUser()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($userForm->load($this->request->post()) && $userForm->createFormUser()) {
+            return $this->redirect(['view', 'id' => $userForm->id]);
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'userForm' => $userForm,
         ]);
     }
 
@@ -89,14 +90,23 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $user = User::findOne($id);
+        $profile = Profile::findOne(['user_id' => $id]);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
+            $isValid = $user->validate();
+            $isValid = $profile->validate() && $isValid;
+            if ($isValid) {
+                $user->save();
+                $profile->save();
+                return $this->redirect(['user/view', 'id' => $user->id]);
+            }
+
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'user' => $user,
+            'profile' => $profile,
         ]);
     }
 
@@ -109,7 +119,14 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $user = User::findOne($id);
+        $profile = Profile::findOne(['user_id' => $user->id]);
+
+        if ($profile !== null) {
+            // Excluir o perfil associado a esse usuário
+            $profile->delete();
+        }
+        $user->delete();
 
         return $this->redirect(['index']);
     }

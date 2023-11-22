@@ -17,7 +17,7 @@ class SignupForm extends Model
     public $password;
     public $name;
     public $address;
-    public $phonenumber;
+    public $phone_number;
     public $role;
 
 
@@ -40,10 +40,10 @@ class SignupForm extends Model
             ['address', 'required'],
             ['address', 'string', 'max' => 100],
 
-            ['phonenumber', 'trim'],
-            ['phonenumber', 'required'],
-            ['phonenumber', 'integer'],
-            ['phonenumber', 'string', 'max' => 9],
+            ['phone_number', 'trim'],
+            ['phone_number', 'required'],
+            ['phone_number', 'integer'],
+            ['phone_number', 'string', 'max' => 9],
 
             ['role', 'trim'],
             ['role', 'required'],
@@ -79,7 +79,7 @@ class SignupForm extends Model
             $user->save(false);
             $profile->name = $this->name;
             $profile->address = $this->address;
-            $profile->phonenumber = $this->phonenumber;
+            $profile->phone_number = $this->phone_number;
             $profile->user_role = $this->role;
             $profile->user_id = $user->id;
             $profile->save(false);
