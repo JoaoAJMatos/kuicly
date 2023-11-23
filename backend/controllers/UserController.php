@@ -69,15 +69,15 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $userForm = new UserForm();
+        $model = new UserForm();
 
 
-        if ($userForm->load($this->request->post()) && $userForm->createFormUser()) {
-            return $this->redirect(['view', 'id' => $userForm->id]);
+        if ($model->load($this->request->post()) && $model->createFormUser()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-            'userForm' => $userForm,
+            'model' => $model,
         ]);
     }
 

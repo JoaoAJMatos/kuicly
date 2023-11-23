@@ -182,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPassword()
     {
-        return Yii::$app->security->decryptByPassword($this->password_hash, 'password');
+        return '';
     }
     /**
      * Generates "remember me" authentication key

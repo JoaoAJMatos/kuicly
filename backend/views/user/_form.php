@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var common\models\UserForm $userForm */
+/** @var common\models\UserForm $model */
 
 /** @var yii\widgets\ActiveForm $form */
 ?>
@@ -13,17 +13,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($userForm, 'username')->textInput() ?>
+    <?= $form->field($model, 'username')->textInput() ?>
 
-    <?= $form->field($userForm, 'name')->textInput() ?>
+    <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($userForm, 'address')->textInput() ?>
+    <?= $form->field($model, 'address')->textInput() ?>
 
-    <?= $form->field($userForm, 'phone_number')->textInput() ?>
+    <?= $form->field($model, 'phone_number')->textInput() ?>
 
-    <?= $form->field($userForm, 'email')->textInput() ?>
+    <?= $form->field($model, 'email')->textInput() ?>
 
-    <?php $form->field($userForm, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'password')->passwordInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
