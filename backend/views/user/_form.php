@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($userForm, 'email')->textInput() ?>
 
-    <?= $form->field($userForm, 'password')->passwordInput() ?>
+    <?php $form->field($userForm, 'password')->passwordInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

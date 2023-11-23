@@ -91,21 +91,31 @@ class UserForm extends Model
 
     public function updateFormUser($id)
     {
-            $user = User::findOne($id);
-            $profile = Profile::findOne(['user_id' => $id]);
+        $user = User::findOne($id);
+        $profile = Profile::findOne(['user_id' => $id]);
 
-            $this->username = $user->username;
-            $this->email = $user->email;
-            $this->password = $user->password_hash;
-            $this->name = $profile->name;
-            $this->address = $profile->address;
-            $this->phone_number = $profile->phone_number;
+        if ($user !== null && $profile !== null) {
+            // Carregar dados do formulário nos modelos
+            if ($user->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+                // Validar os modelos após o carregamento dos dados do formulário
+                if ($user->validate() && $profile->validate()) {
+                    // Atribuir valores diretamente aos modelos
+                    $user->username = $user->username; // Atribua valores apropriados
+                    $user->email = $user->email; // Atribua valores apropriados
 
-            $user->save();
+                    $profile->name = $profile->name; // Atribua valores apropriados
+                    $profile->address = $profile->address; // Atribua valores apropriados
+                    $profile->phone_number = $profile->phone_number; // Atribua valores apropriados
 
-            return $profile->save();
+                    // Salvar os modelos após as modificações
+                    if ($user->save() && $profile->save()) {
+                        return true; // Atualização bem-sucedida
+                    }
+                }
+            }
+        }
 
-
+        return false;
     }
 
 

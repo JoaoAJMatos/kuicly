@@ -10,7 +10,7 @@ use yii\bootstrap5\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container">
+<div class="container py-5">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">

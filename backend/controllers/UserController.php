@@ -90,24 +90,38 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $user = User::findOne($id);
+       $user = User::findOne($id);
+
+        if (!$user) {
+            throw new NotFoundHttpException("The user was not found.");
+        }
+
         $profile = Profile::findOne(['user_id' => $id]);
 
-        if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
-            $isValid = $user->validate();
-            $isValid = $profile->validate() && $isValid;
-            if ($isValid) {
-                $user->save();
-                $profile->save();
-                return $this->redirect(['user/view', 'id' => $user->id]);
+        if (!$profile) {
+            throw new NotFoundHttpException("The user has no profile.");
+        }
+
+            if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
+
+                $isValid = $user->validate();
+                $isValid = $profile->validate() && $isValid;
+
+                if ($isValid) {
+                    $user->save();
+                    $profile->save();
+
+                    return $this->redirect(['user/view', 'id' => $user->id]);
+                }
+
             }
 
-        }
 
         return $this->render('update', [
             'user' => $user,
             'profile' => $profile,
         ]);
+
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var yii\widgets\ActiveForm $form */
+/** @var yii\widgets\ActiveForm $model */
 
 use yii\helpers\Html;
 
@@ -12,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="btn-group">
     <!-- Example single danger button -->
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             Category
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -25,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="btn-group">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 Dificulty
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -39,40 +41,45 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
     <br>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
         <div class="col">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="img/topgbacano" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <h5 class="card-title">Melhor Curso</h5>
+
+                    <p class="card-text">Torna-te um Top G.</p>
+                    <?= Html::a('Ver Curso', ['site/courseDetail'], ['class'=> 'btn btn-primary']) ?>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="img/topgbacano" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <h5 class="card-title">Melhor Curso</h5>
+                    <p class="card-text">Torna-te um Top G.</p>
+                    <?= Html::a('Ver Curso', ['site/courseDetail'], ['class'=> 'btn btn-primary']) ?>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="img/topgbacano" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                    <h5 class="card-title">Melhor Curso</h5>
+                    <p class="card-text">Torna-te um Top G.</p>
+                    <?= Html::a('Ver Curso', ['site/courseDetail'], ['class'=> 'btn btn-primary']) ?>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="img/topgbacano" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <h5 class="card-title">Melhor Curso</h5>
+                    <p class="card-text">Torna-te um Top G.</p>
+                    <?= Html::a('Ver Curso', ['site/courseDetail'], ['class'=> 'btn btn-primary']) ?>
                 </div>
             </div>
         </div>

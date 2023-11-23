@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var common\models\User $user */
+/** @var common\models\UserForm $user */
 /** @var common\models\Profile $profile */
 
 
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($user, 'email')->textInput() ?>
 
-    <?php /*= $form->field($user, 'password')->passwordInput() */?>
+    <?= $form->field($user, 'password')->passwordInput()?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -36,3 +36,14 @@ $this->params['breadcrumbs'][] = 'Update';
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<!--<div class="user-create">
+
+    <h1><?php /*= Html::encode($this->title) */?></h1>
+
+    <?php /*= $this->render('_form', [
+        'userForm' => $userForm,
+    ]) */?>
+
+</div>
+-->

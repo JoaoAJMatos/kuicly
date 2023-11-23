@@ -84,11 +84,11 @@ AppAsset::register($this);
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
+                    Categories
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Arte</a></li>
+                    <li><a class="dropdown-item" href="#">Negócios</a></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </li>
@@ -164,7 +164,7 @@ AppAsset::register($this);
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <?php if (Yii::$app->user->can('instrutor')){?>
-                    <?= Html::a('Create Courses', ['site/create_courses'], ['class'=> 'nav-item nav-link']) ?>
+                    <?= Html::a('Create Courses', ['courses/index'], ['class'=> 'nav-item nav-link']) ?>
                 <?php }?>
 
                 <?= Html::a('Courses', ['site/courses'], ['class'=> 'nav-item nav-link']) ?>
@@ -180,7 +180,7 @@ AppAsset::register($this);
             <?php if (!Yii::$app->user->isGuest){?>
 
 
-                <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default ']) ?>
+                <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-primary py-4 px-lg-5 d-none d-lg-block ']) ?>
             <?php }else{?>
                 <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/login'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
             <?php } ?>

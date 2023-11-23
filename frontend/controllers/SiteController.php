@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
 /**
  * Site controller
  */
@@ -129,6 +130,11 @@ class SiteController extends Controller
     {
 
         return $this->render('courseDetail');
+    }
+    public function actionCreateCourse()
+    {
+
+        return $this->render('createCourse');
     }
     /**
      * Displays about page.
