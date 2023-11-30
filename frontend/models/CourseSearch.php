@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Courses;
+use common\models\Course;
 
 /**
- * CoursesSearch represents the model behind the search form of `common\models\Courses`.
+ * CourseSearch represents the model behind the search form of `common\models\Course`.
  */
-class CoursesSearch extends Courses
+class CourseSearch extends Course
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class CoursesSearch extends Courses
     public function rules()
     {
         return [
-            [['id', 'skill_level', 'user_id', 'category_id'], 'integer'],
-            [['title', 'description', 'course_image'], 'safe'],
+            [['id', 'skill_level', 'user_id', 'category_id', 'file_id'], 'integer'],
+            [['title', 'description'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -41,12 +41,31 @@ class CoursesSearch extends Courses
      */
     public function search($params)
     {
-        $query = Courses::find();
+        $query = Course::find();
 
+        $sort =\yii\helpers\ArrayHelper::getValue($_GET,'sort');
+
+        if($sort != null){
+            if(strpos($sort,'-') === false) {
+                $sortType = SORT_ASC;
+                $sortColumn = $sort;
+            }elseif (strpos($sort,'-') === 0){
+                $sortType = SORT_DESC;
+                $sortColumn = substr($sort,1);
+            }
+        }else{
+            $sortType = SORT_ASC;
+            $sortColumn = 'title';
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=>[
+                'defaultOrder'=>[
+                    $sortColumn => $sortType
+                ]
+            ]
         ]);
 
         $this->load($params);
@@ -64,11 +83,11 @@ class CoursesSearch extends Courses
             'skill_level' => $this->skill_level,
             'user_id' => $this->user_id,
             'category_id' => $this->category_id,
+            'file_id' => $this->file_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'course_image', $this->course_image]);
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

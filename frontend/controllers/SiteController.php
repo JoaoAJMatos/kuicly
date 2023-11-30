@@ -33,7 +33,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['error','signup','login'],
+                        'actions' => ['error','signup','login','signupInstrutor'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -126,25 +126,25 @@ class SiteController extends Controller
 
         return $this->render('cart');
     }
-    public function actionCourseDetail()
+    public function actionSignupInstrutor()
     {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signupInstrutor()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            return $this->goHome();
+        }
 
-        return $this->render('courseDetail');
-    }
-    public function actionCreateCourse()
-    {
+        return $this->render('signupInstrutor', [
+            'model' => $model,
+        ]);
 
-        return $this->render('createCourse');
     }
+
     /**
      * Displays about page.
      *
      * @return mixed
      */
-    public function actionCourses()
-    {
-        return $this->render('courses');
-    }
 
     /**
      * Signs user up.

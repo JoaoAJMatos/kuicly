@@ -1,24 +1,24 @@
 <?php
 
-use common\models\Courses;
+use common\models\Course;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\models\CoursesSearch $searchModel */
+/** @var app\models\CourseSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Courses';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="courses-index">
+<div class="course-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Courses', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -32,15 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'description',
-            'course_image',
             'price',
-            //'skill_level',
+            'skill_level',
             //'user_id',
             //'category_id',
+            //'file_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Courses $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id]);
+                'urlCreator' => function ($action, Course $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
                  }
             ],
         ],

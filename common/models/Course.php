@@ -5,34 +5,35 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "courses".
+ * This is the model class for table "course".
  *
  * @property int $id
  * @property string|null $title
  * @property string|null $description
- * @property resource|null $course_image
  * @property float|null $price
  * @property int|null $skill_level
  * @property int $user_id
  * @property int $category_id
+ * @property int $file_id
  *
- * @property CartItems[] $cartItems
+ * @property CartItem[] $cartItems
  * @property Category $category
- * @property Enrollments[] $enrollments
- * @property Favorites[] $favorites
- * @property OrderItems[] $orderItems
- * @property Ratings[] $ratings
- * @property Sections[] $sections
+ * @property Enrollment[] $enrollments
+ * @property Favorite[] $favorites
+ * @property File $file
+ * @property OrderItem[] $orderItems
+ * @property Rating[] $ratings
+ * @property Section[] $sections
  * @property User $user
  */
-class Courses extends \yii\db\ActiveRecord
+class Course extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'courses';
+        return 'course';
     }
 
     /**
@@ -41,12 +42,15 @@ class Courses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'course_image'], 'string'],
             [['price'], 'number'],
-            [['skill_level', 'user_id', 'category_id'], 'integer'],
-            [['user_id', 'category_id'], 'required'],
-            [['title'], 'string', 'max' => 150],
+            [['skill_level', 'user_id', 'category_id', 'file_id'], 'integer'],
+
+            [['user_id', 'category_id', 'file_id'], 'required'],
+            [['title', 'description'], 'string', 'max' => 150],
+            ['title', 'required'],
+
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -60,11 +64,11 @@ class Courses extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'description' => 'Description',
-            'course_image' => 'Course Image',
             'price' => 'Price',
             'skill_level' => 'Skill Level',
             'user_id' => 'User ID',
             'category_id' => 'Category ID',
+            'file_id' => 'File ID',
         ];
     }
 
@@ -75,7 +79,7 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getCartItems()
     {
-        return $this->hasMany(CartItems::class, ['courses_id' => 'id']);
+        return $this->hasMany(CartItem::class, ['courses_id' => 'id']);
     }
 
     /**
@@ -95,7 +99,7 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getEnrollments()
     {
-        return $this->hasMany(Enrollments::class, ['courses_id' => 'id']);
+        return $this->hasMany(Enrollment::class, ['courses_id' => 'id']);
     }
 
     /**
@@ -105,7 +109,17 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getFavorites()
     {
-        return $this->hasMany(Favorites::class, ['courses_id' => 'id']);
+        return $this->hasMany(Favorite::class, ['courses_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[File]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFile()
+    {
+        return $this->hasOne(File::class, ['id' => 'file_id']);
     }
 
     /**
@@ -115,7 +129,7 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getOrderItems()
     {
-        return $this->hasMany(OrderItems::class, ['courses_id' => 'id']);
+        return $this->hasMany(OrderItem::class, ['courses_id' => 'id']);
     }
 
     /**
@@ -125,7 +139,7 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getRatings()
     {
-        return $this->hasMany(Ratings::class, ['courses_id' => 'id']);
+        return $this->hasMany(Rating::class, ['courses_id' => 'id']);
     }
 
     /**
@@ -135,7 +149,7 @@ class Courses extends \yii\db\ActiveRecord
      */
     public function getSections()
     {
-        return $this->hasMany(Sections::class, ['courses_id' => 'id', 'user_id' => 'user_id', 'category_id' => 'category_id']);
+        return $this->hasMany(Section::class, ['courses_id' => 'id', 'user_id' => 'user_id', 'category_id' => 'category_id']);
     }
 
     /**

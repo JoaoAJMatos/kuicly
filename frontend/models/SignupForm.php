@@ -72,7 +72,6 @@ class SignupForm extends Model
             $profile = new Profile();
 
             $user->username = $this->username;
-
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
@@ -87,6 +86,35 @@ class SignupForm extends Model
             // the following three lines were added:
             $auth = \Yii::$app->authManager;
             $theRole = $auth->getRole($this->role);
+            $auth->assign($theRole, $user->getId());
+
+            return $user;
+        }
+
+        return null;
+    }
+
+    public function signupInstrutor()
+    {
+        if ($this->validate()) {
+            $user = new User();
+            $profile = new Profile();
+
+            $user->username = $this->username;
+            $user->email = $this->email;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
+            $user->save(false);
+            $profile->name = $this->name;
+            $profile->address = $this->address;
+            $profile->phone_number = $this->phone_number;
+            $profile->user_role = $this->role;
+            $profile->user_id = $user->id;
+            $profile->save(false);
+
+            // the following three lines were added:
+            $auth = \Yii::$app->authManager;
+            $theRole = $auth->getRole("instrutor");
             $auth->assign($theRole, $user->getId());
 
             return $user;

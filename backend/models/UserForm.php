@@ -67,7 +67,6 @@ class UserForm extends Model
             $profile = new Profile();
 
             $user->username = $this->username;
-
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
