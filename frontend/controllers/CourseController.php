@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\Course;
+use common\models\Lesson;
+use common\models\Section;
 use common\models\User;
 use common\models\Category;
 use common\models\File;
@@ -63,8 +65,14 @@ class CourseController extends Controller
      */
     public function actionView($id, $user_id, $category_id, $file_id)
     {
+        $modelLesson = new Lesson();
+        $modelSection = new Section();
+
+
         return $this->render('view', [
             'model' => $this->findModel($id, $user_id, $category_id, $file_id),
+            'modelLesson' => $modelLesson,
+            'modelSection' => $modelSection,
         ]);
     }
 
@@ -128,6 +136,7 @@ class CourseController extends Controller
             $modelCategory->loadDefaultValues();
             $modelFile->loadDefaultValues();
         }
+
         return $this->render('create', [
             'model' => $model,
             'modelUser' => $modelUser,

@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="courses">
 
         <div class="card">
-            <img src="<?= 'uploads/'.$model->file->path ?>" class="card-img-top" alt="...">
+            <!--<img src="<?php /*= 'uploads/'.$model->file->path */?>" class="card-img-top" alt="...">-->
+            <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->path) ?>" class="card-img-top" alt="...">
             <?php /*=  Html::img('img/topgbacano',['class'=>'card-img-top'])   */?>
             <div class="card-body">
                 <span class="badge bg-primary"><?= $model->category->category_name ?></span>

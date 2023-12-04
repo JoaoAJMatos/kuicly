@@ -11,7 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'api' => [
+        'class' => 'backend\modules\api\ModuleAPI',
+                ],
+        ],
     'components' => [
         'view' => [
             'theme' => [
@@ -44,14 +48,25 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user',
+                    'extraPatterns' => [
+                        'GET courses' => 'courses',
+                        'GET {id}/courses' => 'course',
+                        'POST {id}/courses' => 'addcourse',
+                        'DELETE {id}/courses' => 'deletecourse',
+
+                        ],
+                    ],
+                ['class' => 'yii\rest\UrlRule','controller' => 'api/course']
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];
