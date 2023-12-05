@@ -16,7 +16,7 @@ $this->title = 'Courses';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="courses">
+
 
         <div class="card">
             <!--<img src="<?php /*= 'uploads/'.$model->file->path */?>" class="card-img-top" alt="...">-->
@@ -33,4 +33,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
-</div>
+

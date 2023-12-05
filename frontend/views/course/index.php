@@ -15,7 +15,7 @@ use yii\data\ActiveDataProvider;
 $this->title = 'Courses';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container py-5"
+<div class="container py-5">
 
 
     <h1><?= Html::encode($this->title) ?></h1>

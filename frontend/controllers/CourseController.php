@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Cart;
+use common\models\CartItem;
 use common\models\Course;
 use common\models\Lesson;
 use common\models\Section;
@@ -65,14 +67,10 @@ class CourseController extends Controller
      */
     public function actionView($id, $user_id, $category_id, $file_id)
     {
-        $modelLesson = new Lesson();
-        $modelSection = new Section();
-
 
         return $this->render('view', [
             'model' => $this->findModel($id, $user_id, $category_id, $file_id),
-            'modelLesson' => $modelLesson,
-            'modelSection' => $modelSection,
+
         ]);
     }
 
@@ -95,19 +93,6 @@ class CourseController extends Controller
         }
 
         $model->user_id = Yii::$app->user->id;
-
-
-       /* if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);*/
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $modelFile->load($this->request->post()) ) {
@@ -186,6 +171,56 @@ class CourseController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionAdditemcard($id)
+    {
+        // Verifique se o usuário está autenticado
+        if (!Yii::$app->user->isGuest) {
+            $userId = Yii::$app->user->id;
+
+            // Verifique se o carrinho já está criado
+            $modelCart = Cart::findOne(['user_id' => $userId]);
+            if($modelCart===null){
+                $modelCart = new Cart();
+                $modelCart->user_id = $userId;
+                $modelCart->num_courses = 0;
+                $modelCart->save();
+            }else{
+                $modelCart->num_courses++;
+                $modelCart->save();
+            }
+
+            $modelCartItem = CartItem::findOne(['courses_id' => $id, 'cart_id' => $modelCart->id]);
+
+            if ($modelCartItem === null) {
+                $modelCartItem = new CartItem();
+                $modelCartItem->courses_id = $id;
+                $modelCartItem->cart_id = $modelCart->id;
+                $modelCart->num_courses++;
+                $modelCart->save();
+                $modelCartItem->save();
+
+                return $this->redirect(['course/view', 'id' => $id, 'user_id' => $modelCartItem->courses->user_id, 'category_id' => $modelCartItem->courses->category_id, 'file_id' => $modelCartItem->courses->file_id]);
+            } else {
+                // Se o curso já está no carrinho, você pode lidar com isso aqui
+                // Pode exibir uma mensagem ou redirecionar para algum lugar
+            }
+        } else {
+            // Se o usuário não estiver autenticado, redirecione para a página de login
+            return $this->redirect(['site/login']);
+        }
+    }
+
+    public function actionMycourse(){
+
+        $userId = Yii::$app->user->id;
+
+        $model = Curso::find()->where(['instrutor_id' => $userId])->all();
+
+        return $this->render('mycreate', [
+            'model' => $model,
+
+        ]);
+    }
     /**
      * Finds the Course model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
