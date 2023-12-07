@@ -1,8 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace frontend\controllers;
 
 use common\models\Lesson;
+use common\models\Section;
 use app\models\LessonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,10 +37,13 @@ class LessonController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new LessonSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        // Filtre as lições pelo ID do curso desejado
+       //$dataProvider->query->andFilterWhere(['course_id' => $id]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -69,9 +73,17 @@ class LessonController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Lesson();
+        $modelSection = Section::find()->where(['courses_id' => $id])->all();
+        $sectionList = [];
+
+        foreach ($modelSection as $section) {
+            $sectionList[$section->id] = $section->title;
+            $model->sections_id = $section->id;
+
+        }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,6 +95,8 @@ class LessonController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelSection' => $modelSection,
+            'sectionList' => $sectionList,
         ]);
     }
 

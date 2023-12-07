@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= ListView::widget([
     'dataProvider' => $dataProvider,
-    'itemView' => '_list',
+    'itemView' => '_listmycourse',
     'options' => [
         'class' => 'row row-cols-1 row-cols-md-3 g-3',
     ],

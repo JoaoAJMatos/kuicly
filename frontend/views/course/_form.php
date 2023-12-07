@@ -38,10 +38,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($modelCategory, 'category_name')->dropDownList(
         $categoryList,
-        ['prompt' => 'Select Category']
     ); ?>
 
-
+    <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id],['class' => 'btn btn-primary'] )?>
+    <br>
+    <br>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

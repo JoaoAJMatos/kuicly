@@ -126,12 +126,13 @@ class SiteController extends Controller
 
         return $this->render('cart');
     }
-    public function actionSignupInstrutor()
+    public function actionSignupinstrutor()
     {
+
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signupInstrutor()) {
+        if ($model->load(Yii::$app->request->post()) && $model->signupinstrutor()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return $this->redirect('site/login');
         }
 
         return $this->render('signupInstrutor', [

@@ -165,10 +165,10 @@ AppAsset::register($this);
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <?php if (Yii::$app->user->can('instrutor')){?>
                     <?= Html::a('Create Courses', ['course/create'], ['class'=> 'nav-item nav-link']) ?>
-                    <?= Html::a('My Courses', ['course/create'], ['class'=> 'nav-item nav-link']) ?>
+                    <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
                 <?php }?>
                 <?php if(Yii::$app->user->isGuest) {?>
-                <?= Html::a('Torna-te um Instrutor', ['site/signupInstrutor'], ['class'=> 'nav-item nav-link']) ?>
+                <?= Html::a('Torna-te um Instrutor', ['site/signupinstrutor'], ['class'=> 'nav-item nav-link']) ?>
                 <?php }?>
                 <?= Html::a('Courses', ['course/index'], ['class'=> 'nav-item nav-link']) ?>
                 <div>

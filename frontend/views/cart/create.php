@@ -9,7 +9,7 @@ $this->title = 'Create Cart';
 $this->params['breadcrumbs'][] = ['label' => 'Carts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="cart-create">
+<div class="container py-5">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

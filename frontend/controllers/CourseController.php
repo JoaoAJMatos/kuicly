@@ -145,12 +145,35 @@ class CourseController extends Controller
     {
         $model = $this->findModel($id, $user_id, $category_id, $file_id);
 
+        $modelFile = File::findOne(['id' => $model->file_id]); // Supondo que existe um relacionamento com o arquivo
+        //buscar o $model->file->path
+
+        $modelCategory = $model->category;
+
+
+        $categories = Category::find()->all();
+        $categoryList = [];
+
+        foreach ($categories as $category) {
+            $categoryList[$category->id] = $category->category_name;
+        }
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $modelFile->path = UploadedFile::getInstance($modelFile, 'path');
+
+            if ($modelFile->save() && $modelFile->upload()) {
+                $model->file_id = $modelFile->id;
+                $model->save(); // Atualiza o curso com o ID do arquivo relacionado
+            }
+
+
             return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelFile' => $modelFile,
+            'categoryList' => $categoryList,
+            'modelCategory' => $modelCategory,
         ]);
     }
 
@@ -168,7 +191,7 @@ class CourseController extends Controller
     {
         $this->findModel($id, $user_id, $category_id, $file_id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['mycourse']);
     }
 
     public function actionAdditemcard($id)
@@ -211,13 +234,15 @@ class CourseController extends Controller
     }
 
     public function actionMycourse(){
+        $searchModel = new CourseSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         $userId = Yii::$app->user->id;
 
-        $model = Curso::find()->where(['instrutor_id' => $userId])->all();
+        $dataProvider->query->andWhere(['user_id' => $userId]);
 
-        return $this->render('mycreate', [
-            'model' => $model,
+        return $this->render('mycourse', [
+            'dataProvider' => $dataProvider,
 
         ]);
     }
