@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($user, 'email')->textInput() ?>
 
-    <?= $form->field($user, 'password')->passwordInput()?>
+    <?php /*= $form->field($user, 'password')->passwordInput()*/?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

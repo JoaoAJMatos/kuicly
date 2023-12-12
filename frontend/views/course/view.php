@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p class="lead text-white">Criado: <?= $model->user->username ?> </p>
                 </div>
                 <div class="col-md-6">
-                    <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->path) ?>" class="view-img" alt="Responsive image">
+                    <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" class="view-img" alt="Responsive image">
                 </div>
             </div>
         <!--<h1><?php /*= Html::encode($this->title) */?></h1>

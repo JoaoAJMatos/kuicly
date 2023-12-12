@@ -45,11 +45,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-8">
 
-            <video width="640" height="360" controls preload="metadata" style="border: 2px solid black;">
-                <source src="" type="video/mp4">
-                <!-- Adicione outras tags source para diferentes tipos de arquivos de vídeo, se disponíveis -->
-                Seu navegador não suporta a reprodução deste vídeo.
-            </video>
+            <!--<video width="640" height="360" controls autoplay style="border: 2px solid black">
+                <source src="<?php /*= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) */?>" type="video/x-matroska">
+
+            </video>-->
+
+            <video width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 2px solid black"></video>
+
+
+
         </div>
         <div class="col-md-4 ">
             <h2>Conteúdo do Curso</h2>
