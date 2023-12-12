@@ -53,7 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="accordion-body">
                             <ul class="list-group list-group-flush">
                                 <?php foreach ($section->lessons as $lesson){?>
-                                    <li class="list-group-item"><?= $lesson->title ?></li>
+                                    <!--<li class="list-group-item"><?php /*= $lesson->title */?> </li>-->
+                                    <?= Html::a(''. $lesson->title,['lesson/view', 'id'=>$lesson->id,'sections_id'=>$lesson->sections_id,'quizzes_id'=>$lesson->quizzes_id,'file_id'=>$lesson->file_id,'lesson_type_id'=>$lesson->lesson_type_id],['class'=>'list-group-item']) ?>
                                 <?php }?>
                             </ul>
                         </div>

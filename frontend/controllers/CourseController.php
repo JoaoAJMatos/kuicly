@@ -7,6 +7,7 @@ use common\models\CartItem;
 use common\models\Course;
 use common\models\Lesson;
 use common\models\Section;
+use common\models\UploadForm;
 use common\models\User;
 use common\models\Category;
 use common\models\File;
@@ -81,6 +82,7 @@ class CourseController extends Controller
      */
     public function actionCreate()
     {
+        $modelUpload = new UploadForm();
         $model = new Course();
         $modelUser = new User();
         $modelCategory = new Category();
@@ -95,22 +97,24 @@ class CourseController extends Controller
         $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $modelFile->load($this->request->post()) ) {
+            if ($model->load($this->request->post()) ) {
 
-                $modelFile->path = UploadedFile::getInstance($modelFile, 'path');
 
-                if (function_exists('com_create_guid') === true) {
-                    $modelFile->name = trim(com_create_guid(), '{}');
+                $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+
+                if ($modelUpload->upload()){
+                    $modelFile->name = $modelUpload->fileName;
                 }
 
-                $modelFile->file_type_id = 2;
+
+                $modelFile->file_type_id = 3;
+                $modelFile->path = "teste";
                 //TODO: verificação do ficheiro
 
-                //$model->category_id = $categoryList->id;
+
                 $modelFile->save();
                 $model->file_id = $modelFile->id;
-
-                if ($model->save() && $modelFile->save() && $modelFile->upload()) {
+                if ($model->save()) {
 
                     return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
                 }
@@ -128,6 +132,7 @@ class CourseController extends Controller
             'modelCategory' => $modelCategory,
             'modelFile' => $modelFile,
             'categoryList' => $categoryList,
+            'modelUpload' => $modelUpload,
         ]);
     }
 
@@ -144,7 +149,7 @@ class CourseController extends Controller
     public function actionUpdate($id, $user_id, $category_id, $file_id)
     {
         $model = $this->findModel($id, $user_id, $category_id, $file_id);
-
+        $modelUpload = new UploadForm();
         $modelFile = File::findOne(['id' => $model->file_id]); // Supondo que existe um relacionamento com o arquivo
         //buscar o $model->file->path
 
@@ -174,6 +179,7 @@ class CourseController extends Controller
             'modelFile' => $modelFile,
             'categoryList' => $categoryList,
             'modelCategory' => $modelCategory,
+            'modelUpload' => $modelUpload,
         ]);
     }
 

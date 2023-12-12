@@ -3,11 +3,16 @@
 namespace frontend\controllers;
 
 use common\models\Lesson;
+use common\models\File;
+use common\models\LessonType;
 use common\models\Section;
+use common\models\Course;
 use app\models\LessonSearch;
+use common\models\UploadForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -63,8 +68,12 @@ class LessonController extends Controller
      */
     public function actionView($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
+        $modelSection = Section::find()->where(['id' => $sections_id])->one();
+        $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
+
         return $this->render('view', [
             'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
+            'modelCourse'=>$modelCourse,
         ]);
     }
 
@@ -76,18 +85,48 @@ class LessonController extends Controller
     public function actionCreate($id)
     {
         $model = new Lesson();
+        $modelUpload = new UploadForm();
         $modelSection = Section::find()->where(['courses_id' => $id])->all();
+        $modelLessonType = LessonType::find()->all();
+        $modelFile = new File();
         $sectionList = [];
+        $lessonTypeList = [];
 
         foreach ($modelSection as $section) {
             $sectionList[$section->id] = $section->title;
             $model->sections_id = $section->id;
-
         }
 
+        foreach ($modelLessonType as $type){
+            $lessonTypeList[$type->id] = $type->type;
+            $model->lesson_type_id = $type->id;
+        }
+
+        $model->quizzes_id = 2;
+        //TODO: quiz
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+
+            if ($model->load($this->request->post()) ) {
+
+                $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+
+                if ($modelUpload->upload()){
+                    $modelFile->name = $modelUpload->fileName;
+                }
+
+                $modelFile->file_type_id = 3;
+                $modelFile->path = "teste";
+                //TODO: verificação do ficheiro
+
+
+                $modelFile->save();
+                $model->file_id = $modelFile->id;
+                if ($model->save()) {
+
+                    return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                }
+
             }
         } else {
             $model->loadDefaultValues();
@@ -97,6 +136,9 @@ class LessonController extends Controller
             'model' => $model,
             'modelSection' => $modelSection,
             'sectionList' => $sectionList,
+            'lessonTypeList' => $lessonTypeList,
+            'modelFile' => $modelFile,
+            'modelUpload' => $modelUpload,
         ]);
     }
 

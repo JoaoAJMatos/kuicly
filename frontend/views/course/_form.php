@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 /** @var common\models\Category $modelCategory */
 /** @var common\models\Category $categoryList*/
 /** @var yii\widgets\ActiveForm $form */
+/** @var common\models\UploadForm $modelUpload */
 ?>
 
 <div class="">
@@ -34,7 +35,7 @@ use yii\widgets\ActiveForm;
         ['prompt' => 'Select Skill Level']
     ); ?>
 
-    <?= $form->field($modelFile, 'path')->fileInput() ?>
+    <?= $form->field($modelUpload, 'imageFile')->fileInput() ?>
 
     <?= $form->field($modelCategory, 'category_name')->dropDownList(
         $categoryList,

@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\Course;
+use common\models\Section;
 use common\models\User;
 use common\models\Profile;
+use common\models\Lesson;
 use backend\models\UserForm;
 use app\models\UserSearch;
 use yii\web\Controller;
@@ -135,7 +138,29 @@ class UserController extends Controller
     {
         $user = User::findOne($id);
         $profile = Profile::findOne(['user_id' => $user->id]);
+        $courses = Course::find()->where(['user_id' => $id])->all();
 
+        foreach ($courses as $course) {
+            $sections = Section::find()->where(['courses_id' => $course->id])->all();
+
+            foreach ($sections as $section) {
+                // Encontrar e excluir todas as seções associadas a cada lição
+                $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
+                foreach ($lessons as $lesson) {
+                    // Excluir todos os quizzes associados a cada seção
+                    //Quiz::deleteAll(['section_id' => $section->id]);
+
+                    // Excluir a seção
+                    $lesson->delete();
+                }
+
+                // Excluir a lição
+                $section->delete();
+            }
+
+            // Excluir o curso
+            $course->delete();
+        }
         if ($profile !== null) {
             // Excluir o perfil associado a esse usuário
             $profile->delete();

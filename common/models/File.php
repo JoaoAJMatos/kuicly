@@ -34,7 +34,7 @@ class File extends \yii\db\ActiveRecord
         return [
             [['name', 'path', 'file_type_id'], 'required'],
             [['file_type_id'], 'integer'],
-            [['path'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+
             //[['name', 'path'], 'string', 'max' => 45],
             [['file_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => FileType::class, 'targetAttribute' => ['file_type_id' => 'id']],
         ];
@@ -83,7 +83,7 @@ class File extends \yii\db\ActiveRecord
         return $this->hasMany(Lesson::class, ['file_id' => 'id']);
     }
 
-    public function upload()
+    /*public function upload()
     {
         if ($this->validate()) {
             $this->path->saveAs(\Yii::getAlias('@webroot').'/uploads/' . $this->path->baseName . '.' . $this->path->extension);
@@ -92,5 +92,5 @@ class File extends \yii\db\ActiveRecord
         } else {
             return false;
         }
-    }
+    }*/
 }

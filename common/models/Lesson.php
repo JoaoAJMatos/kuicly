@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property string|null $title
- * @property string|null $type
  * @property string|null $context
  * @property int $sections_id
  * @property int $quizzes_id
@@ -39,7 +38,6 @@ class Lesson extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type'], 'string'],
             [['sections_id', 'quizzes_id', 'file_id', 'lesson_type_id'], 'required'],
             [['sections_id', 'quizzes_id', 'file_id', 'lesson_type_id'], 'integer'],
             [['title'], 'string', 'max' => 70],
@@ -59,7 +57,6 @@ class Lesson extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'type' => 'Type',
             'context' => 'Context',
             'sections_id' => 'Sections ID',
             'quizzes_id' => 'Quizzes ID',

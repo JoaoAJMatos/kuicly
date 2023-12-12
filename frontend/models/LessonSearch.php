@@ -56,9 +56,6 @@ class LessonSearch extends Lesson
             return $dataProvider;
         }
 
-        if (isset($params['courses_id'])) {
-            $query->innerJoinWith('section')->andWhere(['sections.courses_id' => $params['courses_id']]);
-        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

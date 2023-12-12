@@ -43,29 +43,9 @@ class CourseSearch extends Course
     {
         $query = Course::find();
 
-        $sort =\yii\helpers\ArrayHelper::getValue($_GET,'sort');
-
-        if($sort != null){
-            if(strpos($sort,'-') === false) {
-                $sortType = SORT_ASC;
-                $sortColumn = $sort;
-            }elseif (strpos($sort,'-') === 0){
-                $sortType = SORT_DESC;
-                $sortColumn = substr($sort,1);
-            }
-        }else{
-            $sortType = SORT_ASC;
-            $sortColumn = 'title';
-        }
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=>[
-                'defaultOrder'=>[
-                    $sortColumn => $sortType
-                ]
-            ]
+
         ]);
 
         $this->load($params);
