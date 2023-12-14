@@ -172,7 +172,7 @@ AppAsset::register($this);
                 <?php }?>
                 <?= Html::a('Courses', ['course/index'], ['class'=> 'nav-item nav-link']) ?>
                 <div>
-                    <?= Html::a('<i class="bi bi-cart4"></i>', ['site/cart'], ['class'=> 'nav-item nav-link ']) ?>
+                    <?= Html::a('<i class="bi bi-cart4"></i>', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
                 </div>
             </div>
         </div>

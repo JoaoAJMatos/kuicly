@@ -28,6 +28,8 @@ use yii\widgets\ActiveForm;
         ['prompt' => 'Select Section']
     ); ?>
 
+
+
     <?= $form->field($model, 'lesson_type_id')->dropDownList(
             $lessonTypeList,
         ['prompt' => 'Select Lesson Type']

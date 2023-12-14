@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Cart;
 use app\models\CartSearch;
+use common\models\Order;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,15 +38,20 @@ class CartController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($user_id)
     {
-        $searchModel = new CartSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $modelOrder = new Order();
+        $model = Cart::find()->where(['user_id' => $user_id])->one();
+        $modelOrder->user_id = $user_id;
+        foreach ($model->cartItems as $cartItem){
+            $total =+ $cartItem->courses->price;
+        }
+        $modelOrder->total_price= $total;
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'modelOrder'=>$modelOrder,
         ]);
+
     }
 
     /**

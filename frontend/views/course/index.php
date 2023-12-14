@@ -17,22 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container py-5">
 
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-<br>
-
     <?= $this->render('_search', ['model' => $searchModel]); ?>
-    <p>
-        <?php
-        $selector = \yii\helpers\ArrayHelper::getValue($_GET,'sort','-title');
-        ?>
-        Sort by: <?= Html::dropDownList('sortDropdowm',$selector, ['' => '--Select--','title' => 'Name Asc', '-title'=>'Name Desc','-skill_level' => 'Dificulty Asc','skill_level' =>'Dificulty Desc']) ?>
-    </p>
+
 
         <?= ListView::widget([
             'dataProvider' => $dataProvider,
