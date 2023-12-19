@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property string $path
  * @property int $file_type_id
  *
  * @property Course[] $courses
@@ -32,10 +31,9 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'path', 'file_type_id'], 'required'],
+            [['name', 'file_type_id'], 'required'],
             [['file_type_id'], 'integer'],
-
-            //[['name', 'path'], 'string', 'max' => 45],
+            //[['name'], 'string', 'max' => 45],
             [['file_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => FileType::class, 'targetAttribute' => ['file_type_id' => 'id']],
         ];
     }
@@ -48,7 +46,6 @@ class File extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'path' => 'Path',
             'file_type_id' => 'File Type ID',
         ];
     }
@@ -82,15 +79,4 @@ class File extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Lesson::class, ['file_id' => 'id']);
     }
-
-    /*public function upload()
-    {
-        if ($this->validate()) {
-            $this->path->saveAs(\Yii::getAlias('@webroot').'/uploads/' . $this->path->baseName . '.' . $this->path->extension);
-
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 }

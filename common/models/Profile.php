@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property resource|null $profile_picture
- * @property string|null $user_role
  * @property string|null $name
  * @property int|null $phone_number
  * @property string|null $address
@@ -33,9 +32,9 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
+            [['profile_picture'], 'string'],
             [['phone_number', 'user_id'], 'integer'],
-            [['profile_picture', 'user_role'], 'string'],
+            [['user_id'], 'required'],
             [['name'], 'string', 'max' => 75],
             [['address'], 'string', 'max' => 100],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -50,7 +49,6 @@ class Profile extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'profile_picture' => 'Profile Picture',
-            'user_role' => 'User Role',
             'name' => 'Name',
             'phone_number' => 'Phone Number',
             'address' => 'Address',

@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Cart;
 use common\models\CartItem;
 use common\models\Course;
+use common\models\Enrollment;
 use common\models\Lesson;
 use common\models\Section;
 use common\models\UploadForm;
@@ -107,8 +108,8 @@ class CourseController extends Controller
                 }
 
 
-                $modelFile->file_type_id = 3;
-                $modelFile->path = "teste";
+                $modelFile->file_type_id = 4;
+
                 //TODO: verificação do ficheiro
 
 
@@ -230,6 +231,7 @@ class CourseController extends Controller
 
                 return $this->redirect(['course/view', 'id' => $id, 'user_id' => $modelCartItem->courses->user_id, 'category_id' => $modelCartItem->courses->category_id, 'file_id' => $modelCartItem->courses->file_id]);
             } else {
+
                 // Se o curso já está no carrinho, você pode lidar com isso aqui
                 // Pode exibir uma mensagem ou redirecionar para algum lugar
             }
@@ -241,14 +243,28 @@ class CourseController extends Controller
 
     public function actionMycourse(){
         $searchModel = new CourseSearch();
+        $modelEnrolment = new Enrollment();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+
         $userId = Yii::$app->user->id;
+        $enrolledCourseIds = Enrollment::find()
+            ->select('courses_id')
+            ->where(['user_id' => $userId])
+            ->column();
+        if($enrolledCourseIds === null){
+            $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
+        }else{
+            $dataProvider2 = new \yii\data\ArrayDataProvider();
+        }
 
         $dataProvider->query->andWhere(['user_id' => $userId]);
 
+
+
         return $this->render('mycourse', [
             'dataProvider' => $dataProvider,
+            'dataProvider2' => $dataProvider2,
 
         ]);
     }

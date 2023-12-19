@@ -12,6 +12,7 @@ use yii\widgets\ListView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var app\models\CartSearch $model */
 /** @var app\models\Order $modelOrder */
+/** @var app\models\Cart $ivatotal */
 
 $this->title = 'Carts';
 $this->params['breadcrumbs'][] = $this->title;
@@ -95,12 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row ">
                                 <div class="col">
                                     <div class="row justify-content-between">
-                                        <div class="col-4"><p class="mb-1"><b>Subtotal</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b>179 EUR</b></p></div>
-                                    </div>
-                                    <div class="row justify-content-between">
-                                        <div class="col"><p class="mb-1"><b>Shipping</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b>0 EUR</b></p></div>
+                                        <div class="col"><p class="mb-1"><b>IVA</b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?></b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>

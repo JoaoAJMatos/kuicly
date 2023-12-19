@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\UserForm $user */
 /** @var common\models\Profile $profile */
+/** @var common\models\UserForm $userForm */
 
 
 $this->title = 'Update User: ' . $user->id;
@@ -42,8 +43,8 @@ $this->params['breadcrumbs'][] = 'Update';
     <h1><?php /*= Html::encode($this->title) */?></h1>
 
     <?php /*= $this->render('_form', [
-        'userForm' => $userForm,
+        'model' => $userForm,
     ]) */?>
 
-</div>
--->
+</div>-->
+

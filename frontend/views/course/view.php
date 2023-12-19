@@ -64,14 +64,18 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
+
         <div class="col-md-6 ">
+            <?php  if(Yii::$app->user->id != $model->user_id){ ?>
             <div class="card float-end" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Buy your Course Now!</h5>
                         <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary btn-lg btn-block' ]) ?>
                 </div>
             </div>
+            <?php } ?>
         </div>
+
     </div>
 
 </div>

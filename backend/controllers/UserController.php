@@ -93,6 +93,16 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+
+        /*$model = new UserForm();
+
+        if($model->load($this->request->post()) && $model->updateFormUser($id)){
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);*/
        $user = User::findOne($id);
 
         if (!$user) {

@@ -47,9 +47,12 @@ class CartController extends Controller
             $total =+ $cartItem->courses->price;
         }
         $modelOrder->total_price= $total;
+        $modelOrder->iva = 23;
+
         return $this->render('index', [
             'model' => $model,
             'modelOrder'=>$modelOrder,
+            'ivatotal'=> $total * 0.23,
         ]);
 
     }

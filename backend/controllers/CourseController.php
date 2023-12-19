@@ -1,9 +1,12 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
+use common\models\Cart;
+use common\models\CartItem;
 use common\models\Course;
 use app\models\CourseSearch;
+use common\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,6 +43,7 @@ class CourseController extends Controller
     {
         $searchModel = new CourseSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = new User();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -120,9 +124,32 @@ class CourseController extends Controller
      */
     public function actionDelete($id, $user_id, $category_id, $file_id)
     {
+        // Encontre o carrinho do usuário
+        $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
+
+        if ($modelCart) {
+            // Encontre o item do carrinho que corresponde ao curso
+            $modelCartItem = CartItem::find()
+                ->where(['cart_id' => $modelCart->id, 'courses_id' => $id])
+                ->one();
+
+            if ($modelCartItem) {
+                // Se o curso estiver no carrinho de alguém, exclua o item do carrinho
+                $modelCartItem->delete();
+            }
+        }
+
         $this->findModel($id, $user_id, $category_id, $file_id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionLessons($course_id)
+    {
+        $model = Course::findOne($course_id);
+        return $this->render('lessons', [
+            'model' => $model,
+        ]);
     }
 
     /**
