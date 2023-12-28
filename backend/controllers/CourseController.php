@@ -6,6 +6,8 @@ use common\models\Cart;
 use common\models\CartItem;
 use common\models\Course;
 use app\models\CourseSearch;
+use common\models\Lesson;
+use common\models\Section;
 use common\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -125,6 +127,7 @@ class CourseController extends Controller
     public function actionDelete($id, $user_id, $category_id, $file_id)
     {
         // Encontre o carrinho do usuário
+        $model = $this->findModel($id, $user_id, $category_id, $file_id);
         $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
 
         if ($modelCart) {
@@ -138,19 +141,26 @@ class CourseController extends Controller
                 $modelCartItem->delete();
             }
         }
+        $sections = Section::find()->where(['courses_id' => $model->id])->all();
+
+        foreach ($sections as $section) {
+            // Encontrar e excluir todas as seções associadas a cada lição
+            $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
+            foreach ($lessons as $lesson) {
+                // Excluir todos os quizzes associados a cada seção
+                //Quiz::deleteAll(['section_id' => $section->id]);
+
+                $lesson->delete();
+            }
+
+            $section->delete();
+        }
 
         $this->findModel($id, $user_id, $category_id, $file_id)->delete();
 
         return $this->redirect(['index']);
     }
 
-    public function actionLessons($course_id)
-    {
-        $model = Course::findOne($course_id);
-        return $this->render('lessons', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Finds the Course model based on its primary key value.

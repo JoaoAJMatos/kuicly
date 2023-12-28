@@ -108,7 +108,7 @@ class CourseController extends Controller
                 }
 
 
-                $modelFile->file_type_id = 4;
+                $modelFile->file_type_id = 5;
 
                 //TODO: verificação do ficheiro
 
@@ -117,7 +117,7 @@ class CourseController extends Controller
                 $model->file_id = $modelFile->id;
                 if ($model->save()) {
 
-                    return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+                    return $this->redirect(['lesson/create', 'id' => $model->id]);
                 }
             }
         } else {
@@ -151,9 +151,7 @@ class CourseController extends Controller
     {
         $model = $this->findModel($id, $user_id, $category_id, $file_id);
         $modelUpload = new UploadForm();
-        $modelFile = File::findOne(['id' => $model->file_id]); // Supondo que existe um relacionamento com o arquivo
-        //buscar o $model->file->path
-
+        $modelFile = File::find()->where(['id' => $model->file_id])->one();
         $modelCategory = $model->category;
 
 
@@ -163,14 +161,16 @@ class CourseController extends Controller
         foreach ($categories as $category) {
             $categoryList[$category->id] = $category->category_name;
         }
+
+        $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+        if ($modelUpload->upload()) {
+            $modelFile->name = $modelUpload->fileName;
+
+        }
+        $modelFile->save();
+        $model->file_id = $modelFile->id;
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            $modelFile->path = UploadedFile::getInstance($modelFile, 'path');
-
-            if ($modelFile->save() && $modelFile->upload()) {
-                $model->file_id = $modelFile->id;
-                $model->save(); // Atualiza o curso com o ID do arquivo relacionado
-            }
-
 
             return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
         }
@@ -203,6 +203,7 @@ class CourseController extends Controller
 
     public function actionAdditemcard($id)
     {
+        $previousUrl = Yii::$app->request->referrer;
         // Verifique se o usuário está autenticado
         if (!Yii::$app->user->isGuest) {
             $userId = Yii::$app->user->id;
@@ -229,11 +230,13 @@ class CourseController extends Controller
                 $modelCart->save();
                 $modelCartItem->save();
 
-                return $this->redirect(['course/view', 'id' => $id, 'user_id' => $modelCartItem->courses->user_id, 'category_id' => $modelCartItem->courses->category_id, 'file_id' => $modelCartItem->courses->file_id]);
+                /*return $this->redirect(['course/view', 'id' => $id, 'user_id' => $modelCartItem->courses->user_id, 'category_id' => $modelCartItem->courses->category_id, 'file_id' => $modelCartItem->courses->file_id]);*/
+                return $this->redirect([$previousUrl]);
             } else {
 
-                // Se o curso já está no carrinho, você pode lidar com isso aqui
-                // Pode exibir uma mensagem ou redirecionar para algum lugar
+                // Se o item já está no carrinho
+                Yii::$app->session->setFlash('info', 'Este item já está no seu carrinho.');
+                return $this->redirect([$previousUrl]);
             }
         } else {
             // Se o usuário não estiver autenticado, redirecione para a página de login

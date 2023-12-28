@@ -47,7 +47,8 @@ class Course extends \yii\db\ActiveRecord
 
             [['user_id', 'category_id', 'file_id'], 'required'],
             [['title', 'description'], 'string', 'max' => 150],
-            ['title', 'required'],
+            [['title', 'description','price','skill_level','category_id'], 'required'],
+
 
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],

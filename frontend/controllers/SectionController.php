@@ -2,19 +2,18 @@
 
 namespace frontend\controllers;
 
-use common\models\Cart;
-use app\models\CartSearch;
-use common\models\CartItem;
-use common\models\Order;
+use common\models\Course;
+use common\models\Section;
+use app\models\SectionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
 
 /**
- * CartController implements the CRUD actions for Cart model.
+ * SectionController implements the CRUD actions for Section model.
  */
-class CartController extends Controller
+class SectionController extends Controller
 {
     /**
      * @inheritDoc
@@ -35,65 +34,53 @@ class CartController extends Controller
     }
 
     /**
-     * Lists all Cart models.
+     * Lists all Section models.
      *
      * @return string
      */
-    public function actionIndex($user_id)
+    public function actionIndex()
     {
-        $modelOrder = new Order();
-        $model = Cart::find()->where(['user_id' => $user_id])->one();
-        $modelOrder->user_id = $user_id;
-        if($model === null){
-            $model = new Cart();
-            $modelOrder->total_price = 0;
-            $model->user_id = $user_id;
-            $model->save();
-        }
-        $modelOrder->total_price = 0;
-
-        /*foreach ($model->cartItems as $cartItem){
-            $total =+ $cartItem->courses->price;
-        }*/
-       // $modelOrder->total_price= $total;
-
+        $searchModel = new SectionSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'model' => $model,
-            'modelOrder'=>$modelOrder,
-            //'ivatotal'=> $total * 0.23,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
-
     }
 
     /**
-     * Displays a single Cart model.
+     * Displays a single Section model.
      * @param int $id ID
+     * @param int $courses_id Courses ID
      * @param int $user_id User ID
+     * @param int $category_id Category ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $user_id)
+    public function actionView($id, $courses_id, $user_id, $category_id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id, $user_id),
+            'model' => $this->findModel($id, $courses_id, $user_id, $category_id),
         ]);
     }
 
     /**
-     * Creates a new Cart model.
+     * Creates a new Section model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Cart();
-
+        $model = new Section();
+        $modelCourse = Course::find()->where(['id' => $id])->one();
+        $model->user_id = Yii::$app->user->id;
+        $model->courses_id = $id;
+        $model->category_id = $modelCourse->category_id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-
-                return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id]);
+                return $this->redirect(['lesson/create', 'id' => $id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -105,19 +92,21 @@ class CartController extends Controller
     }
 
     /**
-     * Updates an existing Cart model.
+     * Updates an existing Section model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
+     * @param int $courses_id Courses ID
      * @param int $user_id User ID
+     * @param int $category_id Category ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $user_id)
+    public function actionUpdate($id, $courses_id, $user_id, $category_id)
     {
-        $model = $this->findModel($id, $user_id);
+        $model = $this->findModel($id, $courses_id, $user_id, $category_id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id]);
+            return $this->redirect(['view', 'id' => $model->id, 'courses_id' => $model->courses_id, 'user_id' => $model->user_id, 'category_id' => $model->category_id]);
         }
 
         return $this->render('update', [
@@ -126,45 +115,35 @@ class CartController extends Controller
     }
 
     /**
-     * Deletes an existing Cart model.
+     * Deletes an existing Section model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
+     * @param int $courses_id Courses ID
      * @param int $user_id User ID
+     * @param int $category_id Category ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id, $user_id)
+    public function actionDelete($id, $courses_id, $user_id, $category_id)
     {
-        $this->findModel($id, $user_id)->delete();
+        $this->findModel($id, $courses_id, $user_id, $category_id)->delete();
 
         return $this->redirect(['index']);
     }
-    public function actionDeletecartitem($id,$user_id)
-    {
-        $cartItem = CartItem::findOne($id);
-
-        if (!$cartItem) {
-            throw new NotFoundHttpException('CartItem not found.');
-        }
-
-        // Delete the cartItem
-        $cartItem->delete();
-
-        // Redireciona para onde for adequado após a exclusão
-        return $this->redirect(['cart/index','user_id'=>$user_id]); // Altere 'index' para a página desejada
-    }
 
     /**
-     * Finds the Cart model based on its primary key value.
+     * Finds the Section model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
+     * @param int $courses_id Courses ID
      * @param int $user_id User ID
-     * @return Cart the loaded model
+     * @param int $category_id Category ID
+     * @return Section the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $user_id)
+    protected function findModel($id, $courses_id, $user_id, $category_id)
     {
-        if (($model = Cart::findOne(['id' => $id, 'user_id' => $user_id])) !== null) {
+        if (($model = Section::findOne(['id' => $id, 'courses_id' => $courses_id, 'user_id' => $user_id, 'category_id' => $category_id])) !== null) {
             return $model;
         }
 

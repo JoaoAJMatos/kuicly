@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
 
                 <?= Html::a('Ver Curso', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+                <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary' ]) ?>
             </div>
         </div>
 

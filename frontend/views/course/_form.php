@@ -41,7 +41,6 @@ use yii\widgets\ActiveForm;
         $categoryList,
     ); ?>
 
-    <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id],['class' => 'btn btn-primary'] )?>
     <br>
     <br>
     <div class="form-group">

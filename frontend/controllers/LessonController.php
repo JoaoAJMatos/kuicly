@@ -102,8 +102,9 @@ class LessonController extends Controller
             $model->lesson_type_id = $type->id;
         }
 
-        $model->quizzes_id = 2;
+        $model->quizzes_id = 3;
         //TODO: quiz
+
 
         if ($this->request->isPost) {
 
@@ -115,8 +116,7 @@ class LessonController extends Controller
                     $modelFile->name = $modelUpload->fileName;
                 }
 
-                $modelFile->file_type_id = 3;
-                $modelFile->path = "teste";
+                $modelFile->file_type_id = 4;
                 //TODO: verificação do ficheiro
 
 
@@ -139,6 +139,7 @@ class LessonController extends Controller
             'lessonTypeList' => $lessonTypeList,
             'modelFile' => $modelFile,
             'modelUpload' => $modelUpload,
+            'id' => $id,
         ]);
     }
 
@@ -164,6 +165,38 @@ class LessonController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionSection($id)
+    {
+        $model = new Section();
+        $modelCourse = Course::find()->where(['id' => $id])->one();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) ) {
+                $model->courses_id = $id;
+                if ($model->save()) {
+                    return $this->redirect(['course/view', 'id' => $model->courses_id, 'user_id' => $modelCourse->user_id, 'category_id' => $modelCourse->category_id, 'file_id' => $modelCourse->file_id]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('section', [
+            'model' => $model,
+            'modelCourse' => $modelCourse,
+        ]);
+    }
+    public function actionSomeAction($id) {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => (string) $model->_id]);
+        }else {
+            return $this->render('_form', [
+                'model' => $model
+            ]);
+        }
     }
 
     /**

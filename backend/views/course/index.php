@@ -36,10 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {delete} {myButton} ',
+                'template' => '{view} {myButton} {delete}  ',
                 'buttons' => [
                 'myButton' => function($url, $model, $key) {     // render your custom button
-                    return Html::a('Lessons', Url::to(['course/lessons', 'course_id' => $model->id]), ['class' => 'btn btn-success']);
+                    return Html::a('<i class="bi bi-list"></i>Lesson', Url::to(['lesson/index', 'id' => $model->id]), ['class' => 'btn btn-success']);
                 }
             ],
             ],

@@ -17,11 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Lesson', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'title',
             'context',
             'sections_id',
@@ -37,10 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'file_id',
             //'lesson_type_id',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Lesson $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {delete}  ',
+
             ],
         ],
     ]); ?>

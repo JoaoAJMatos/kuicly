@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row mb-md-5">
                                 <div class="col">
                                     <br>
-                                    <button type="button" name="" id="" class="btn  btn-primary ">PURCHASE $37 EUR</button>
+                                    <button type="button" name="" id="" class="btn  btn-primary ">PURCHASE <?=  $modelOrder->total_price ?> EUR</button>
                                 </div>
                             </div>
                         </div>
@@ -90,18 +90,46 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                     <div class="pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed-1">1</p></div>
                                     <div class="pl-0 flex-sm-col col-auto my-auto"><p><b><?= $cartitem->courses->price ?> EUR</b></p></div>
+                                    <div class="float-end">
+
+                                        <?= Html::a('<i class="bi bi-x"></i>', ['deletecartitem', 'id' => $cartitem->id,'user_id'=>$model->user_id], [
+                                            'class' => 'btn btn-danger',
+                                            'data' => [
+                                                'confirm' => 'Are you sure you want to delete this item?',
+                                                'method' => 'post',
+                                            ],
+                                        ]) ?>
+                                    </div>
                                 </div>
                                 <hr class="my-2">
                             <?php } ?>
+                            <div class="row  justify-content-between">
+                                <div class="col-auto col-md-7">
+                                    <div class="media flex-column flex-sm-row">
+                                        <br>
+
+                                        <?= Html::a(Html::img('@web/img/mais.jpg',['class'=>'img-fluid','width'=>"62" ,'height'=>"62"]),['course/index'])?>
+
+                                        <div class="media-body  my-auto">
+                                            <div class="row ">
+                                                <div class="col"><p class="mb-0"><b></b></p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pl-0 flex-sm-col col-auto  my-auto">New Product</div>
+                                <div class="pl-0 flex-sm-col col-auto my-auto"><p><b></b></p></div>
+                            </div>
+                            <hr class="my-2">
                             <div class="row ">
                                 <div class="col">
                                     <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>IVA</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?php /*= $ivatotal*/?></b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p  class="mb-1"><b><?= $modelOrder->total_price ?> EUR</b></p> </div>
+                                        <div class="flex-sm-col col-auto"><p  class="mb-1"><b><?=  $modelOrder->total_price ?> EUR</b></p> </div>
                                     </div><hr class="my-0">
                                 </div>
                             </div>

@@ -40,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="container py-5">
     <div class="row">
         <div class="col-md-6">
-            <h2>Conteúdo do Curso</h2>
+            <div class="d-flex align-items-center">
+                <h2 style="margin-right: 20px; margin-bottom: 0;">Conteúdo do Curso</h2>
+                <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            </div>
             <div class="accordion" id="accordionExample">
                 <?php foreach ($model->sections as $section){?>
                 <div class="accordion-item">

@@ -1,7 +1,8 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
+use common\models\Course;
 use common\models\Lesson;
 use app\models\LessonSearch;
 use yii\web\Controller;
@@ -36,10 +37,19 @@ class LessonController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new LessonSearch();
+        $model = Course::findOne($id);
+        $sectionIds = $model->getSections()->select('id')->column();
+        //$dataProvider = $searchModel->search(['courses_id' => $id]);
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        // Filtre as lições pelo ID da section do curso desejado
+
+
+        $dataProvider->query->andWhere(['in', 'sections_id', $sectionIds]);
+        //$dataProvider->query->andWhere(['sections_id' => $sectionIds]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
