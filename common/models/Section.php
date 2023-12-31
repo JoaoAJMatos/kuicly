@@ -35,7 +35,8 @@ class Section extends \yii\db\ActiveRecord
         return [
             [['order', 'courses_id', 'user_id', 'category_id'], 'integer'],
             [['courses_id', 'user_id', 'category_id'], 'required'],
-            [['title'], 'string', 'max' => 70],
+            [['title'], 'string', 'max' => 70, 'min' => 3],
+            [['title'],'required'],
             [['courses_id', 'user_id', 'category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['courses_id' => 'id', 'user_id' => 'user_id', 'category_id' => 'category_id']],
         ];
     }

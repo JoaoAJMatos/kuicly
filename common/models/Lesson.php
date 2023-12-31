@@ -42,6 +42,7 @@ class Lesson extends \yii\db\ActiveRecord
             [['sections_id', 'quizzes_id', 'file_id', 'lesson_type_id'], 'integer'],
             [['title'], 'string', 'max' => 70],
             [['context'], 'string', 'max' => 100],
+            [['title','context'],'required'],
             [['quizzes_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quiz::class, 'targetAttribute' => ['quizzes_id' => 'id']],
             [['sections_id'], 'exist', 'skipOnError' => true, 'targetClass' => Section::class, 'targetAttribute' => ['sections_id' => 'id']],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],

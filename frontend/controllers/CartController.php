@@ -5,7 +5,10 @@ namespace frontend\controllers;
 use common\models\Cart;
 use app\models\CartSearch;
 use common\models\CartItem;
+use common\models\Enrollment;
 use common\models\Order;
+use common\models\OrderItem;
+use common\models\Transaction;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,28 +44,93 @@ class CartController extends Controller
      */
     public function actionIndex($user_id)
     {
-        $modelOrder = new Order();
-        $model = Cart::find()->where(['user_id' => $user_id])->one();
-        $modelOrder->user_id = $user_id;
-        if($model === null){
-            $model = new Cart();
-            $modelOrder->total_price = 0;
-            $model->user_id = $user_id;
-            $model->save();
+        if (Yii::$app->user->can('comprarCurso')){
+            $model = Cart::find()->where(['user_id' => $user_id])->one();
+
+            $total = 0;
+            if($model === null){
+                $model = new Cart();
+                $model->user_id = $user_id;
+                $model->save();
+            }
+
+            foreach ($model->cartItems as $cartItem){
+
+                $total += $cartItem->courses->price;
+            }
+
+            return $this->render('index', [
+                'model' => $model,
+                'total' => $total,
+                //'ivatotal'=> $total * 0.23,
+            ]);
+        }else{
+            return $this->redirect(['site/index']);
         }
-        $modelOrder->total_price = 0;
 
-        /*foreach ($model->cartItems as $cartItem){
-            $total =+ $cartItem->courses->price;
-        }*/
-       // $modelOrder->total_price= $total;
+    }
+
+    public function actionAdditemcard($id)
+    {
+        if(Yii::$app->user->can('adicionarCursoCarrinho')){
+            $model = Cart::find()->where(['user_id' => Yii::$app->user->id])->one();
+            if($model === null){
+                $model = new Cart();
+                $model->user_id = Yii::$app->user->id;
+                $model->save();
+            }
+            $cartItem = new CartItem();
+            $cartItem->cart_id = $model->id;
+            $cartItem->courses_id = $id;
+            $cartItem->save();
+            return $this->redirect(['index','user_id'=>Yii::$app->user->id]);
+        }else{
+            return $this->redirect(['site/index']);
+        }
+
+    }
+
+    public function actionPayment($total){
+
+        if(Yii::$app->user->can('comprarCurso')){
+            $user_id = Yii::$app->user->id;
+            $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
+            $modelOrder = new Order();
+            // iva
 
 
-        return $this->render('index', [
-            'model' => $model,
-            'modelOrder'=>$modelOrder,
-            //'ivatotal'=> $total * 0.23,
-        ]);
+            $modelOrder->date = date('Y-m-d H:i:s');
+            $modelOrder->status = 'PAID';
+            $modelOrder->total_price = $total;
+            $modelOrder->user_id = $user_id;
+            $modelOrder->save();
+
+            foreach ($modelCart->cartItems as $cartItem){
+
+                // Criando um novo OrderItem para cada CartItem
+                $modelOrderItem = new OrderItem();
+                $modelOrderItem->orders_id = $modelOrder->id; // Associando ao pedido criado
+                $modelOrderItem->courses_id = $cartItem->courses_id;
+                $modelOrderItem->price = $cartItem->courses->price;
+                $modelOrderItem->iva_price = $cartItem->courses->price * 0.23;
+                // Outros dados do OrderItem (preço, quantidade, etc.) podem ser definidos aqui
+                $modelOrderItem->save();
+
+                $modelEnrollment = new Enrollment();
+                $modelEnrollment->enrollment_date = date('Y-m-d H:i:s');
+                $modelEnrollment->user_id = $user_id;
+                $modelEnrollment->courses_id = $cartItem->courses_id;
+                $modelEnrollment->save();
+
+                $cartItem->delete();
+            }
+
+            return $this->redirect(['index','user_id'=>Yii::$app->user->id]);
+
+        }else{
+            return $this->redirect(['site/index']);
+        }
+
 
     }
 
@@ -141,17 +209,23 @@ class CartController extends Controller
     }
     public function actionDeletecartitem($id,$user_id)
     {
-        $cartItem = CartItem::findOne($id);
+        if(Yii::$app->user->can('retirarCursoCarrinho')){
 
-        if (!$cartItem) {
-            throw new NotFoundHttpException('CartItem not found.');
+            $cartItem = CartItem::findOne($id);
+
+            if (!$cartItem) {
+                throw new NotFoundHttpException('CartItem not found.');
+            }
+
+            // Delete the cartItem
+            $cartItem->delete();
+
+            // Redireciona para onde for adequado após a exclusão
+            return $this->redirect(['cart/index','user_id'=>$user_id]); // Altere 'index' para a página desejada
+        }else{
+            return $this->redirect(['site/index']);
         }
 
-        // Delete the cartItem
-        $cartItem->delete();
-
-        // Redireciona para onde for adequado após a exclusão
-        return $this->redirect(['cart/index','user_id'=>$user_id]); // Altere 'index' para a página desejada
     }
 
     /**

@@ -6,7 +6,9 @@ use common\models\Cart;
 use common\models\CartItem;
 use common\models\Course;
 use common\models\Enrollment;
+use common\models\Favorite;
 use common\models\Lesson;
+use common\models\Rating;
 use common\models\Section;
 use common\models\UploadForm;
 use common\models\User;
@@ -49,13 +51,14 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CourseSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+            $searchModel = new CourseSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+
     }
 
     /**
@@ -69,11 +72,39 @@ class CourseController extends Controller
      */
     public function actionView($id, $user_id, $category_id, $file_id)
     {
-
+        $totalRating = Rating::find()->where(['courses_id' => $id])->sum('rating');
+        $totalAlunos = Enrollment::find()->where(['courses_id' => $id])->count();
+        $totalRating = $totalRating / 5;
         return $this->render('view', [
             'model' => $this->findModel($id, $user_id, $category_id, $file_id),
+            'totalRating' => $totalRating,
+            'totalAlunos' => $totalAlunos,
 
         ]);
+    }
+
+    public function actionRating($id)
+    {
+        $userid = Yii::$app->user->id;
+        $modelRating = new Rating();
+        $userHasCourse = Enrollment::find()->where(['user_id' => $userid, 'courses_id' => $id]);
+
+        if ($userHasCourse) {
+            if ($modelRating->load(Yii::$app->request->post()) && $modelRating->validate()) {
+                // Salve a avaliação para o curso específico
+                $modelRating->user_id = $userid; // Supondo que o usuário esteja logado
+                $modelRating->courses_id = $id; // Supondo que a avaliação esteja associada ao curso
+                $modelRating->save();
+
+                Yii::$app->session->setFlash('success', 'Avaliação enviada com sucesso.');
+                return $this->refresh(); // Ou redirecione para qualquer página desejada após enviar a avaliação
+            } else {
+                Yii::$app->session->setFlash('error', 'Falha ao enviar a avaliação.');
+            }
+        } else {
+            Yii::$app->session->setFlash('info', 'Para avaliar o curso tem de estar inscrito no mesmo.');
+        }
+        return $this->refresh();
     }
 
     /**
@@ -83,58 +114,66 @@ class CourseController extends Controller
      */
     public function actionCreate()
     {
-        $modelUpload = new UploadForm();
-        $model = new Course();
-        $modelUser = new User();
-        $modelCategory = new Category();
-        $modelFile = new File();
-        $categories = Category::find()->all();
-        $categoryList = [];
-        foreach ($categories as $category) {
-            $categoryList[$category->id] = $category->category_name;
-            $model->category_id = $category->id;
-        }
+        if(Yii::$app->user->can('criarCurso')){
 
-        $model->user_id = Yii::$app->user->id;
+            $modelUpload = new UploadForm();
+            $model = new Course();
+            $modelUser = new User();
+            $modelCategory = new Category();
+            $modelFile = new File();
+            $categories = Category::find()->all();
+            $categoryList = [];
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
-
-
-                $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
-
-                if ($modelUpload->upload()){
-                    $modelFile->name = $modelUpload->fileName;
-                }
-
-
-                $modelFile->file_type_id = 5;
-
-                //TODO: verificação do ficheiro
-
-
-                $modelFile->save();
-                $model->file_id = $modelFile->id;
-                if ($model->save()) {
-
-                    return $this->redirect(['lesson/create', 'id' => $model->id]);
-                }
+            foreach ($categories as $category) {
+                $categoryList[$category->id] = $category->category_name;
+                $model->category_id = $category->id;
             }
-        } else {
-            $model->loadDefaultValues();
-            $modelUser->loadDefaultValues();
-            $modelCategory->loadDefaultValues();
-            $modelFile->loadDefaultValues();
+
+            $model->user_id = Yii::$app->user->id;
+
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) ) {
+
+
+                    $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+
+                    if ($modelUpload->upload()){
+                        $modelFile->name = $modelUpload->fileName;
+                    }
+
+
+                    $modelFile->file_type_id = 6;
+
+                    //TODO: verificação do ficheiro
+
+
+                    $modelFile->save();
+                    $model->file_id = $modelFile->id;
+                    if ($model->save()) {
+
+                        return $this->redirect(['lesson/create', 'id' => $model->id]);
+                    }
+                }
+            } else {
+                $model->loadDefaultValues();
+                $modelUser->loadDefaultValues();
+                $modelCategory->loadDefaultValues();
+                $modelFile->loadDefaultValues();
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+                'modelUser' => $modelUser,
+                'modelCategory' => $modelCategory,
+                'modelFile' => $modelFile,
+                'categoryList' => $categoryList,
+                'modelUpload' => $modelUpload,
+            ]);
+
+        }else{
+            return $this->redirect(['index']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-            'modelUser' => $modelUser,
-            'modelCategory' => $modelCategory,
-            'modelFile' => $modelFile,
-            'categoryList' => $categoryList,
-            'modelUpload' => $modelUpload,
-        ]);
     }
 
     /**
@@ -149,39 +188,44 @@ class CourseController extends Controller
      */
     public function actionUpdate($id, $user_id, $category_id, $file_id)
     {
-        $model = $this->findModel($id, $user_id, $category_id, $file_id);
-        $modelUpload = new UploadForm();
-        $modelFile = File::find()->where(['id' => $model->file_id])->one();
-        $modelCategory = $model->category;
+        if(Yii::$app->user->can('editarCurso')){
+            $model = $this->findModel($id, $user_id, $category_id, $file_id);
+            $modelUpload = new UploadForm();
+            $modelFile = File::find()->where(['id' => $model->file_id])->one();
+            $modelCategory = $model->category;
 
 
-        $categories = Category::find()->all();
-        $categoryList = [];
+            $categories = Category::find()->all();
+            $categoryList = [];
 
-        foreach ($categories as $category) {
-            $categoryList[$category->id] = $category->category_name;
+            foreach ($categories as $category) {
+                $categoryList[$category->id] = $category->category_name;
+            }
+
+            $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+            if ($modelUpload->upload()) {
+                $modelFile->name = $modelUpload->fileName;
+
+            }
+            $modelFile->save();
+            $model->file_id = $modelFile->id;
+
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+
+                return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+                'modelFile' => $modelFile,
+                'categoryList' => $categoryList,
+                'modelCategory' => $modelCategory,
+                'modelUpload' => $modelUpload,
+            ]);
+        }else{
+            return $this->redirect(['index']);
         }
 
-        $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
-        if ($modelUpload->upload()) {
-            $modelFile->name = $modelUpload->fileName;
-
-        }
-        $modelFile->save();
-        $model->file_id = $modelFile->id;
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-
-            return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-            'modelFile' => $modelFile,
-            'categoryList' => $categoryList,
-            'modelCategory' => $modelCategory,
-            'modelUpload' => $modelUpload,
-        ]);
     }
 
     /**
@@ -196,16 +240,20 @@ class CourseController extends Controller
      */
     public function actionDelete($id, $user_id, $category_id, $file_id)
     {
-        $this->findModel($id, $user_id, $category_id, $file_id)->delete();
+        if(Yii::$app->user->can('apagarCurso')){
+            $this->findModel($id, $user_id, $category_id, $file_id)->delete();
 
-        return $this->redirect(['mycourse']);
+            return $this->redirect(['mycourse']);
+        }else{
+            return $this->redirect(['index']);
+        }
+
     }
 
     public function actionAdditemcard($id)
     {
-        $previousUrl = Yii::$app->request->referrer;
         // Verifique se o usuário está autenticado
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->can('adicionarCursoCarrinho')) {
             $userId = Yii::$app->user->id;
 
             // Verifique se o carrinho já está criado
@@ -231,45 +279,71 @@ class CourseController extends Controller
                 $modelCartItem->save();
 
                 /*return $this->redirect(['course/view', 'id' => $id, 'user_id' => $modelCartItem->courses->user_id, 'category_id' => $modelCartItem->courses->category_id, 'file_id' => $modelCartItem->courses->file_id]);*/
-                return $this->redirect([$previousUrl]);
+                return $this->redirect(['index']);
             } else {
 
-                // Se o item já está no carrinho
                 Yii::$app->session->setFlash('info', 'Este item já está no seu carrinho.');
-                return $this->redirect([$previousUrl]);
+                return $this->redirect(['index']);
+                // Se o curso já está no carrinho, você pode lidar com isso aqui
+                // Pode exibir uma mensagem ou redirecionar para algum lugar
             }
         } else {
             // Se o usuário não estiver autenticado, redirecione para a página de login
             return $this->redirect(['site/login']);
         }
+
     }
 
     public function actionMycourse(){
-        $searchModel = new CourseSearch();
-        $modelEnrolment = new Enrollment();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        if (Yii::$app->user->can('inscreverEmCurso')) {
+            $searchModel = new CourseSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
+            $userId = Yii::$app->user->id;
+            $dataProvider->query->andWhere(['user_id' => $userId]);
+
+            $enrolledCourseIds = Enrollment::find()
+                ->select('courses_id')
+                ->where(['user_id' => $userId])
+                ->column();
+
+            if($enrolledCourseIds === null){
+                $dataProvider2 = new \yii\data\ArrayDataProvider();
+            }else{
+
+                $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
+            }
 
 
-        $userId = Yii::$app->user->id;
-        $enrolledCourseIds = Enrollment::find()
-            ->select('courses_id')
-            ->where(['user_id' => $userId])
-            ->column();
-        if($enrolledCourseIds === null){
-            $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
+            return $this->render('mycourse', [
+                'dataProvider' => $dataProvider,
+                'dataProvider2' => $dataProvider2,
+
+            ]);
         }else{
-            $dataProvider2 = new \yii\data\ArrayDataProvider();
+            return $this->redirect(['index']);
         }
 
-        $dataProvider->query->andWhere(['user_id' => $userId]);
+
+    }
+
+    public function actionAddfavourite($id){
+
+        if(Yii::$app->user->can('marcarCursoFavorito')){
+            $model = new Favorite();
+            $userId = Yii::$app->user->id;
+
+            $model->user_id = $userId;
+            $model->courses_id = $id;
+            $model->save();
+
+            Yii::$app->session->setFlash('success', 'Curso adicionado aos favoritos com sucesso.');
+            return $this->redirect(['index']);
+        }else{
+            return $this->redirect(['index']);
+        }
 
 
-
-        return $this->render('mycourse', [
-            'dataProvider' => $dataProvider,
-            'dataProvider2' => $dataProvider2,
-
-        ]);
     }
     /**
      * Finds the Course model based on its primary key value.

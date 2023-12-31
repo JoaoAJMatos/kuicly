@@ -187,6 +187,21 @@ class RbacController extends Controller
         $reembolsar->description = 'Reembolsar Curso';
         $auth->add($reembolsar);
 
+        $restrito = $auth->createPermission('restrito');
+        $restrito->description = 'Não entra ninguem aqui';
+        $auth->add($restrito);
+
+        // add "criarUtilizador" permission
+        $criarUtilizador = $auth->createPermission('criarUtilizador');
+        $criarUtilizador->description = 'Criar Utilizador';
+        $auth->add($criarUtilizador);
+
+        // add "editarUtilizador" permission
+        $editarUtilizador = $auth->createPermission('editarUtilizador');
+        $editarUtilizador->description = 'Editar Utilizador';
+        $auth->add($editarUtilizador);
+
+
 
         // add "admin" role
         $admin = $auth->createRole('admin');

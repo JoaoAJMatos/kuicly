@@ -72,23 +72,28 @@ class SectionController extends Controller
      */
     public function actionCreate($id)
     {
-        $model = new Section();
-        $modelCourse = Course::find()->where(['id' => $id])->one();
-        $model->user_id = Yii::$app->user->id;
-        $model->courses_id = $id;
-        $model->category_id = $modelCourse->category_id;
+        if (Yii::$app->user->can('criarVideo')){
+            $model = new Section();
+            $modelCourse = Course::find()->where(['id' => $id])->one();
+            $model->user_id = Yii::$app->user->id;
+            $model->courses_id = $id;
+            $model->category_id = $modelCourse->category_id;
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['lesson/create', 'id' => $id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['lesson/create', 'id' => $id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/index']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

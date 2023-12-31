@@ -5,25 +5,23 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "order_item".
+ * This is the model class for table "favorite".
  *
  * @property int $id
- * @property float|null $price
- * @property int $orders_id
+ * @property int $user_id
  * @property int $courses_id
- * @property int|null $iva_price
  *
  * @property Course $courses
- * @property Order $orders
+ * @property User $user
  */
-class OrderItem extends \yii\db\ActiveRecord
+class Favorite extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'order_item';
+        return 'favorite';
     }
 
     /**
@@ -32,11 +30,10 @@ class OrderItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price'], 'number'],
-            [['orders_id', 'courses_id'], 'required'],
-            [['orders_id', 'courses_id', 'iva_price'], 'integer'],
+            [['user_id', 'courses_id'], 'required'],
+            [['user_id', 'courses_id'], 'integer'],
             [['courses_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['courses_id' => 'id']],
-            [['orders_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['orders_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -47,10 +44,8 @@ class OrderItem extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'price' => 'Price',
-            'orders_id' => 'Orders ID',
+            'user_id' => 'User ID',
             'courses_id' => 'Courses ID',
-            'iva_price' => 'Iva Price',
         ];
     }
 
@@ -65,12 +60,12 @@ class OrderItem extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Orders]].
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders()
+    public function getUser()
     {
-        return $this->hasOne(Order::class, ['id' => 'orders_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }

@@ -15,8 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container py-5">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <!--<p>
         <?php /*= Html::a('Update', ['update', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id], ['class' => 'btn btn-primary']) */?>
         <?php /*= Html::a('Delete', ['delete', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id], [
@@ -50,7 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </video>-->
 
-            <video width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 2px solid black"></video>
+            <video id='myVideo' width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 2px solid black"></video>
+
+
+            <h1><?= Html::encode($this->title) ?></h1>
+
+            <p> <?= $model->context ?> </p>
 
 
 
@@ -83,3 +86,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+    <script>
+        // Aqui você recuperaria as notas do banco de dados ou de onde estão armazenadas
+        // Por simplicidade, vamos criar uma estrutura fixa de notas para este exemplo
+        const videoNotas = {
+            '10': 'Nota no segundo 10',
+            '30': 'Outra nota no segundo 30',
+            // ...
+        };
+
+        const video = document.getElementById('myVideo');
+        video.addEventListener('timeupdate', function() {
+            const currentTime = Math.floor(video.currentTime); // Obtém o tempo atual do vídeo
+
+            const nota = videoNotas[currentTime];
+            if (nota) {
+                // Exibe a nota de alguma forma na interface do usuário
+                // Por exemplo, mostrando em uma caixa de diálogo, console, ou manipulando elementos HTML
+                console.log('Nota:', nota);
+            }
+        });
+    </script>

@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="card">
 
     <!--<img src="<?php /*= 'uploads/'.$model->file->path */?>" class="card-img-top" alt="...">-->
-    <img src="<?= Yii::$app->urlManager->createUrl('uploads/'. $model->file->name) ?>" class="card-img-top" alt="...">
+    <img src="<?= Yii::$app->urlManager->createUrl('uploads/'. $model->file->name) ?>" class="card-img-top img-course-index" alt="...">
     <?php /*=  Html::img('img/topgbacano',['class'=>'card-img-top'])   */?>
     <div class="card-body">
 
@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         <?= Html::a('Ver Curso', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+
+        <?php if(Yii::$app->user->can('criarcurso')){?>
         <?= Html::a('Editar', ['course/update', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
         <div class="float-end">
 
@@ -45,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
         </div>
-
+        <?php }?>
     </div>
 </div>
 

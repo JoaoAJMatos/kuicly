@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use Yii;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -44,16 +45,21 @@ class LessonController extends Controller
      */
     public function actionIndex($id)
     {
-        $searchModel = new LessonSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if(Yii::$app->user->can('restrito')){
+            $searchModel = new LessonSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        // Filtre as lições pelo ID do curso desejado
-       //$dataProvider->query->andFilterWhere(['course_id' => $id]);
+            // Filtre as lições pelo ID do curso desejado
+            //$dataProvider->query->andFilterWhere(['course_id' => $id]);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['index']);
+        }
+
     }
 
     /**
@@ -68,13 +74,18 @@ class LessonController extends Controller
      */
     public function actionView($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
-        $modelSection = Section::find()->where(['id' => $sections_id])->one();
-        $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
+        if(Yii::$app->user->can('verVideo')){
+            $modelSection = Section::find()->where(['id' => $sections_id])->one();
+            $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
 
-        return $this->render('view', [
-            'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
-            'modelCourse'=>$modelCourse,
-        ]);
+            return $this->render('view', [
+                'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
+                'modelCourse'=>$modelCourse,
+            ]);
+        }else{
+            return $this->redirect(['site/index']);
+        }
+
     }
 
     /**
@@ -84,63 +95,69 @@ class LessonController extends Controller
      */
     public function actionCreate($id)
     {
-        $model = new Lesson();
-        $modelUpload = new UploadForm();
-        $modelSection = Section::find()->where(['courses_id' => $id])->all();
-        $modelLessonType = LessonType::find()->all();
-        $modelFile = new File();
-        $sectionList = [];
-        $lessonTypeList = [];
+        if (Yii::$app->user->can('criarVideo')){
+            $model = new Lesson();
+            $modelUpload = new UploadForm();
+            $modelSection = Section::find()->where(['courses_id' => $id])->all();
+            $modelLessonType = LessonType::find()->all();
+            $modelFile = new File();
+            $sectionList = [];
+            $lessonTypeList = [];
 
-        foreach ($modelSection as $section) {
-            $sectionList[$section->id] = $section->title;
-            $model->sections_id = $section->id;
-        }
-
-        foreach ($modelLessonType as $type){
-            $lessonTypeList[$type->id] = $type->type;
-            $model->lesson_type_id = $type->id;
-        }
-
-        $model->quizzes_id = 3;
-        //TODO: quiz
-
-
-        if ($this->request->isPost) {
-
-            if ($model->load($this->request->post()) ) {
-
-                $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
-
-                if ($modelUpload->upload()){
-                    $modelFile->name = $modelUpload->fileName;
-                }
-
-                $modelFile->file_type_id = 4;
-                //TODO: verificação do ficheiro
-
-
-                $modelFile->save();
-                $model->file_id = $modelFile->id;
-                if ($model->save()) {
-
-                    return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
-                }
-
+            foreach ($modelSection as $section) {
+                $sectionList[$section->id] = $section->title;
+                $model->sections_id = $section->id;
             }
-        } else {
-            $model->loadDefaultValues();
+
+            foreach ($modelLessonType as $type){
+                $lessonTypeList[$type->id] = $type->type;
+                $model->lesson_type_id = $type->id;
+            }
+
+            $model->quizzes_id = 4;
+            //TODO: quiz
+
+
+            if ($this->request->isPost) {
+
+                if ($model->load($this->request->post()) ) {
+
+                    $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+
+                    if ($modelUpload->upload()){
+                        $modelFile->name = $modelUpload->fileName;
+                    }
+
+                    $modelFile->file_type_id = 6;
+                    //TODO: verificação do ficheiro
+
+
+                    $modelFile->save();
+                    $model->file_id = $modelFile->id;
+                    if ($model->save()) {
+
+                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                    }
+
+                }
+            } else {
+                $model->loadDefaultValues();
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+                'modelSection' => $modelSection,
+                'sectionList' => $sectionList,
+                'lessonTypeList' => $lessonTypeList,
+                'modelFile' => $modelFile,
+                'modelUpload' => $modelUpload,
+                'id' => $id,
+            ]);
+        }else{
+            return $this->redirect(['site/index']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-            'modelSection' => $modelSection,
-            'sectionList' => $sectionList,
-            'lessonTypeList' => $lessonTypeList,
-            'modelFile' => $modelFile,
-            'modelUpload' => $modelUpload,
-            'id' => $id,
-        ]);
+
     }
 
     /**
@@ -156,48 +173,57 @@ class LessonController extends Controller
      */
     public function actionUpdate($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
-        $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
+        if(Yii::$app->user->can('editarVideo')) {
+            $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
+            $modelUpload = new UploadForm();
+            $modelSection = Section::find()->where(['courses_id' => $model->sections_id])->all();
+            $modelLessonType = LessonType::find()->all();
+            $modelFile = File::find()->where(['id' => $model->file_id])->one();
+            $sectionList = [];
+            $lessonTypeList = [];
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
-        }
+            foreach ($modelSection as $section) {
+                $sectionList[$section->id] = $section->title;
+            }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+            foreach ($modelLessonType as $type) {
+                $lessonTypeList[$type->id] = $type->type;
+            }
 
-    public function actionSection($id)
-    {
-        $model = new Section();
-        $modelCourse = Course::find()->where(['id' => $id])->one();
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post())) {
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
-                $model->courses_id = $id;
-                if ($model->save()) {
-                    return $this->redirect(['course/view', 'id' => $model->courses_id, 'user_id' => $modelCourse->user_id, 'category_id' => $modelCourse->category_id, 'file_id' => $modelCourse->file_id]);
+                    $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+
+                    if ($modelUpload->upload()) {
+                        $modelFile->name = $modelUpload->fileName;
+                    }
+
+                    $modelFile->save();
+                    $model->file_id = $modelFile->id;
+                    if ($model->save()) {
+
+                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                    }
                 }
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('section', [
-            'model' => $model,
-            'modelCourse' => $modelCourse,
-        ]);
-    }
-    public function actionSomeAction($id) {
-        $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => (string) $model->_id]);
-        }else {
-            return $this->render('_form', [
-                'model' => $model
+            return $this->render('update', [
+                'model' => $model,
+                'modelSection' => $modelSection,
+                'sectionList' => $sectionList,
+                'lessonTypeList' => $lessonTypeList,
+                'modelFile' => $modelFile,
+                'modelUpload' => $modelUpload,
+                'id' => $id,
             ]);
+
+        }else{
+            return $this->redirect(['site/index']);
         }
     }
+
+
 
     /**
      * Deletes an existing Lesson model.

@@ -167,14 +167,17 @@ AppAsset::register($this);
                     <?= Html::a('Create Courses', ['course/create'], ['class'=> 'nav-item nav-link']) ?>
 
                 <?php }?>
+                <?php if(!Yii::$app->user->isGuest){?>
                 <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
+                <?php }?>
                 <?php if(Yii::$app->user->isGuest) {?>
                 <?= Html::a('Torna-te um Instrutor', ['site/signupinstrutor'], ['class'=> 'nav-item nav-link']) ?>
                 <?php }?>
                 <?= Html::a('Courses', ['course/index'], ['class'=> 'nav-item nav-link']) ?>
-                <div>
-                    <?= Html::a('<i class="bi bi-cart4"></i>', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
-                </div>
+
+                <?php if(!Yii::$app->user->isGuest) {?>
+                <?= Html::a('<i class="bi bi-cart4"></i>', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
+                <?php }?>
             </div>
         </div>
 

@@ -12,7 +12,6 @@ use Yii;
  * @property string|null $status
  * @property float|null $total_price
  * @property int|null $nif
- * @property string|null $ordercol
  * @property int $user_id
  * @property int $iva_id
  *
@@ -38,11 +37,10 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['date'], 'safe'],
-            [['status'], 'string'],
             [['total_price'], 'number'],
             [['nif', 'user_id', 'iva_id'], 'integer'],
             [['user_id', 'iva_id'], 'required'],
-            [['ordercol'], 'string', 'max' => 45],
+            [['status'], 'string', 'max' => 45],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['iva_id'], 'exist', 'skipOnError' => true, 'targetClass' => Iva::class, 'targetAttribute' => ['iva_id' => 'id']],
         ];
@@ -59,7 +57,6 @@ class Order extends \yii\db\ActiveRecord
             'status' => 'Status',
             'total_price' => 'Total Price',
             'nif' => 'Nif',
-            'ordercol' => 'Ordercol',
             'user_id' => 'User ID',
             'iva_id' => 'Iva ID',
         ];

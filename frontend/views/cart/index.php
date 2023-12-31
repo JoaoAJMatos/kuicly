@@ -12,7 +12,7 @@ use yii\widgets\ListView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var app\models\CartSearch $model */
 /** @var app\models\Order $modelOrder */
-/** @var app\models\Cart $ivatotal */
+/** @var app\models\Cart $total */
 
 $this->title = 'Carts';
 $this->params['breadcrumbs'][] = $this->title;
@@ -63,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row mb-md-5">
                                 <div class="col">
                                     <br>
-                                    <button type="button" name="" id="" class="btn  btn-primary ">PURCHASE <?=  $modelOrder->total_price ?> EUR</button>
+
+                                    <?= Html::a('PURCHASE'. $total.' EUR',['cart/payment','total'=>$total],['class'=> 'btn btn-primary'])?>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p  class="mb-1"><b><?=  $modelOrder->total_price ?> EUR</b></p> </div>
+                                        <div class="flex-sm-col col-auto"><p  class="mb-1"><b><?=  $total?> EUR</b></p> </div>
                                     </div><hr class="my-0">
                                 </div>
                             </div>

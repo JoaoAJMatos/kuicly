@@ -43,6 +43,8 @@ class CourseSearch extends Course
     {
         $query = Course::find();
 
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 
@@ -50,11 +52,17 @@ class CourseSearch extends Course
 
         $this->load($params);
 
+
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
+        if (isset($params['courseIds']) && is_array($params['courseIds'])) {
+            $query->andWhere(['in', 'id', $params['courseIds']]);
+        }
+
 
         // grid filtering conditions
         $query->andFilterWhere([

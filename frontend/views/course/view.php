@@ -3,15 +3,21 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\data\ActiveDataProvider;
+use \yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Course $model */
 /** @var common\models\Course $modelSection */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var common\models\Course $totalRating */
+/** @var common\models\Course $totalAlunos */
+
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$userId = Yii::$app->user->id;
+$enrollment = \common\models\Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $model->id])->exists();
 \yii\web\YiiAsset::register($this);
 ?>
 
@@ -22,17 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-6">
                     <h1 class="display-5 text-white"> <?= $model->title ?> </h1>
                     <p class="lead text-white"> <?= $model->description ?> </p>
-                    <p class="lead text-white">Classificação: Alunos:</p>
+                    <p class="lead text-white">Classificação: <?php for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $totalRating) { ?>
+                                <i class="fas fa-star"></i>
+                            <?php } else {?>
+                                <i class="far fa-star"></i>
+                            <?php }
+                        }?> Alunos:<?= $totalAlunos?></p>
                     <p class="lead text-white">Criado: <?= $model->user->username ?> </p>
+
+
+
                 </div>
                 <div class="col-md-6">
                     <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" class="view-img" alt="Responsive image">
                 </div>
             </div>
-        <!--<h1><?php /*= Html::encode($this->title) */?></h1>
-        <p> <?php /*= $model->description */?> </p>
-        <p>Classificação: Alunos:</p>
-        <p>Criado: </p>-->
+
     </div>
 
 </div>
@@ -42,7 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
             <div class="d-flex align-items-center">
                 <h2 style="margin-right: 20px; margin-bottom: 0;">Conteúdo do Curso</h2>
+                <?php if(Yii::$app->user->can('instrutor')){?>
                 <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?php }?>
             </div>
             <div class="accordion" id="accordionExample">
                 <?php foreach ($model->sections as $section){?>
@@ -69,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         <div class="col-md-6 ">
-            <?php  if(Yii::$app->user->id != $model->user_id){ ?>
+            <?php  if(!$enrollment && Yii::$app->user->id != $model->user_id){ ?>
             <div class="card float-end" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Buy your Course Now!</h5>

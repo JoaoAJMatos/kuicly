@@ -40,8 +40,7 @@ use yii\helpers\Url;
 
     <?= $form->field($modelUpload, 'imageFile')->fileInput() ?>
 
-    <?= $form->field($model, 'quizzes_id')->textInput() ?>
-
+    <br>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

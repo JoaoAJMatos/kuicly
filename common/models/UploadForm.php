@@ -27,7 +27,6 @@ class UploadForm extends Model
     {
 
 
-
         if ($this->validate()) {
             if (function_exists('com_create_guid') === true) {
                 $this->fileName = trim(com_create_guid(), '{}') . '.' . $this->imageFile->extension;

@@ -12,7 +12,7 @@ use common\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * CourseController implements the CRUD actions for Course model.
  */
@@ -43,14 +43,19 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CourseSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-        $model = new User();
+        if (Yii::$app->user->can('admin')){
+            $searchModel = new CourseSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
+            $model = new User();
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -126,39 +131,45 @@ class CourseController extends Controller
      */
     public function actionDelete($id, $user_id, $category_id, $file_id)
     {
-        // Encontre o carrinho do usuário
-        $model = $this->findModel($id, $user_id, $category_id, $file_id);
-        $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
+        if (Yii::$app->user->can('admin')){
 
-        if ($modelCart) {
-            // Encontre o item do carrinho que corresponde ao curso
-            $modelCartItem = CartItem::find()
-                ->where(['cart_id' => $modelCart->id, 'courses_id' => $id])
-                ->one();
+            // Encontre o carrinho do usuário
+            $model = $this->findModel($id, $user_id, $category_id, $file_id);
+            $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
 
-            if ($modelCartItem) {
-                // Se o curso estiver no carrinho de alguém, exclua o item do carrinho
-                $modelCartItem->delete();
+            if ($modelCart) {
+                // Encontre o item do carrinho que corresponde ao curso
+                $modelCartItem = CartItem::find()
+                    ->where(['cart_id' => $modelCart->id, 'courses_id' => $id])
+                    ->one();
+
+                if ($modelCartItem) {
+                    // Se o curso estiver no carrinho de alguém, exclua o item do carrinho
+                    $modelCartItem->delete();
+                }
             }
-        }
-        $sections = Section::find()->where(['courses_id' => $model->id])->all();
+            $sections = Section::find()->where(['courses_id' => $model->id])->all();
 
-        foreach ($sections as $section) {
-            // Encontrar e excluir todas as seções associadas a cada lição
-            $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
-            foreach ($lessons as $lesson) {
-                // Excluir todos os quizzes associados a cada seção
-                //Quiz::deleteAll(['section_id' => $section->id]);
+            foreach ($sections as $section) {
+                // Encontrar e excluir todas as seções associadas a cada lição
+                $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
+                foreach ($lessons as $lesson) {
+                    // Excluir todos os quizzes associados a cada seção
+                    //Quiz::deleteAll(['section_id' => $section->id]);
 
-                $lesson->delete();
+                    $lesson->delete();
+                }
+
+                $section->delete();
             }
 
-            $section->delete();
+            $this->findModel($id, $user_id, $category_id, $file_id)->delete();
+
+            return $this->redirect(['index']);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        $this->findModel($id, $user_id, $category_id, $file_id)->delete();
-
-        return $this->redirect(['index']);
     }
 
 

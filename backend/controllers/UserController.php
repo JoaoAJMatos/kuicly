@@ -12,6 +12,7 @@ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -72,16 +73,21 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new UserForm();
+        if(Yii::$app->user->can('criarUtilizador')){
+            $model = new UserForm();
 
 
-        if ($model->load($this->request->post()) && $model->createFormUser()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post()) && $model->createFormUser()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -93,27 +99,18 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->can('editarUtilizador')){
+            $user = User::findOne($id);
 
-        /*$model = new UserForm();
+            if (!$user) {
+                throw new NotFoundHttpException("The user was not found.");
+            }
 
-        if($model->load($this->request->post()) && $model->updateFormUser($id)){
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+            $profile = Profile::findOne(['user_id' => $id]);
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);*/
-       $user = User::findOne($id);
-
-        if (!$user) {
-            throw new NotFoundHttpException("The user was not found.");
-        }
-
-        $profile = Profile::findOne(['user_id' => $id]);
-
-        if (!$profile) {
-            throw new NotFoundHttpException("The user has no profile.");
-        }
+            if (!$profile) {
+                throw new NotFoundHttpException("The user has no profile.");
+            }
 
             if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
 
@@ -130,10 +127,15 @@ class UserController extends Controller
             }
 
 
-        return $this->render('update', [
-            'user' => $user,
-            'profile' => $profile,
-        ]);
+            return $this->render('update', [
+                'user' => $user,
+                'profile' => $profile,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
+
 
     }
 
@@ -146,38 +148,43 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $user = User::findOne($id);
-        $profile = Profile::findOne(['user_id' => $user->id]);
-        $courses = Course::find()->where(['user_id' => $id])->all();
+        if (Yii::$app->user->can('banirUtilizador')){
+            $user = User::findOne($id);
+            $profile = Profile::findOne(['user_id' => $user->id]);
+            $courses = Course::find()->where(['user_id' => $id])->all();
 
-        foreach ($courses as $course) {
-            $sections = Section::find()->where(['courses_id' => $course->id])->all();
+            foreach ($courses as $course) {
+                $sections = Section::find()->where(['courses_id' => $course->id])->all();
 
-            foreach ($sections as $section) {
-                // Encontrar e excluir todas as seções associadas a cada lição
-                $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
-                foreach ($lessons as $lesson) {
-                    // Excluir todos os quizzes associados a cada seção
-                    //Quiz::deleteAll(['section_id' => $section->id]);
+                foreach ($sections as $section) {
+                    // Encontrar e excluir todas as seções associadas a cada lição
+                    $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
+                    foreach ($lessons as $lesson) {
+                        // Excluir todos os quizzes associados a cada seção
+                        //Quiz::deleteAll(['section_id' => $section->id]);
 
-                    // Excluir a seção
-                    $lesson->delete();
+                        // Excluir a seção
+                        $lesson->delete();
+                    }
+
+                    // Excluir a lição
+                    $section->delete();
                 }
 
-                // Excluir a lição
-                $section->delete();
+                // Excluir o curso
+                $course->delete();
             }
+            if ($profile !== null) {
+                // Excluir o perfil associado a esse usuário
+                $profile->delete();
+            }
+            $user->delete();
 
-            // Excluir o curso
-            $course->delete();
+            return $this->redirect(['index']);
+        }else{
+            return $this->redirect(['site/login']);
         }
-        if ($profile !== null) {
-            // Excluir o perfil associado a esse usuário
-            $profile->delete();
-        }
-        $user->delete();
 
-        return $this->redirect(['index']);
     }
 
     /**

@@ -19,9 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         <div class="card">
-            <!--<img src="<?php /*= 'uploads/'.$model->file->path */?>" class="card-img-top" alt="...">-->
-            <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" class="card-img-top" alt="...">
-            <?php /*=  Html::img('img/topgbacano',['class'=>'card-img-top'])   */?>
+
+            <img src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" class="card-img-top img-course-index" alt="..." >
+
             <div class="card-body">
                 <span class="badge bg-primary"><?= $model->category->category_name ?></span>
                 <span class="badge bg-danger text-end"><?= $model->skill_level ?></span>
@@ -30,7 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 
 
                 <?= Html::a('Ver Curso', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+
                 <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary' ]) ?>
+                <div class="float-end">
+
+                    <?= Html::a('favorito',['course/addfavourite','id'=>$model->id],['class'=>'btn btn-primary'])?>
+                </div>
+
             </div>
         </div>
 
