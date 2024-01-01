@@ -8,6 +8,7 @@ use app\models\LessonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -39,22 +40,27 @@ class LessonController extends Controller
      */
     public function actionIndex($id)
     {
-        $searchModel = new LessonSearch();
-        $model = Course::findOne($id);
-        $sectionIds = $model->getSections()->select('id')->column();
-        //$dataProvider = $searchModel->search(['courses_id' => $id]);
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if(Yii::$app->user->can('admin')){
+            $searchModel = new LessonSearch();
+            $model = Course::findOne($id);
+            $sectionIds = $model->getSections()->select('id')->column();
+            //$dataProvider = $searchModel->search(['courses_id' => $id]);
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        // Filtre as lições pelo ID da section do curso desejado
+            // Filtre as lições pelo ID da section do curso desejado
 
 
-        $dataProvider->query->andWhere(['in', 'sections_id', $sectionIds]);
-        //$dataProvider->query->andWhere(['sections_id' => $sectionIds]);
+            $dataProvider->query->andWhere(['in', 'sections_id', $sectionIds]);
+            //$dataProvider->query->andWhere(['sections_id' => $sectionIds]);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -69,9 +75,14 @@ class LessonController extends Controller
      */
     public function actionView($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
-        ]);
+        if(Yii::$app->user->can('admin')){
+            return $this->render('view', [
+                'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -81,19 +92,24 @@ class LessonController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Lesson();
+        if(Yii::$app->user->can('restrito')){
+            $model = new Lesson();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -109,15 +125,20 @@ class LessonController extends Controller
      */
     public function actionUpdate($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
-        $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
+        if(Yii::$app->user->can('restrito')){
+            $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -133,9 +154,13 @@ class LessonController extends Controller
      */
     public function actionDelete($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
     {
-        $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)->delete();
+        if(Yii::$app->user->can('apagarVideo') && Yii::$app->user->can('admin')){
+            $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        }else{
+            return $this->redirect(['site/login']);
+        }
     }
 
     /**

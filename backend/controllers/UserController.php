@@ -44,13 +44,18 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (Yii::$app->user->can('admin')){
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -61,9 +66,14 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('admin')){
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -113,7 +123,10 @@ class UserController extends Controller
             }
 
             if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
-
+                var_dump($this->request->post());
+                var_dump($user->load($this->request->post()));
+                var_dump($user);
+                die();
                 $isValid = $user->validate();
                 $isValid = $profile->validate() && $isValid;
 

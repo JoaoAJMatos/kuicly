@@ -164,18 +164,26 @@ AppAsset::register($this);
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <?php if (Yii::$app->user->can('instrutor')){?>
+                    <?= Html::a('Rendimento',['course/income'],['class'=>'nav-item nav-link'])?>
                     <?= Html::a('Create Courses', ['course/create'], ['class'=> 'nav-item nav-link']) ?>
 
                 <?php }?>
+
                 <?php if(!Yii::$app->user->isGuest){?>
-                <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
+
+                    <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
+
                 <?php }?>
+
                 <?php if(Yii::$app->user->isGuest) {?>
+
                 <?= Html::a('Torna-te um Instrutor', ['site/signupinstrutor'], ['class'=> 'nav-item nav-link']) ?>
                 <?php }?>
+
                 <?= Html::a('Courses', ['course/index'], ['class'=> 'nav-item nav-link']) ?>
 
                 <?php if(!Yii::$app->user->isGuest) {?>
+
                 <?= Html::a('<i class="bi bi-cart4"></i>', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
                 <?php }?>
             </div>

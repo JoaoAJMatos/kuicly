@@ -69,9 +69,14 @@ class CourseController extends Controller
      */
     public function actionView($id, $user_id, $category_id, $file_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $user_id, $category_id, $file_id),
-        ]);
+        if (Yii::$app->user->can('admin')){
+            return $this->render('view', [
+                'model' => $this->findModel($id, $user_id, $category_id, $file_id),
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -81,19 +86,24 @@ class CourseController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Course();
+        if (Yii::$app->user->can('restrito')){
+            $model = new Course();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -108,15 +118,20 @@ class CourseController extends Controller
      */
     public function actionUpdate($id, $user_id, $category_id, $file_id)
     {
-        $model = $this->findModel($id, $user_id, $category_id, $file_id);
+        if (Yii::$app->user->can('restrito')){
+            $model = $this->findModel($id, $user_id, $category_id, $file_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id, 'category_id' => $model->category_id, 'file_id' => $model->file_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**

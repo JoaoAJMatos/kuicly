@@ -114,7 +114,7 @@ class LessonController extends Controller
                 $model->lesson_type_id = $type->id;
             }
 
-            $model->quizzes_id = 4;
+            $model->quizzes_id = 5;
             //TODO: quiz
 
 
@@ -127,10 +127,6 @@ class LessonController extends Controller
                     if ($modelUpload->upload()){
                         $modelFile->name = $modelUpload->fileName;
                     }
-
-                    $modelFile->file_type_id = 6;
-                    //TODO: verificação do ficheiro
-
 
                     $modelFile->save();
                     $model->file_id = $modelFile->id;
@@ -171,12 +167,12 @@ class LessonController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    public function actionUpdate($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id, $course_id)
     {
         if(Yii::$app->user->can('editarVideo')) {
             $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
             $modelUpload = new UploadForm();
-            $modelSection = Section::find()->where(['courses_id' => $model->sections_id])->all();
+            $modelSection = Section::find()->where(['courses_id' => $course_id])->all();
             $modelLessonType = LessonType::find()->all();
             $modelFile = File::find()->where(['id' => $model->file_id])->one();
             $sectionList = [];

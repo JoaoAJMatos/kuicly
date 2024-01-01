@@ -39,4 +39,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <video id='myVideo' width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 1px solid black"></video>
 </div>

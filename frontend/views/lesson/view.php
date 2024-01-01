@@ -8,6 +8,7 @@ use yii\widgets\DetailView;
 /** @var common\models\Lesson $modelCourse */
 
 
+
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Lessons', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -43,19 +44,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-8">
 
-            <!--<video width="640" height="360" controls autoplay style="border: 2px solid black">
-                <source src="<?php /*= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) */?>" type="video/x-matroska">
-
-            </video>-->
-
-            <video id='myVideo' width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 2px solid black"></video>
+            <video id='myVideo' width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 1px solid black"></video>
 
 
             <h1><?= Html::encode($this->title) ?></h1>
 
             <p> <?= $model->context ?> </p>
 
+            <div class="">
+                <?= Html::a('editar lesson',['lesson/update','id'=>$model->id,'sections_id'=>$model->sections_id,'quizzes_id'=>$model->quizzes_id,'file_id'=>$model->file_id,'lesson_type_id'=>$model->lesson_type_id,'course_id'=>$modelCourse->id],['class'=>'btn btn-primary'])?>
 
+            </div>
 
         </div>
         <div class="col-md-4 ">

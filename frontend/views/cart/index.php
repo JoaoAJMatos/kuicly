@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\ListView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\CartSearch $searchModel */
@@ -13,6 +14,7 @@ use yii\widgets\ListView;
 /** @var app\models\CartSearch $model */
 /** @var app\models\Order $modelOrder */
 /** @var app\models\Cart $total */
+/** @var app\models\Cart $modelCardPayment */
 
 $this->title = 'Carts';
 $this->params['breadcrumbs'][] = $this->title;
@@ -35,36 +37,43 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-auto mt-0"><p><b>BBBootstrap Team Vasant Vihar  110020 New Delhi India</b></p></div>
                                 <div class="col-auto"><p><b>BBBootstrap@gmail.com</b> </p></div>
                             </div>
+                            <?php $form = ActiveForm::begin(); ?>
+
+
                             <div class="row mt-4">
                                 <div class="col"><p class="text-muted mb-2">PAYMENT DETAILS</p><hr class="mt-0"></div>
                             </div>
                             <div class="form-group">
-                                <label for="NAME" class="small text-muted mb-1">NAME ON CARD</label>
-                                <input type="text" class="form-control form-control-sm" name="NAME" id="NAME" aria-describedby="helpId" placeholder="BBBootstrap Team">
+                                <?= $form->field($modelCardPayment, 'card_holder') ?>
+
                             </div>
                             <div class="form-group">
-                                <label for="NAME" class="small text-muted mb-1">CARD NUMBER</label>
-                                <input type="text" class="form-control form-control-sm" name="NAME" id="NAME" aria-describedby="helpId" placeholder="4534 5555 5555 5555">
+                                <?= $form->field($modelCardPayment, 'card_number') ?>
+
                             </div>
                             <div class="row no-gutters">
                                 <div class="col-sm-6 pr-sm-2">
                                     <div class="form-group">
-                                        <label for="NAME" class="small text-muted mb-1">VALID THROUGH</label>
-                                        <input type="text" class="form-control form-control-sm" name="NAME" id="NAME" aria-describedby="helpId" placeholder="06/21">
+                                        <?= $form->field($modelCardPayment, 'card_expiry') ?>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="NAME" class="small text-muted mb-1">CVC CODE</label>
-                                        <input type="text" class="form-control form-control-sm" name="NAME" id="NAME" aria-describedby="helpId" placeholder="183">
+                                        <?= $form->field($modelCardPayment, 'card_cvc') ?>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-md-5">
                                 <div class="col">
                                     <br>
+                                    <div class="form-group">
+                                        <?= Html::submitButton('PURCHASE'.$total.'EUR', ['class' => 'btn btn-primary']) ?>
+                                    </div>
 
-                                    <?= Html::a('PURCHASE'. $total.' EUR',['cart/payment','total'=>$total],['class'=> 'btn btn-primary'])?>
+                                    <?php ActiveForm::end(); ?>
+
                                 </div>
                             </div>
                         </div>

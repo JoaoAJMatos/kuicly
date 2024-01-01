@@ -52,7 +52,7 @@ $this->title = 'My Yii Application';
                     <div class="p-4">
                         <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
                         <h5 class="mb-3">Skilled Instructors</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Specialized, experienced instructors dedicated to your learning</p>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@ $this->title = 'My Yii Application';
                     <div class="p-4">
                         <i class="fa fa-3x fa-globe text-primary mb-4"></i>
                         <h5 class="mb-3">Online Classes</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Diverse, flexible online courses to fit your schedule</p>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@ $this->title = 'My Yii Application';
                     <div class="p-4">
                         <i class="fa fa-3x fa-home text-primary mb-4"></i>
                         <h5 class="mb-3">Home Projects</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Practical projects to creatively apply your knowledge at home</p>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@ $this->title = 'My Yii Application';
                     <div class="p-4">
                         <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
                         <h5 class="mb-3">Book Library</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Digital library full of complementary resources to enhance your learning</p>
                     </div>
                 </div>
             </div>

@@ -9,10 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property int $file_type_id
  *
  * @property Course[] $courses
- * @property FileType $fileType
  * @property Lesson[] $lessons
  */
 class File extends \yii\db\ActiveRecord
@@ -31,10 +29,8 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'file_type_id'], 'required'],
-            [['file_type_id'], 'integer'],
-            //[['name'], 'string', 'max' => 45],
-            [['file_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => FileType::class, 'targetAttribute' => ['file_type_id' => 'id']],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 45],
         ];
     }
 
@@ -46,7 +42,6 @@ class File extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'file_type_id' => 'File Type ID',
         ];
     }
 
@@ -58,16 +53,6 @@ class File extends \yii\db\ActiveRecord
     public function getCourses()
     {
         return $this->hasMany(Course::class, ['file_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[FileType]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFileType()
-    {
-        return $this->hasOne(FileType::class, ['id' => 'file_type_id']);
     }
 
     /**

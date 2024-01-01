@@ -6,9 +6,11 @@ use common\models\Cart;
 use app\models\CartSearch;
 use common\models\CartItem;
 use common\models\Enrollment;
+use common\models\Iva;
 use common\models\Order;
 use common\models\OrderItem;
 use common\models\Transaction;
+use frontend\models\CardPayment;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -46,6 +48,7 @@ class CartController extends Controller
     {
         if (Yii::$app->user->can('comprarCurso')){
             $model = Cart::find()->where(['user_id' => $user_id])->one();
+            $modelCardPayment = new CardPayment();
 
             $total = 0;
             if($model === null){
@@ -59,11 +62,22 @@ class CartController extends Controller
                 $total += $cartItem->courses->price;
             }
 
+            if ($this->request->isPost) {
+                if ($modelCardPayment->load($this->request->post()) && $modelCardPayment->pay()) {
+
+                    return $this->redirect(['payment', 'total' => $total]);
+                }
+            } else {
+                $model->loadDefaultValues();
+            }
+
             return $this->render('index', [
                 'model' => $model,
                 'total' => $total,
+                'modelCardPayment' => $modelCardPayment,
                 //'ivatotal'=> $total * 0.23,
             ]);
+
         }else{
             return $this->redirect(['site/index']);
         }
@@ -96,6 +110,7 @@ class CartController extends Controller
             $user_id = Yii::$app->user->id;
             $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
             $modelOrder = new Order();
+            $modelIva = Iva::find()->where(['id' => 1])->one();
             // iva
 
 
@@ -103,16 +118,23 @@ class CartController extends Controller
             $modelOrder->status = 'PAID';
             $modelOrder->total_price = $total;
             $modelOrder->user_id = $user_id;
+            $modelOrder->iva_id = $modelIva->id;
             $modelOrder->save();
+
+            //$modelGetOrder = Order::find()->where(['user_id' => $user_id])->one();
+
 
             foreach ($modelCart->cartItems as $cartItem){
 
                 // Criando um novo OrderItem para cada CartItem
                 $modelOrderItem = new OrderItem();
-                $modelOrderItem->orders_id = $modelOrder->id; // Associando ao pedido criado
+                $modelOrderItem->orders_id = $modelOrder->id;
+                // Associando ao pedido criado
                 $modelOrderItem->courses_id = $cartItem->courses_id;
                 $modelOrderItem->price = $cartItem->courses->price;
-                $modelOrderItem->iva_price = $cartItem->courses->price * 0.23;
+                $modelOrderItem->iva_price = $cartItem->courses->price;
+                //todo: mudar iva_price para float
+
                 // Outros dados do OrderItem (preço, quantidade, etc.) podem ser definidos aqui
                 $modelOrderItem->save();
 

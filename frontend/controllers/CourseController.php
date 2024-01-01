@@ -8,6 +8,8 @@ use common\models\Course;
 use common\models\Enrollment;
 use common\models\Favorite;
 use common\models\Lesson;
+use common\models\Order;
+use common\models\OrderItem;
 use common\models\Rating;
 use common\models\Section;
 use common\models\UploadForm;
@@ -140,12 +142,6 @@ class CourseController extends Controller
                     if ($modelUpload->upload()){
                         $modelFile->name = $modelUpload->fileName;
                     }
-
-
-                    $modelFile->file_type_id = 6;
-
-                    //TODO: verificação do ficheiro
-
 
                     $modelFile->save();
                     $model->file_id = $modelFile->id;
@@ -343,6 +339,42 @@ class CourseController extends Controller
             return $this->redirect(['index']);
         }
 
+    }
+
+    public function actionIncome()
+    {
+        $instrutorId = Yii::$app->user->id;
+        // Busca todos os cursos associados ao instrutor
+        $cursosDoInstrutor = Course::find()
+            ->where(['user_id' => $instrutorId])
+            ->all();
+        $eachprice=[];
+        $totalVendas = 0;
+
+        foreach ($cursosDoInstrutor as $curso) {
+            // Encontra todas as vendas (orders) relacionadas a cada curso do instrutor
+            $vendasDoCurso = OrderItem::find()
+                    ->where(['courses_id' => $curso->id])
+                    ->all();
+
+            $teste = 0;
+            $quantidade = 0;
+            // Calcula o total de vendas para cada curso
+            foreach ($vendasDoCurso as $venda) {
+                $quantidade++;
+                $teste += $venda->price;
+                $totalVendas += $venda->price; // Supondo que 'total' seja o valor total da venda
+            }
+            $eachprice[$curso->id] = $teste;
+        }
+
+        return $this->render('income', [
+            'cursosDoInstrutor' => $cursosDoInstrutor,
+            'totalVendas' => $totalVendas,
+            'eachprice' => $eachprice,
+            'quantidade' => $quantidade,
+
+        ]);
 
     }
     /**
