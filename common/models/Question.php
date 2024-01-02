@@ -8,9 +8,13 @@ use Yii;
  * This is the model class for table "question".
  *
  * @property int $id
- * @property string|null $text
+ * @property string $text
  * @property string|null $type
- * @property string|null $correct_answer
+ * @property string|null $option_one
+ * @property string|null $option_two
+ * @property string|null $option_three
+ * @property string|null $option_four
+ * @property int $correct_answer
  * @property int $quizzes_id
  *
  * @property Answer[] $answers
@@ -32,10 +36,11 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'correct_answer'], 'string'],
-            [['quizzes_id'], 'required'],
-            [['quizzes_id'], 'integer'],
+            [['text', 'correct_answer', 'quizzes_id'], 'required'],
+            [['type'], 'string'],
+            [['correct_answer', 'quizzes_id'], 'integer'],
             [['text'], 'string', 'max' => 255],
+            [['option_one', 'option_two', 'option_three', 'option_four'], 'string', 'max' => 45],
             [['quizzes_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quiz::class, 'targetAttribute' => ['quizzes_id' => 'id']],
         ];
     }
@@ -49,6 +54,10 @@ class Question extends \yii\db\ActiveRecord
             'id' => 'ID',
             'text' => 'Text',
             'type' => 'Type',
+            'option_one' => 'Option One',
+            'option_two' => 'Option Two',
+            'option_three' => 'Option Three',
+            'option_four' => 'Option Four',
             'correct_answer' => 'Correct Answer',
             'quizzes_id' => 'Quizzes ID',
         ];

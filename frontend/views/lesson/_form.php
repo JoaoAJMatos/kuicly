@@ -11,6 +11,7 @@ use yii\helpers\Url;
 /** @var common\models\Lesson $modelSection */
 /** @var common\models\Lesson $sectionList */
 /** @var common\models\LessonType $lessonTypeList */
+/** @var common\models\LessonType $quizList */
 /** @var common\models\Lesson $modelFile */
 /** @var common\models\UploadForm $modelUpload */
 /** @var common\models\Lesson $id */
@@ -40,6 +41,12 @@ use yii\helpers\Url;
 
     <?= $form->field($modelUpload, 'imageFile')->fileInput() ?>
 
+    <?= $form->field($model, 'quizzes_id')->dropDownList(
+        $quizList,
+        ['prompt' => 'Select Quiz']
+    ); ?>
+    <?= Html::a('Create Quiz',['quiz/create','course_id'=>$id],['class'=> 'btn btn-primary'])?>
+
     <br>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -49,18 +56,21 @@ use yii\helpers\Url;
 
 </div>
 <script>
-    const VIDEO = 5;
-    const QUIZ = 7;
+    const VIDEO = 9;
+    const QUIZ = 10;
 
     const select = document.getElementById('lesson-lesson_type_id');
 
     select.addEventListener('change', (event) => {
         const selection = event.target.value;
         console.log(selection);
+        console.log(VIDEO);
         if (selection === VIDEO){
+            console.log(selection);
             document.getElementsByClassName('field-lesson-quizzes_id')[0].style.display = 'none';
             document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'block';
         } else if(selection === QUIZ){
+            console.log(selection);
             document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'none';
             document.getElementsByClassName('field-lesson-quizzes_id')[0].style.display = 'block';
         }

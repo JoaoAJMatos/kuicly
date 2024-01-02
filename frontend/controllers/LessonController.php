@@ -2,9 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Answer;
 use common\models\Lesson;
 use common\models\File;
 use common\models\LessonType;
+use common\models\Quiz;
 use common\models\Section;
 use common\models\Course;
 use app\models\LessonSearch;
@@ -77,10 +79,12 @@ class LessonController extends Controller
         if(Yii::$app->user->can('verVideo')){
             $modelSection = Section::find()->where(['id' => $sections_id])->one();
             $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
+            $modelAnswer = new Answer();
 
             return $this->render('view', [
                 'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
                 'modelCourse'=>$modelCourse,
+                'modelAnswer'=>$modelAnswer,
             ]);
         }else{
             return $this->redirect(['site/index']);
@@ -100,9 +104,13 @@ class LessonController extends Controller
             $modelUpload = new UploadForm();
             $modelSection = Section::find()->where(['courses_id' => $id])->all();
             $modelLessonType = LessonType::find()->all();
+            $modelQuiz = Quiz::find()->all();
             $modelFile = new File();
             $sectionList = [];
             $lessonTypeList = [];
+            $quizList = [];
+
+
 
             foreach ($modelSection as $section) {
                 $sectionList[$section->id] = $section->title;
@@ -114,7 +122,12 @@ class LessonController extends Controller
                 $model->lesson_type_id = $type->id;
             }
 
-            $model->quizzes_id = 5;
+            foreach ($modelQuiz as $quiz){
+                $quizList[$quiz->id] = $quiz->title;
+                $model->quizzes_id = $quiz->id;
+            }
+
+            //$model->quizzes_id = 5;
             //TODO: quiz
 
 
@@ -148,6 +161,9 @@ class LessonController extends Controller
                 'modelFile' => $modelFile,
                 'modelUpload' => $modelUpload,
                 'id' => $id,
+                'quizList' => $quizList,
+
+
             ]);
         }else{
             return $this->redirect(['site/index']);

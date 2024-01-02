@@ -2,10 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\Lesson $model */
 /** @var common\models\Lesson $modelCourse */
+/** @var common\models\Lesson $modelAnswer */
 
 
 
@@ -16,46 +17,50 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container py-5">
 
-    <!--<p>
-        <?php /*= Html::a('Update', ['update', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id], ['class' => 'btn btn-primary']) */?>
-        <?php /*= Html::a('Delete', ['delete', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) */?>
-    </p>
-
-    --><?php /*= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'type',
-            'context',
-            'sections_id',
-            'quizzes_id',
-            'file_id',
-            'lesson_type_id',
-        ],
-    ]) */?>
-
     <div class="row">
         <div class="col-md-8">
-
+            <?php if($model->lessonType->type === 'video'){ ?>
             <video id='myVideo' width="640" height="360" controls autoplay src="<?= Yii::$app->urlManager->createUrl('uploads/'.$model->file->name) ?>" style="border: 1px solid black"></video>
-
 
             <h1><?= Html::encode($this->title) ?></h1>
 
             <p> <?= $model->context ?> </p>
 
+
+            <?php }else{ ?>
+                <h1><?= Html::encode($this->title) ?></h1>
+                <p> <?= $model->context ?> </p>
+
+                <h1><?= $model->quizzes->title.'-'.$model->quizzes->number_questions ?> </h1>
+
+                <p><?= $model->quizzes->description ?></p>
+
+                <?php foreach ($model->quizzes->questions as $question){?>
+                    <h2><?= $question->text ?></h2>
+
+                    <p>Option 1 : <?= $question->option_one ?></p>
+                    <p>Option 2 : <?= $question->option_two ?></p>
+                    <p>Option 3 : <?= $question->option_three ?></p>
+                    <p>Option 4 : <?= $question->option_four ?></p>
+
+                    <?php $form = ActiveForm::begin(['action' => ['question/answer', 'id'=>$model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]]); ?>
+                    <?= $form->field($modelAnswer, 'questions_id')->hiddenInput(['value' => $question->id])->label(false) ?>
+                    <?= $form->field($modelAnswer, 'text')->textInput(['maxlength' => true]) ?>
+
+                    <div class="form-group">
+                        <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                    </div>
+
+                    <?php ActiveForm::end(); ?>
+
+
+                <?php }?>
+
+            <?php } ?>
             <div class="">
                 <?= Html::a('editar lesson',['lesson/update','id'=>$model->id,'sections_id'=>$model->sections_id,'quizzes_id'=>$model->quizzes_id,'file_id'=>$model->file_id,'lesson_type_id'=>$model->lesson_type_id,'course_id'=>$modelCourse->id],['class'=>'btn btn-primary'])?>
 
             </div>
-
         </div>
         <div class="col-md-4 ">
             <h2>Conteúdo do Curso</h2>
@@ -72,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <ul class="list-group list-group-flush">
                                     <?php foreach ($section->lessons as $lesson){?>
                                         <!--<li class="list-group-item"><?php /*= $lesson->title */?> </li>-->
-                                        <?= Html::a(''. $lesson->title,['lesson/view', 'id'=>$lesson->id,'sections_id'=>$lesson->sections_id,'quizzes_id'=>$lesson->quizzes_id,'file_id'=>$lesson->file_id,'lesson_type_id'=>$lesson->lesson_type_id],['class'=>'list-group-item']) ?>
+                                        <?= Html::a(''. $lesson->title. '-'.$lesson->lessonType->type,['lesson/view', 'id'=>$lesson->id,'sections_id'=>$lesson->sections_id,'quizzes_id'=>$lesson->quizzes_id,'file_id'=>$lesson->file_id,'lesson_type_id'=>$lesson->lesson_type_id],['class'=>'list-group-item']) ?>
                                     <?php }?>
                                 </ul>
                             </div>

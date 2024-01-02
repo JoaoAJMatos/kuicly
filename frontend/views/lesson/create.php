@@ -10,6 +10,7 @@ use yii\helpers\Html;
 /** @var common\models\File $modelFile */
 /** @var common\models\UploadForm $modelUpload */
 /** @var common\models\Lesson $id */
+/** @var common\models\Section $quizList */
 
 $this->title = 'Create Lesson';
 $this->params['breadcrumbs'][] = ['label' => 'Lessons', 'url' => ['index']];
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'modelFile' => $modelFile,
         'modelUpload' => $modelUpload,
         'id' => $id,
+        'quizList' => $quizList,
 
     ]) ?>
 

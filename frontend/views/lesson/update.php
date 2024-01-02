@@ -10,6 +10,7 @@ use yii\helpers\Html;
 /** @var common\models\File $modelFile */
 /** @var common\models\UploadForm $modelUpload */
 /** @var common\models\Lesson $id */
+/** @var common\models\Section $quizList */
 
 $this->title = 'Update Lesson: ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Lessons', 'url' => ['index']];
@@ -28,6 +29,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'modelFile' => $modelFile,
         'modelUpload' => $modelUpload,
         'id' => $id,
+        'quizList' => $quizList,
     ]) ?>
 
 </div>
