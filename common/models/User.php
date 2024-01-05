@@ -53,6 +53,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+
+            [['username', 'email'], 'required'],
+            [['username', 'email'], 'unique','targetClass' => '\common\models\User', 'message' => 'This {attribute} has already been taken.'],
+            [['username', 'email'], 'string', 'max' => 60],
+
+                [['username'], 'string', 'min' => 3, 'max' => 255],
+                [['username'], 'match', 'pattern' => '/^[a-z]\w*$/i'],
+
+                [['email'], 'email'],
+
+                [['password_reset_token'], 'unique'],
+
+                [['verification_token'], 'unique'],
+
+                [['status'], 'integer'],
+
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
 
@@ -215,4 +231,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
 }

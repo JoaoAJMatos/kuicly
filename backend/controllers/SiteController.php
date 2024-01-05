@@ -81,7 +81,17 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if(Yii::$app->user->can('estudante') && !Yii::$app->user->can('instrutor'))
+            {
+                Yii::$app->user->logout();
+                $this->redirect(['localhost:8080/kuicly/frontend/web/index.php?r=site%2Flogin']);
+            }
+            else if(Yii::$app->user->can('admin') )
+            {
+
+                return $this->goBack();
+            }
+
         }
 
         $model->password = '';

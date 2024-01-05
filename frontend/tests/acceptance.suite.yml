@@ -7,3 +7,5 @@ modules:
             browser: firefox
         - Yii2:
             part: init
+        - PhpBrowser:
+                    url: http://localhost:8080/advanced/frontend/web/index-test.php

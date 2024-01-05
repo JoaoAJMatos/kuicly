@@ -350,7 +350,7 @@ class CourseController extends Controller
             ->all();
         $eachprice=[];
         $totalVendas = 0;
-
+        $quantidade = 0;
         foreach ($cursosDoInstrutor as $curso) {
             // Encontra todas as vendas (orders) relacionadas a cada curso do instrutor
             $vendasDoCurso = OrderItem::find()

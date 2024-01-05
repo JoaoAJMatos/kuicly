@@ -10,6 +10,7 @@ use common\models\Iva;
 use common\models\Order;
 use common\models\OrderItem;
 use common\models\Transaction;
+use common\models\User;
 use frontend\models\CardPayment;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -113,13 +114,20 @@ class CartController extends Controller
             $modelIva = Iva::find()->where(['id' => 1])->one();
             // iva
 
+            if(empty($modelCart->cartItems)){
 
-            $modelOrder->date = date('Y-m-d H:i:s');
-            $modelOrder->status = 'PAID';
-            $modelOrder->total_price = $total;
-            $modelOrder->user_id = $user_id;
-            $modelOrder->iva_id = $modelIva->id;
-            $modelOrder->save();
+                Yii::$app->session->setFlash('error', 'Não existe nada no carrinho.');
+                return $this->redirect(['cart/index','user_id'=>Yii::$app->user->id]);
+            }else{
+                $modelOrder->date = date('Y-m-d H:i:s');
+                $modelOrder->status = 'PAID';
+                $modelOrder->total_price = $total;
+                $modelOrder->user_id = $user_id;
+                $modelOrder->iva_id = $modelIva->id;
+                $modelOrder->save();
+
+            }
+
 
             //$modelGetOrder = Order::find()->where(['user_id' => $user_id])->one();
 
@@ -147,12 +155,32 @@ class CartController extends Controller
                 $cartItem->delete();
             }
 
-            return $this->redirect(['index','user_id'=>Yii::$app->user->id]);
+            return $this->redirect(['view', 'id' => $modelOrder->id, 'user_id' => $user_id]);
 
         }else{
             return $this->redirect(['site/index']);
         }
 
+
+    }
+
+    public function actionBills(){
+        $modelOrder = Order::find()->where(['user_id' => Yii::$app->user->id])->one();
+        $model = User::find()->where(['id' => Yii::$app->user->id])->one();
+
+        if ($modelOrder === null) {
+            Yii::$app->session->setFlash('error', 'O pedido não foi encontrado.');
+            return $this->redirect(['cart/index','user_id'=>Yii::$app->user->id]);
+
+        }
+
+        $modelOrderItem = OrderItem::find()->where(['orders_id' => $modelOrder->id])->all();
+
+        return $this->render('bills', [
+            'modelOrder' => $modelOrder,
+            'modelOrderItem' => $modelOrderItem,
+            'model' => $model,
+        ]);
 
     }
 
@@ -165,8 +193,14 @@ class CartController extends Controller
      */
     public function actionView($id, $user_id)
     {
+        $modelOrder = Order::find()->where(['id' => $id])->one();
+        $model = User::find()->where(['id' => $user_id])->one();
+        $modelOrderItem = OrderItem::find()->where(['orders_id' => $id])->all();
+
         return $this->render('view', [
-            'model' => $this->findModel($id, $user_id),
+            'model' => $model,
+            'modelOrder' => $modelOrder,
+            'modelOrderItem' => $modelOrderItem,
         ]);
     }
 
