@@ -10,16 +10,20 @@ class UserCest
     // tests
     public function tryToTest(FunctionalTester $I)
     {
+
     }
 
     public function tryToRegister(FunctionalTester $I)
     {
-        $I->amOnPage('/site/signup'); // Página de registro de usuário
+        $I->amOnPage('/site/signup'); // Página de registo
         $I->fillField('Username', 'john_doe');
-        $I->fillField('Email', 'john@example.com');
+        $I->fillField('Name', 'João');
+        $I->fillField('Address', 'Rua do João');
+        $I->fillField('Phone Number', '912345678');
+        $I->fillField('Email', 'joao@gmail.com');
         $I->fillField('Password', 'password123');
         $I->click('Signup');
-        $I->see('Registration successful.'); // Verifica se a mensagem de registro foi bem-sucedida
+        $I->see('Logout'); // Verifica se o botão de logout está presente
     }
 
     public function tryToLogin(FunctionalTester $I)
@@ -28,12 +32,12 @@ class UserCest
         $I->fillField('Username', 'john_doe');
         $I->fillField('Password', 'password123');
         $I->click('Login');
-        $I->see('Welcome, John!'); // Verifica se a mensagem de boas-vindas é exibida após o login
+        $I->see('Logout'); // Verifica se o botão de logout está presente
     }
 
       public function tryToLogout(FunctionalTester $I)
         {
             $I->amOnPage('/site/logout'); // Página de logout
-            $I->see('Logout'); // Verifica se o botão de logout está presente
+            $I->see('Login'); // Verifica se o botão de login está presente
         }
 }

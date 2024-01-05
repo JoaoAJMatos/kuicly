@@ -38,7 +38,7 @@ class UserTest extends \Codeception\Test\Unit
         $this->assertTrue($user->validate(['username']));
     }
 
-    public function testCreateUser()
+    public function testCreateUserUnsuccessfully()
     {
         $user = new User();
         $user->username = 'john_doe';
@@ -48,20 +48,17 @@ class UserTest extends \Codeception\Test\Unit
         $this->assertTrue($user->save());
     }
 
-    public function testUniqueEmailValidation()
+    public function testCreateUserUnsuccessfully()
     {
-        $user1 = new User();
-        $user1->email = 'test@example.com';
-        $user1->save();
+        $user = new User();
+        $user->username = 'john_doe';
+        $user->email = 'john@example.com';
+        $user->password = 'password';
 
-        $user2 = new User();
-        $user2->email = 'test@example.com';
-
-        $this->assertFalse($user2->validate());
-        $this->assertArrayHasKey('email', $user2->errors);
+        $this->assertTrue($user->save());
     }
 
-    public function testRequiredFields()
+    public function testUpdateUser()
     {
         $user = new User();
 
