@@ -9,6 +9,7 @@ use common\models\Enrollment;
 use common\models\Iva;
 use common\models\Order;
 use common\models\OrderItem;
+use common\models\Profile;
 use common\models\Transaction;
 use common\models\User;
 use frontend\models\CardPayment;
@@ -155,7 +156,7 @@ class CartController extends Controller
                 $cartItem->delete();
             }
 
-            return $this->redirect(['view', 'id' => $modelOrder->id, 'user_id' => $user_id]);
+            return $this->redirect(['order/view', 'id' => $modelOrder->id, 'user_id' => $user_id]);
 
         }else{
             return $this->redirect(['site/index']);
@@ -164,25 +165,6 @@ class CartController extends Controller
 
     }
 
-    public function actionBills(){
-        $modelOrder = Order::find()->where(['user_id' => Yii::$app->user->id])->one();
-        $model = User::find()->where(['id' => Yii::$app->user->id])->one();
-
-        if ($modelOrder === null) {
-            Yii::$app->session->setFlash('error', 'O pedido não foi encontrado.');
-            return $this->redirect(['cart/index','user_id'=>Yii::$app->user->id]);
-
-        }
-
-        $modelOrderItem = OrderItem::find()->where(['orders_id' => $modelOrder->id])->all();
-
-        return $this->render('bills', [
-            'modelOrder' => $modelOrder,
-            'modelOrderItem' => $modelOrderItem,
-            'model' => $model,
-        ]);
-
-    }
 
     /**
      * Displays a single Cart model.
@@ -191,18 +173,6 @@ class CartController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $user_id)
-    {
-        $modelOrder = Order::find()->where(['id' => $id])->one();
-        $model = User::find()->where(['id' => $user_id])->one();
-        $modelOrderItem = OrderItem::find()->where(['orders_id' => $id])->all();
-
-        return $this->render('view', [
-            'model' => $model,
-            'modelOrder' => $modelOrder,
-            'modelOrderItem' => $modelOrderItem,
-        ]);
-    }
 
     /**
      * Creates a new Cart model.

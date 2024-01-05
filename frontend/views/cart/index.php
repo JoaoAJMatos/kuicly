@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="card-body">
                             <div class="row justify-content-between">
                                 <div class="col-auto mt-0"><p><b>BBBootstrap Team Vasant Vihar  110020 New Delhi India</b></p></div>
-                                <?= Html::a('Bills',['cart/bills'],['class'=>'btn btn-primary']) ?>
+                                <?= Html::a('Bills',['order/index'],['class'=>'btn btn-primary']) ?>
                             </div>
                             <?php $form = ActiveForm::begin(); ?>
 

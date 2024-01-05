@@ -4,62 +4,53 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Cart $model */
-/** @var common\models\Cart $modelOrder */
-/** @var common\models\Cart $modelOrderItem */
-/** @var common\models\Cart $modelProfile */
+/** @var common\models\Order $model */
+/** @var common\models\Order $modelOrderItem */
+/** @var common\models\Order $modelOrder */
+/** @var common\models\Order $modelProfile */
+/** @var common\models\Order $modelUser */
+/** @var common\models\Order $totaliva */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Carts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="container py-5">
 
-
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">Factura</h1>
+            <h1 class="">Factura</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">Dados do cliente</h3>
+            <h3 class="">Dados do cliente</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="text-center">Nome: <?= $modelProfile->name ?></h5>
+            <h5 class="">Nome: <?= $modelProfile->name ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="text-center">Adress: <?= $modelProfile->address ?></h5>
+            <h5 class="">Adress: <?= $modelProfile->address ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="text-center">Telefone: <?= $modelProfile->phone_number ?></h5>
+            <h5 class="">Telefone: <?= $modelProfile->phone_number ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="text-center">Email: <?= $model->email ?></h5>
+            <h5 class="">Email: <?= $modelUser->email ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">Datos de la compra</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h5 class="text-center">Fecha: <?= $model->created_at ?></h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Productos</h3>
+            <h3 class="">Productos</h3>
         </div>
     </div>
     <div class="row">
@@ -78,13 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td><?= $orderItem->courses->title ?></td>
                         <td><?= $orderItem->price ?>€</td>
                         <td><?= $orderItem->iva_price ?>€</td>
+
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <h3 class="text-center">Total: <?= $modelOrder->total_price ?>€</h3>
+            <h3 class="">Total IVA: <?= $totaliva ?>€</h3>
+            <h3 class="">Total: <?= $model->total_price ?>€</h3>
         </div>
     </div>
-
-
 </div>
