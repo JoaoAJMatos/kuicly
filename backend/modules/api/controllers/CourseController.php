@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use common\models\User;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
 use yii\web\Controller;
@@ -55,7 +56,7 @@ class CourseController extends ActiveController
     }
 
 
-    public function actionGetCourses()
+    public function actionCourses()
     {
         $courses = new $this->modelClass;
         $recs = $courses::find()->all();

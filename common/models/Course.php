@@ -46,7 +46,10 @@ class Course extends \yii\db\ActiveRecord
             [['skill_level', 'user_id', 'category_id', 'file_id'], 'integer'],
 
             [['user_id', 'category_id', 'file_id'], 'required'],
-            [['title', 'description'], 'string', 'max' => 150],
+
+            [['title'],'string','min'=>3,'max'=>35],
+            [['description'],'string','min'=>10,'max'=>150],
+
             [['title', 'description','price','skill_level','category_id'], 'required'],
 
 

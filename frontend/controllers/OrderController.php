@@ -64,13 +64,15 @@ class OrderController extends Controller
      */
     public function actionView($id, $user_id, $iva_id)
     {
-        if(Yii::$app->user->can('verFactura')) {
+        if(Yii::$app->user->can('verFatura')) {
+            $model = $this->findModel($id, $user_id, $iva_id);
             $modelUser = User::find()->where(['id' => $user_id])->one();
             $modelProfile = Profile::find()->where(['user_id' => $user_id])->one();
             $modelOrderItem = OrderItem::find()->where(['orders_id' => $id])->all();
             $totaliva = 0;
+
             foreach ($modelOrderItem as $orderItem) {
-                $totaliva = $orderItem->iva_price;
+                $totaliva += $orderItem->iva_price;
             }
 
             return $this->render('view', [
@@ -79,6 +81,7 @@ class OrderController extends Controller
                 'modelProfile' => $modelProfile,
                 'modelOrderItem' => $modelOrderItem,
                 'totaliva' => $totaliva,
+                'subtotal' => $model->total_price - $totaliva,
             ]);
 
         }else{

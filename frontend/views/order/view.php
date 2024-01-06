@@ -74,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
+                <h3 class="">SubTotal: <?= $totaliva ?>€</h3>
             <h3 class="">Total IVA: <?= $totaliva ?>€</h3>
             <h3 class="">Total: <?= $model->total_price ?>€</h3>
         </div>

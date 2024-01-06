@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use common\models\Cart;
 use yii\helpers\Html;
@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
 /** @var app\models\Order $modelOrder */
 /** @var app\models\Cart $total */
 /** @var app\models\Cart $modelCardPayment */
+/** @var app\models\Cart $subtotal */
+/** @var app\models\Cart $ivatotal */
 
 $this->title = 'Carts';
 $this->params['breadcrumbs'][] = $this->title;
@@ -69,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col">
                                     <br>
                                     <div class="form-group">
-                                        <?= Html::submitButton('PURCHASE'.$total.'EUR', ['class' => 'btn btn-primary']) ?>
+                                        <?= Html::submitButton('PURCHASE '.$total.' EUR', ['class' => 'btn btn-primary']) ?>
                                     </div>
 
                                     <?php ActiveForm::end(); ?>
@@ -134,8 +136,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row ">
                                 <div class="col">
                                     <div class="row justify-content-between">
+                                        <div class="col"><p class="mb-1"><b>SubTotal</b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $subtotal?></b></p></div>
+                                    </div>
+                                    <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>IVA</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?php /*= $ivatotal*/?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?></b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\tests;
 
+use common\fixtures\UserFixture;
 use common\models\User;
 
 class UserTest extends \Codeception\Test\Unit
@@ -9,7 +10,16 @@ class UserTest extends \Codeception\Test\Unit
      * @var \frontend\tests\UnitTester
      */
     protected $tester;
-    
+
+    public function _fixtures()
+    {
+        return [
+            'user' => [
+                'class' => UserFixture::class,
+                'dataFile' => codecept_data_dir() . 'user.php'
+            ]
+        ];
+    }
     protected function _before()
     {
     }
@@ -41,36 +51,43 @@ class UserTest extends \Codeception\Test\Unit
     public function testCreateUserUnsuccessfully()
     {
         $user = new User();
-        $user->username = 'john_doe';
-        $user->email = 'john@example.com';
-        $user->password = 'password';
+        $user->username = 'john_dEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr';
+        $this->assertFalse($user->validate(['username']));
+        $user->email = 'john23232';
+        $this->assertFalse($user->validate(['email']));
+        $user->setPassword('22');
+        $user->generateAuthKey();
+        $this->assertFalse($user->validate());
 
-        $this->assertTrue($user->save());
+        $this->assertFalse($user->save());
     }
 
-    public function testCreateUserUnsuccessfully()
+    public function testCreateUserSuccessfully()
     {
         $user = new User();
-        $user->username = 'john_doe';
-        $user->email = 'john@example.com';
-        $user->password = 'password';
+        $user->username = 'john_de';
+        $this->assertTrue($user->validate(['username']));
+        $user->email = 'john@gmail.com';
+        $this->assertTrue($user->validate(['email']));
+        $user->setPassword('12345678');
+        $user->generateAuthKey();
+        $this->assertTrue($user->validate());
 
         $this->assertTrue($user->save());
     }
 
     public function testUpdateUser()
     {
-        $user = new User();
+        $user = $this->tester->grabFixture('user', 'user1');
 
-        // Não definir campos obrigatórios
-        $this->assertFalse($user->validate());
-
-        // Definir campos obrigatórios
         $user->username = 'testuser';
         $user->email = 'test@example.com';
-        $user->password = 'password';
+        $user->setPassword('12345679');
+        $user->generateAuthKey();
 
         $this->assertTrue($user->validate());
+
+        $this->assertTrue($user->save());
     }
 
     public function testDeleteUser()
@@ -78,7 +95,8 @@ class UserTest extends \Codeception\Test\Unit
         $user = new User();
         $user->username = 'testuser';
         $user->email = 'test@example.com';
-        $user->password = 'password';
+        $user->setPassword('12345678');
+        $user->generateAuthKey();
         $user->save();
 
         $userId = $user->id;

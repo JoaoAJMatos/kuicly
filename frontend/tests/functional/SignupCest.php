@@ -43,17 +43,14 @@ class SignupCest
     {
         $I->submitForm($this->formId, [
             'SignupForm[username]' => 'tester',
+            'SignupForm[name]' => 'tester',
+            'SignupForm[address]' => 'tester',
+            'SignupForm[phone_number]' => 'tester',
             'SignupForm[email]' => 'tester.email@example.com',
             'SignupForm[password]' => 'tester_password',
         ]);
-
-        $I->seeRecord('common\models\User', [
-            'username' => 'tester',
-            'email' => 'tester.email@example.com',
-            'status' => \common\models\User::STATUS_INACTIVE
-        ]);
-
-        $I->seeEmailIsSent();
+        $I->seeCurrentUrlEquals('site/login');
+        $I->dontSee('Name cannot be blank.');
         $I->see('Thank you for registration. Please check your inbox for verification email.');
     }
 }

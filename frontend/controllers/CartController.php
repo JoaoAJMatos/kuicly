@@ -51,6 +51,7 @@ class CartController extends Controller
         if (Yii::$app->user->can('comprarCurso')){
             $model = Cart::find()->where(['user_id' => $user_id])->one();
             $modelCardPayment = new CardPayment();
+            $modelIva = Iva::find()->where(['id' => 1])->one();
 
             $total = 0;
             if($model === null){
@@ -77,7 +78,8 @@ class CartController extends Controller
                 'model' => $model,
                 'total' => $total,
                 'modelCardPayment' => $modelCardPayment,
-                //'ivatotal'=> $total * 0.23,
+                'ivatotal'=> $total * ($modelIva->iva / 100),
+                'subtotal'=> $total - $total * ($modelIva->iva / 100),
             ]);
 
         }else{
@@ -129,10 +131,6 @@ class CartController extends Controller
 
             }
 
-
-            //$modelGetOrder = Order::find()->where(['user_id' => $user_id])->one();
-
-
             foreach ($modelCart->cartItems as $cartItem){
 
                 // Criando um novo OrderItem para cada CartItem
@@ -141,7 +139,7 @@ class CartController extends Controller
                 // Associando ao pedido criado
                 $modelOrderItem->courses_id = $cartItem->courses_id;
                 $modelOrderItem->price = $cartItem->courses->price;
-                $modelOrderItem->iva_price = $cartItem->courses->price;
+                $modelOrderItem->iva_price = $cartItem->courses->price * ($modelIva->iva / 100);
                 //todo: mudar iva_price para float
 
                 // Outros dados do OrderItem (preço, quantidade, etc.) podem ser definidos aqui
@@ -156,7 +154,7 @@ class CartController extends Controller
                 $cartItem->delete();
             }
 
-            return $this->redirect(['order/view', 'id' => $modelOrder->id, 'user_id' => $user_id]);
+            return $this->redirect(['order/view', 'id' => $modelOrder->id, 'user_id' => $user_id, 'iva_id' => $modelIva->id]);
 
         }else{
             return $this->redirect(['site/index']);

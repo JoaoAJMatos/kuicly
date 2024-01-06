@@ -29,7 +29,8 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_name'], 'string', 'max' => 60],
+            [['category_name'], 'string', 'max' => 60, 'min' => 3],
+            [['category_name'], 'required'],
             [['description'], 'string', 'max' => 255],
         ];
     }

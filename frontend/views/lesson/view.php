@@ -57,10 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php }?>
 
             <?php } ?>
-            <div class="">
-                <?= Html::a('editar lesson',['lesson/update','id'=>$model->id,'sections_id'=>$model->sections_id,'quizzes_id'=>$model->quizzes_id,'file_id'=>$model->file_id,'lesson_type_id'=>$model->lesson_type_id,'course_id'=>$modelCourse->id],['class'=>'btn btn-primary'])?>
 
-            </div>
         </div>
         <div class="col-md-4 ">
             <h2>Conteúdo do Curso</h2>
@@ -85,6 +82,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <?php } ?>
         </div>
+            <div class="">
+                <?= Html::a('editar lesson',['lesson/update','id'=>$model->id,'sections_id'=>$model->sections_id,'quizzes_id'=>$model->quizzes_id,'file_id'=>$model->file_id,'lesson_type_id'=>$model->lesson_type_id,'course_id'=>$modelCourse->id],['class'=>'btn btn-primary'])?>
+
+            </div>
 
     </div>
 

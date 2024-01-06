@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
     <hr>
+        <h1>Courses Buyed</h1>
     <?php }?>
     <?= ListView::widget([
         'dataProvider' => $dataProvider2,
