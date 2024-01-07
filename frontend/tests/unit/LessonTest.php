@@ -50,19 +50,14 @@ class LessonTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testSomeFeature()
-    {
-
-    }
-
-    public function testCreateCourseUnsuccessfully()
+    public function testCreateLessonUnsuccessfully()
     {
         $lesson = new Lesson();
 
-        $lesson->title = 'q';
+        $lesson->title = '';
         $this->assertFalse($lesson->validate(['title']));
-        $lesson->context = 'e';
-        $this->assertFalse($lesson->validate(['description']));
+        $lesson->context = '';
+        $this->assertFalse($lesson->validate(['context']));
         $lesson->sections_id = null;
         $this->assertFalse($lesson->validate(['sections_id']));
         $lesson->quizzes_id = null;
@@ -77,7 +72,7 @@ class LessonTest extends \Codeception\Test\Unit
 
     }
 
-    public function testCreateCourseSuccessfully()
+    public function testCreateLessonSuccessfully()
     {
         $lesson = new Lesson();
         $file = $this->tester->grabFixture('file', 'file1');
@@ -88,7 +83,7 @@ class LessonTest extends \Codeception\Test\Unit
         $lesson->title = 'Introdução';
         $this->assertTrue($lesson->validate(['title']));
         $lesson->context = 'Introdução ao curso';
-        $this->assertTrue($lesson->validate(['description']));
+        $this->assertTrue($lesson->validate(['context']));
         $lesson->sections_id = $section->id;
         $this->assertTrue($lesson->validate(['sections_id']));
         $lesson->quizzes_id = $quiz->id;
@@ -101,15 +96,12 @@ class LessonTest extends \Codeception\Test\Unit
         $this->assertTrue($lesson->save());
     }
 
-    public function testUpdateCourse()
+    public function testUpdateLesson()
     {
         $lesson = $this->tester->grabFixture('lesson', 'lesson1');
 
         $lesson->title = 'Introdução';
         $lesson->context = 'Introdução ao curso';
-        $lesson->sections_id = 2;
-        $lesson->quizzes_id = 2;
-        $lesson->file_id = 2;
 
 
         $this->assertTrue($lesson->validate());
@@ -124,7 +116,7 @@ class LessonTest extends \Codeception\Test\Unit
 
     }
 
-    public function testDeleteCourse()
+    public function testDeleteLesson()
     {
         $lesson = new Lesson();
 

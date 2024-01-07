@@ -59,10 +59,10 @@ class Lesson extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'context' => 'Context',
-            'sections_id' => 'Sections ID',
-            'quizzes_id' => 'Quizzes ID',
+            'sections_id' => 'Section',
+            'quizzes_id' => 'Quiz',
             'file_id' => 'File ID',
-            'lesson_type_id' => 'Lesson Type ID',
+            'lesson_type_id' => 'Lesson Type',
         ];
     }
 

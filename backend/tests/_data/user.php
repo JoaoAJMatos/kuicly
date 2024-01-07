@@ -23,7 +23,6 @@ return [
         'username' => 'Admin',
         'auth_key' => 'pzziFplaKNl6L-dnKUBBz1pdAwk3rNj0',
         'password_hash' => '$13$MWTLR87N4p5C5j3/qRC6J.fWdmwtsZC5gt6yx4rO3I8Ydgl03Wnhu',
-
         'email' => 'teste123@gmail.com',
         'created_at' => '1704542363',
         'updated_at' => '1704542363',

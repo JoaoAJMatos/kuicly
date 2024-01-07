@@ -85,7 +85,7 @@ class SiteController extends Controller
             if(!Yii::$app->user->can('loginBO'))
             {
                 Yii::$app->user->logout();
-                $this->redirect(['localhost:8080/kuicly/frontend/web/index.php?r=site%2Flogin']);
+                $this->redirect(['http://localhost:8080/kuicly/frontend/web/index.php?r=site%2Flogin']);
             }
             else
             {

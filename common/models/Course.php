@@ -58,7 +58,6 @@ class Course extends \yii\db\ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
-
     /**
      * {@inheritdoc}
      */

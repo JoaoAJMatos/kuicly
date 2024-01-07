@@ -29,7 +29,7 @@ $userEnrolled = \common\models\Enrollment::find()->where(['user_id' => $userId, 
                 <p class="card-text"><?= $model->description ?></p>
                 
 
-                <?= Html::a('Ver Curso', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+                <?= Html::a('View Course', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
                 <?php if(!$userEnrolled){?>
                 <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary' ]) ?>
                 <?php }?>

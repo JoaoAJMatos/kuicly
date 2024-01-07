@@ -35,10 +35,10 @@ $userId = Yii::$app->user->id;
         <p class="card-text"><?= $model->description ?></p>
 
 
-        <?= Html::a('Ver Curso', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+        <?= Html::a('View Course', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
 
         <?php if(Yii::$app->user->can('criarcurso') && $model->user_id === Yii::$app->user->id){?>
-        <?= Html::a('Editar', ['course/update', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
+        <?= Html::a('Update', ['course/update', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
         <div class="float-end">
 
             <?= Html::a('<i class="bi bi-x"></i>', ['delete', 'id' => $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], [

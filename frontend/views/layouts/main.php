@@ -184,7 +184,7 @@ AppAsset::register($this);
 
                 <?php if(!Yii::$app->user->isGuest) {?>
 
-                <?= Html::a('<i class="bi bi-cart4"></i>', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
+                <?= Html::a('Cart', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
                 <?php }?>
             </div>
         </div>
