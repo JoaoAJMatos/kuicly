@@ -125,6 +125,7 @@ class LessonTest extends \Codeception\Test\Unit
         $lesson->sections_id = 2;
         $lesson->quizzes_id = 2;
         $lesson->file_id = 2;
+        $lesson->lesson_type_id = 2;
 
         $lessonId = $lesson->id;
         $lesson->delete();
