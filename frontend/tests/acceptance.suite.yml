@@ -3,10 +3,9 @@ actor: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://localhost:8080
-            browser: firefox
+            url: 'http://localhost/kuicly/frontend/web/'
+            browser: chrome
+            window_size: maximize
         - Yii2:
             part: init
             cleanup: false
-        - PhpBrowser:
-                    url: http://localhost:8080/advanced/frontend/web/index-test.php
