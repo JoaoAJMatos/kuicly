@@ -26,7 +26,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category', 'teste1');
+        $I->selectOption('Category', 'Design');
         $I->click('Save'); // Submete o formulário
         $I->wait(3);
 

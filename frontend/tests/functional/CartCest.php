@@ -27,7 +27,7 @@ class CartCest
 
         $I->click('Buy');
 
-        $I->click('Cart');
+        $I->click('Cart','.navbar-nav.ms-auto.p-4.p-lg-0');
 
         $I->see('Checkout');
         $I->see('1','.boxed-1');
@@ -42,7 +42,7 @@ class CartCest
 
         $I->click('Buy');
 
-        $I->click('Cart');
+        $I->click('Cart','.navbar-nav.ms-auto.p-4.p-lg-0');
 
         $I->see('Checkout');
         $I->see('1','.boxed-1');
@@ -63,7 +63,7 @@ class CartCest
 
         $I->click('Buy');
 
-        $I->click('Cart');
+        $I->click('Cart','.navbar-nav.ms-auto.p-4.p-lg-0');
 
         $I->see('Checkout');
         $I->see('1','.boxed-1');

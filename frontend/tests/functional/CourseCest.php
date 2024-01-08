@@ -36,7 +36,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category Name', 'category1');
+        $I->selectOption('Category Name', 'Design');
         $I->click('Save'); // Submete o formulário
 
         $I->see('Create Lesson', 'h1'); // Verifica se está na página de criação de aula
@@ -55,7 +55,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category Name', 'category1');
+        $I->selectOption('Category Name', 'Design');
         $I->click('Save'); // Submete o formulário
 
         $I->see('Create Lesson', 'h1'); // Verifica se está na página de criação de aula
@@ -83,7 +83,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category Name', 'category1');
+        $I->selectOption('Category Name', 'Design');
         $I->click('Save'); // Submete o formulário
 
         $I->amOnPage('/course/mycourse');

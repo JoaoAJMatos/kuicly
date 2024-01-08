@@ -15,6 +15,7 @@ use yii\data\ActiveDataProvider;
 $this->title = 'Courses';
 $this->params['breadcrumbs'][] = $this->title;
 $userId = Yii::$app->user->id;
+
 $userEnrolled = \common\models\Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $model->id])->exists();
 ?>
 
@@ -30,7 +31,7 @@ $userEnrolled = \common\models\Enrollment::find()->where(['user_id' => $userId, 
                 
 
                 <?= Html::a('View Course', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
-                <?php if(!$userEnrolled){?>
+                <?php if(!$userEnrolled && $model->user_id !== $userId){?>
                 <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary' ]) ?>
                 <?php }?>
                 <div class="float-end">
