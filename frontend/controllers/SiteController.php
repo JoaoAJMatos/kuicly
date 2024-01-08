@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
 /**
  * Site controller
  */
@@ -32,7 +33,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['error','signup','login'],
+                        'actions' => ['error','signup','login','signupInstrutor'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -125,20 +126,26 @@ class SiteController extends Controller
 
         return $this->render('cart');
     }
-    public function actionCourseDetail()
+    public function actionSignupinstrutor()
     {
 
-        return $this->render('courseDetail');
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signupinstrutor()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            return $this->redirect('login');
+        }
+
+        return $this->render('signupInstrutor', [
+            'model' => $model,
+        ]);
+
     }
+
     /**
      * Displays about page.
      *
      * @return mixed
      */
-    public function actionCourses()
-    {
-        return $this->render('courses');
-    }
 
     /**
      * Signs user up.
@@ -150,7 +157,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return $this->redirect('login');
         }
 
         return $this->render('signup', [

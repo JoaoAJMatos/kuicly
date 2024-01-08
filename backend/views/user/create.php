@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 
 /** @var yii\web\View $this */
-/** @var common\models\UserForm $userForm */
+/** @var common\models\UserForm $model */
 
 
 $this->title = 'Create User';
@@ -17,10 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'userForm' => $userForm,
+        'model' => $model,
     ]) ?>
 
-</div>-->
+</div>
 
 
 

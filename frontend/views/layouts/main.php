@@ -73,7 +73,7 @@ AppAsset::register($this);
        <!-- <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
         </a>-->
-        <?= Html::a('<i class="fa fa-book me-3"></i>Kuilcy', ['site/index'], ['class'=> 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
+        <?= Html::a('<i class="fa fa-book me-3"></i>Kuilcy', ['/'], ['class'=> 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
 
             <!--<div class="container-fluid">
                 <form class="d-flex">
@@ -84,11 +84,11 @@ AppAsset::register($this);
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
+                    Categories
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Arte</a></li>
+                    <li><a class="dropdown-item" href="#">Negócios</a></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </li>
@@ -164,23 +164,35 @@ AppAsset::register($this);
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <?php if (Yii::$app->user->can('instrutor')){?>
-                    <?= Html::a('Create Courses', ['site/create_courses'], ['class'=> 'nav-item nav-link']) ?>
+                    <?= Html::a('Rendimento',['course/income'],['class'=>'nav-item nav-link'])?>
+                    <?= Html::a('Create Courses', ['course/create'], ['class'=> 'nav-item nav-link']) ?>
+
                 <?php }?>
 
-                <?= Html::a('Courses', ['site/courses'], ['class'=> 'nav-item nav-link']) ?>
-                <div>
-                    <?= Html::a('<i class="bi bi-cart4"></i>', ['site/cart'], ['class'=> 'nav-item nav-link ']) ?>
-                </div>
+                <?php if(!Yii::$app->user->isGuest){?>
 
+                    <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
 
+                <?php }?>
+
+                <?php if(Yii::$app->user->isGuest) {?>
+
+                <?= Html::a('Torna-te um Instrutor', ['site/signupinstrutor'], ['class'=> 'nav-item nav-link']) ?>
+                <?php }?>
+
+                <?= Html::a('Courses', ['course/index'], ['class'=> 'nav-item nav-link']) ?>
+
+                <?php if(!Yii::$app->user->isGuest) {?>
+
+                <?= Html::a('Cart', ['cart/index','user_id'=> Yii::$app->user->id], ['class'=> 'nav-item nav-link ']) ?>
+                <?php }?>
             </div>
-
         </div>
 
             <?php if (!Yii::$app->user->isGuest){?>
 
 
-                <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default ']) ?>
+                <?= Html::a('Logout', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-primary py-4 px-lg-5 d-none d-lg-block ']) ?>
             <?php }else{?>
                 <?=Html::a('Join Now <i class="fa fa-arrow-right fa-2xl"></i>', ['site/login'], ['class'=> 'btn btn-primary py-4 px-lg-5 d-none d-lg-block '])?>
             <?php } ?>

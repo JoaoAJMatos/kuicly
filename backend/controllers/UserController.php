@@ -2,13 +2,17 @@
 
 namespace backend\controllers;
 
+use common\models\Course;
+use common\models\Section;
 use common\models\User;
 use common\models\Profile;
+use common\models\Lesson;
 use backend\models\UserForm;
 use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -40,13 +44,18 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (Yii::$app->user->can('admin')){
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -57,9 +66,14 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('admin')){
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
+        }
+
     }
 
     /**
@@ -69,16 +83,21 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $userForm = new UserForm();
+        if(Yii::$app->user->can('criarUtilizador')){
+            $model = new UserForm();
 
 
-        if ($userForm->load($this->request->post()) && $userForm->createFormUser()) {
-            return $this->redirect(['view', 'id' => $userForm->id]);
+            if ($model->load($this->request->post()) && $model->createFormUser()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('create', [
-            'userForm' => $userForm,
-        ]);
     }
 
     /**
@@ -90,24 +109,47 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $user = User::findOne($id);
-        $profile = Profile::findOne(['user_id' => $id]);
+        if(Yii::$app->user->can('editarUtilizador')){
+            $user = User::findOne($id);
 
-        if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
-            $isValid = $user->validate();
-            $isValid = $profile->validate() && $isValid;
-            if ($isValid) {
-                $user->save();
-                $profile->save();
-                return $this->redirect(['user/view', 'id' => $user->id]);
+            if (!$user) {
+                throw new NotFoundHttpException("The user was not found.");
             }
 
+            $profile = Profile::findOne(['user_id' => $id]);
+
+            if (!$profile) {
+                throw new NotFoundHttpException("The user has no profile.");
+            }
+
+            if ($user->load($this->request->post()) && $profile->load($this->request->post())) {
+                var_dump($this->request->post());
+                var_dump($user->load($this->request->post()));
+                var_dump($user);
+                die();
+                $isValid = $user->validate();
+                $isValid = $profile->validate() && $isValid;
+
+                if ($isValid) {
+                    $user->save();
+                    $profile->save();
+
+                    return $this->redirect(['user/view', 'id' => $user->id]);
+                }
+
+            }
+
+
+            return $this->render('update', [
+                'user' => $user,
+                'profile' => $profile,
+            ]);
+        }else{
+            return $this->redirect(['site/login']);
         }
 
-        return $this->render('update', [
-            'user' => $user,
-            'profile' => $profile,
-        ]);
+
+
     }
 
     /**
@@ -119,16 +161,43 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $user = User::findOne($id);
-        $profile = Profile::findOne(['user_id' => $user->id]);
+        if (Yii::$app->user->can('banirUtilizador')){
+            $user = User::findOne($id);
+            $profile = Profile::findOne(['user_id' => $user->id]);
+            $courses = Course::find()->where(['user_id' => $id])->all();
 
-        if ($profile !== null) {
-            // Excluir o perfil associado a esse usuário
-            $profile->delete();
+            foreach ($courses as $course) {
+                $sections = Section::find()->where(['courses_id' => $course->id])->all();
+
+                foreach ($sections as $section) {
+                    // Encontrar e excluir todas as seções associadas a cada lição
+                    $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
+                    foreach ($lessons as $lesson) {
+                        // Excluir todos os quizzes associados a cada seção
+                        //Quiz::deleteAll(['section_id' => $section->id]);
+
+                        // Excluir a seção
+                        $lesson->delete();
+                    }
+
+                    // Excluir a lição
+                    $section->delete();
+                }
+
+                // Excluir o curso
+                $course->delete();
+            }
+            if ($profile !== null) {
+                // Excluir o perfil associado a esse usuário
+                $profile->delete();
+            }
+            $user->delete();
+
+            return $this->redirect(['index']);
+        }else{
+            return $this->redirect(['site/login']);
         }
-        $user->delete();
 
-        return $this->redirect(['index']);
     }
 
     /**

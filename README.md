@@ -1,3 +1,34 @@
+**Grupo PL1**
+
+ João Afonso Jerónimo de Matos: 2220857
+
+ João Miguel dos Santos Zeferino Fernandes: 220876
+
+ Rubén Vieira Gomes: 2220859
+
+## Descrição
+Projeto de uma plataforma de ensino online, onde os utilizadores podem criar cursos e aulas, e os alunos podem inscrever-se nos cursos e assistir às aulas.
+
+
+## Dados para utilizar a aplicação
+
+- Admin
+    - Username: Admin   
+    - Password: 12345678
+
+- Instrutor
+  - Username: Instrutor
+  - Password: 12345678
+
+- Estudante
+  - Username: estudante
+  - Password: 12345678
+
+
+
+
+
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">

@@ -67,7 +67,6 @@ class UserForm extends Model
             $profile = new Profile();
 
             $user->username = $this->username;
-
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
@@ -91,21 +90,29 @@ class UserForm extends Model
 
     public function updateFormUser($id)
     {
+        if ($this->validate()) {
             $user = User::findOne($id);
-            $profile = Profile::findOne(['user_id' => $id]);
+            $profile = Profile::findOne(['user_id' => $user->id]);
 
-            $this->username = $user->username;
-            $this->email = $user->email;
-            $this->password = $user->password_hash;
-            $this->name = $profile->name;
-            $this->address = $profile->address;
-            $this->phone_number = $profile->phone_number;
-
+            $user->username = $this->username;
+            $user->email = $this->email;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
             $user->save();
+            $profile->name = $this->name;
+            $profile->address = $this->address;
+            $profile->phone_number = $this->phone_number;
+
+
+            // the following three lines were added:
+            /*$auth = \Yii::$app->authManager;
+            $theRole = $auth->getRole("admin");
+            $auth->assign($theRole, $user->getId());*/
 
             return $profile->save();
+        }
 
-
+        return null;
     }
 
 

@@ -1,0 +1,11 @@
+suite_namespace: frontend\tests\acceptance
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: 'http://localhost/kuicly/frontend/web/'
+            browser: chrome
+            window_size: maximize
+        - Yii2:
+            part: init
+            cleanup: false

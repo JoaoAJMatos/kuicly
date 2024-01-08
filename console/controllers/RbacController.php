@@ -187,6 +187,24 @@ class RbacController extends Controller
         $reembolsar->description = 'Reembolsar Curso';
         $auth->add($reembolsar);
 
+        $restrito = $auth->createPermission('restrito');
+        $restrito->description = 'Não entra ninguem aqui';
+        $auth->add($restrito);
+
+        // add "criarUtilizador" permission
+        $criarUtilizador = $auth->createPermission('criarUtilizador');
+        $criarUtilizador->description = 'Criar Utilizador';
+        $auth->add($criarUtilizador);
+
+        // add "editarUtilizador" permission
+        $editarUtilizador = $auth->createPermission('editarUtilizador');
+        $editarUtilizador->description = 'Editar Utilizador';
+        $auth->add($editarUtilizador);
+
+        $loginBO = $auth->createPermission('loginBO');
+        $loginBO->description = 'login no BackOffice';
+        $auth->add($loginBO);
+
 
         // add "admin" role
         $admin = $auth->createRole('admin');
@@ -202,6 +220,10 @@ class RbacController extends Controller
         $auth->addChild($admin, $banirUtilizador);
         $auth->addChild($admin, $personalizarPaginaInicial);
         $auth->addChild($admin, $reembolsar);
+        $auth->addChild($admin, $editarUtilizador);
+        $auth->addChild($admin, $criarUtilizador);
+        $auth->addChild($admin, $loginBO);
+        $auth->addChild($admin, $verFatura);
 
         // add "estudante" role
         $estudante = $auth->createRole('estudante');
@@ -242,8 +264,11 @@ class RbacController extends Controller
 
         // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()
         // usually implemented in your User model.
-        $auth->assign($admin, 4);
-        $auth->assign($instrutor, 2);
-        $auth->assign($estudante, 3);
+
+           $auth->assign($estudante, 11);
+           $auth->assign($instrutor, 12);
+           $auth->assign($admin, 13);
+        $auth->assign($instrutor, 14);
+        $auth->assign($instrutor, 15);
     }
 }
