@@ -65,6 +65,7 @@ return [
                         'POST createcourse'=> 'createcourse',
                         'PUT updatecourse/{title}'=> 'updatecoursepricebytitle',
                         'DELETE {title}'=> 'deletecoursebytitle',
+                        'GET {id}/mycourses'=>'enrollment',
                         ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
@@ -104,7 +105,8 @@ return [
                         'GET {id}/items'=> 'items',
                         'DELETE {id}/course/{course_id}' => 'removeitem',
                         'POST createcart'=> 'createcart',
-                        'GET payment/{id}'=> 'payment',],
+                        'GET payment/{id}'=> 'payment',
+                        'GET {id} '=>'cart',],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{course_id}' => '<course_id:\d+>',
@@ -115,7 +117,7 @@ return [
                     'controller' => 'api/order',
                     'extraPatterns' => [
                         'GET {id}/items'=> 'items',
-                        'GET {id} '=>'order',
+                        'GET {id}'=>'order',
                         'GET allorders'=>'allorders',
                     ],
                     'tokens' => [

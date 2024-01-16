@@ -76,15 +76,23 @@ class OrderController extends ActiveController
             // Handle the case where the cart is not found
             return ['error' => 'order not found'];
         }
+        if ($order->orderItems === null) {
+            // Handle the case where the cart is not found
+            return ['error' => 'order item not found'];
+        }
 
         $fullOrder = [];
 
         foreach ($order->orderItems as $item) {
+            $course = \common\models\Course::find()->where(['id' => $item->courses_id])->one();
 
             $fullOrder[] = [
                 'id' => $item->id,
                 'price' => $item->price,
                 'iva_price'=> $item->iva_price,
+                'course_id'=> $item->courses_id,
+                'order_id'=> $item->orders_id,
+                'course_title'=> $course->title,
 
                 // Add other order item attributes as needed
             ];
@@ -108,9 +116,24 @@ class OrderController extends ActiveController
     public function actionOrder($id)
     {
         $order = $this->modelClass::findOne($id);
-        $user = $order->user;
-        $order->user_id = $user->username;
-        return $order;
+        $iva = $order->iva;
+        $fullOrder = [];
+
+        $total = $order->total_price;
+        $totaliva = $total * ($iva->iva / 100);
+        $subtotal = $total - $totaliva;
+
+        $fullOrder[] = [
+            'id' => $order->id,
+            'user_id' => $order->user_id,
+            'total_price' => $order->total_price,
+            'iva' => $iva->iva,
+            'totaliva' => $totaliva,
+            'subtotal' => $subtotal,
+
+        ];
+
+        return $fullOrder;
     }
 
 

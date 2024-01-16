@@ -97,7 +97,8 @@ class CartController extends ActiveController
                     'description' => $course->description,
                     'price' => $course->price,
                     'skill_level' => $course->skill_level,
-                    'carrinho_id' => $item->id,
+                    'cart_id' => $cart->id,
+                    'file_id' => $course->file_id,
 
                     // Add other course attributes as needed
                 ];
@@ -180,6 +181,22 @@ class CartController extends ActiveController
 
 
         return $order;
+    }
+
+    public function actionCart($user_id){
+        $cart = $this->modelClass::find()->where(['user_id' => $user_id])->one();
+        $total = 0;
+        foreach ($cart->cartItems as $item) {
+
+            $total += $item->courses->price;
+        }
+
+        return [
+            'id' => $cart->id,
+            'user_id' => $cart->user_id,
+            'total' => $total,
+        ];
+
     }
 
 

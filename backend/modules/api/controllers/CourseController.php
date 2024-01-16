@@ -3,6 +3,7 @@
 namespace backend\modules\api\controllers;
 
 use backend\modules\api\components\CustomAuth;
+use common\models\Enrollment;
 use common\models\User;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
@@ -104,7 +105,7 @@ class CourseController extends ActiveController
                     'description' => $course->description,
                     'price' => $course->price,
                     'skill_level' => $course->skill_level,
-                    'img' => 'http://localhost/kuicly/frontend/web/uploads' + $file->name,
+                    'img' =>  $file->name,
                     // Adicione outros atributos do arquivo conforme necessário
                 ];
             } else {
@@ -186,6 +187,27 @@ class CourseController extends ActiveController
         $course = $this->modelClass::findOne(['title' => $title]);
         $course->delete();
         return $course;
+    }
+
+    public function actionEnrollment($id)
+    {
+        $enrollment = Enrollment::find()->where(['user_id' => $id])->all();
+        $myCourses = [];
+        foreach ($enrollment as $enroll) {
+           $course = $this->modelClass::find()->where(['id' => $enroll->courses_id])->one();
+           $file = $course->file;
+              $myCourses[] = [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'price' => $course->price,
+                'skill_level' => $course->skill_level,
+                'img' => $file->name,
+              ];
+
+        }
+        return $myCourses;
+
     }
 
 }
