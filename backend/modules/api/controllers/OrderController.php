@@ -117,16 +117,17 @@ class OrderController extends ActiveController
     {
         $order = $this->modelClass::findOne($id);
         $iva = $order->iva;
-        $fullOrder = [];
+
 
         $total = $order->total_price;
         $totaliva = $total * ($iva->iva / 100);
         $subtotal = $total - $totaliva;
 
-        $fullOrder[] = [
+        $fullOrder= [
             'id' => $order->id,
             'user_id' => $order->user_id,
             'total_price' => $order->total_price,
+            'date' => $order->date,
             'iva' => $iva->iva,
             'totaliva' => $totaliva,
             'subtotal' => $subtotal,

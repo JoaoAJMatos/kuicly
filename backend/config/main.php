@@ -106,7 +106,7 @@ return [
                         'DELETE {id}/course/{course_id}' => 'removeitem',
                         'POST createcart'=> 'createcart',
                         'GET payment/{id}'=> 'payment',
-                        'GET {id} '=>'cart',],
+                        'GET {id}'=> 'cart',],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{course_id}' => '<course_id:\d+>',

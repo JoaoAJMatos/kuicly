@@ -178,14 +178,37 @@ class CartController extends ActiveController
 
         }
 
+        $iva = $order->iva;
 
 
-        return $order;
+        $totaliva = $order->total_price * ($iva->iva / 100);
+        $subtotal = $order->total_price - $totaliva;
+
+        $fullOrder= [
+            'id' => $order->id,
+            'user_id' => $order->user_id,
+            'date' => $order->date,
+            'total_price' => $order->total_price,
+            'iva' => $iva->iva,
+            'totaliva' => $totaliva,
+            'subtotal' => $subtotal,
+
+        ];
+
+
+
+        return $fullOrder;
     }
 
-    public function actionCart($user_id){
-        $cart = $this->modelClass::find()->where(['user_id' => $user_id])->one();
+    public function actionCart($id){
+        $cart = $this->modelClass::find()->where(['user_id' => $id])->one();
         $total = 0;
+        if ($cart->cartItems === null) {
+            // Handle the case where the cart is not found
+            return $total;
+        }
+
+
         foreach ($cart->cartItems as $item) {
 
             $total += $item->courses->price;
