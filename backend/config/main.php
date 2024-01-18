@@ -66,10 +66,12 @@ return [
                         'PUT updatecourse/{title}'=> 'updatecoursepricebytitle',
                         'DELETE {title}'=> 'deletecoursebytitle',
                         'GET {id}/mycourses'=>'enrollment',
+                        'GET {id}/hascourse/{course_id}'=> 'hascourse',
                         ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{title}' => '<title:\w+>', //[a-zA-Z0-9_] 1 ou + vezes (char)
+                        '{course_id}' => '<course_id:\d+>',
                     ],
                 ],
                 ['class' => 'yii\rest\UrlRule',

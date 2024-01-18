@@ -202,12 +202,21 @@ class CourseController extends ActiveController
                 'description' => $course->description,
                 'price' => $course->price,
                 'skill_level' => $course->skill_level,
-                'img' => $file->name,
+                'file_id' => $file->name,
               ];
 
         }
         return $myCourses;
 
+    }
+
+    public function actionHascourse($id, $course_id)
+    {
+        $enrollment = Enrollment::find()->where(['user_id' => $id, 'courses_id' => $course_id])->one();
+        if ($enrollment) {
+            return true;
+        }
+        return false;
     }
 
 }
