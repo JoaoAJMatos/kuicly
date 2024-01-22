@@ -10,6 +10,7 @@ use yii\widgets\DetailView;
 /** @var common\models\Order $modelProfile */
 /** @var common\models\Order $modelUser */
 /** @var common\models\Order $totaliva */
+/** @var common\models\Order $subtotal*/
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
@@ -74,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
-                <h3 class="">SubTotal: <?= $totaliva ?>€</h3>
+                <h3 class="">SubTotal: <?= $subtotal ?>€</h3>
             <h3 class="">Total IVA: <?= $totaliva ?>€</h3>
             <h3 class="">Total: <?= $model->total_price ?>€</h3>
         </div>

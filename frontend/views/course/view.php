@@ -71,8 +71,10 @@ $enrollment = \common\models\Enrollment::find()->where(['user_id' => $userId, 'c
                             <ul class="list-group list-group-flush">
                                 <?php foreach ($section->lessons as $lesson){?>
                                     <!--<li class="list-group-item"><?php /*= $lesson->title */?> </li>-->
+
                                     <?= Html::a(''. $lesson->title. '-'.$lesson->lessonType->type,['lesson/view', 'id'=>$lesson->id,'sections_id'=>$lesson->sections_id,'quizzes_id'=>$lesson->quizzes_id,'file_id'=>$lesson->file_id,'lesson_type_id'=>$lesson->lesson_type_id],['class'=>'list-group-item']) ?>
-                                <?php }?>
+
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>

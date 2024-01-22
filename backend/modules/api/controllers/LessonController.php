@@ -88,7 +88,7 @@ class LessonController extends ActiveController
 
             foreach ($lessons as $lesson) {
                 $file = $lesson->file;
-                $lesson->file_id = 'http://10.0.2.2/kuicly/frontend/web/uploads/' . $file->name;
+                $lesson->file_id =$file->name;
 
             }
 
@@ -109,11 +109,11 @@ class LessonController extends ActiveController
             if ($file) {
                 // Retornar os detalhes do arquivo
                 return [
-                    'id' => $lesson->id,
+                    'id' => $lesson->id,+
                     'title' => $lesson->title,
                     'context' => $lesson->context,
                     'section_id' => $lesson->sections_id,
-                    'video' => 'http://10.0.2.2/kuicly/frontend/web/uploads/' .$file->name,
+                    'video' => $file->name,
                     // Adicione outros atributos do arquivo conforme necessário
                 ];
             } else {

@@ -123,9 +123,17 @@ class CartController extends ActiveController
     {
         $cart = $this->modelClass::find()->where(['user_id' => $id])->one();
         $item = \common\models\CartItem::find()->where(['cart_id' => $cart->id, 'courses_id' => $course_id])->one();
-        $item->delete();
 
-        return $item;
+        if($item == null){
+            return false;
+        }
+        
+        if($item->delete()){
+            return true;
+        }
+
+
+        return false;
     }
 
     public function actionCreatecart()

@@ -122,7 +122,7 @@ class CourseController extends ActiveController
     public function actionCreatecourse()
     {
         $request = \Yii::$app->request;
-        $course = new $this->modelClass();
+        $course = $this->modelClass::findAll();
 
 
         // Set basic attributes

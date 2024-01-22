@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Answer;
+use common\models\Enrollment;
 use common\models\Lesson;
 use common\models\File;
 use common\models\LessonType;
@@ -79,13 +80,25 @@ class LessonController extends Controller
         if(Yii::$app->user->can('verVideo')){
             $modelSection = Section::find()->where(['id' => $sections_id])->one();
             $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
+            $userId = Yii::$app->user->id;
+            $enrollment = Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $modelCourse->id])->exists();
             $modelAnswer = new Answer();
+            if ($enrollment){
 
-            return $this->render('view', [
-                'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
-                'modelCourse'=>$modelCourse,
-                'modelAnswer'=>$modelAnswer,
-            ]);
+
+                return $this->render('view', [
+                    'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
+                    'modelCourse'=>$modelCourse,
+                    'modelAnswer'=>$modelAnswer,
+                ]);
+            }
+            else {
+                Yii::$app->session->setFlash('info', 'You dont have the Course.');
+                return $this->redirect(['course/view', 'id' => $modelCourse->id,'user_id'=>$modelCourse->user_id,'category_id'=>$modelCourse->category_id, 'file_id' => $modelCourse->file_id]);
+            }
+
+
+
         }else{
             return $this->redirect(['site/index']);
         }
