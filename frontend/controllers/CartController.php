@@ -51,7 +51,7 @@ class CartController extends Controller
         if (Yii::$app->user->can('comprarCurso')){
             $model = Cart::find()->where(['user_id' => $user_id])->one();
             $modelCardPayment = new CardPayment();
-            $modelIva = Iva::find()->where(['id' => 1])->one();
+            $modelIva = Iva::find()->one();
 
             $total = 0;
             if($model === null){
@@ -114,7 +114,7 @@ class CartController extends Controller
             $user_id = Yii::$app->user->id;
             $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
             $modelOrder = new Order();
-            $modelIva = Iva::find()->where(['id' => 1])->one();
+            $modelIva = Iva::find()->one();
             // iva
 
             if(empty($modelCart->cartItems)){

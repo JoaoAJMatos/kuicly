@@ -136,11 +136,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col">
                                     <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>SubTotal</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $subtotal?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $subtotal?>EUR</b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>IVA</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?>EUR</b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>

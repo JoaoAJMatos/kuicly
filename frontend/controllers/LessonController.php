@@ -83,7 +83,7 @@ class LessonController extends Controller
             $userId = Yii::$app->user->id;
             $enrollment = Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $modelCourse->id])->exists();
             $modelAnswer = new Answer();
-            if ($enrollment){
+            if ($enrollment || $modelCourse->user_id == $userId) {
 
 
                 return $this->render('view', [
@@ -113,15 +113,17 @@ class LessonController extends Controller
     public function actionCreate($id)
     {
         if (Yii::$app->user->can('criarVideo')){
+            $userId = Yii::$app->user->id;
             $model = new Lesson();
             $modelUpload = new UploadForm();
             $modelSection = Section::find()->where(['courses_id' => $id])->all();
             $modelLessonType = LessonType::find()->all();
-            $modelQuiz = Quiz::find()->all();
+            $modelQuiz = Quiz::find()->where(['user_id' => $userId])->all();
             $modelFile = new File();
             $sectionList = [];
             $lessonTypeList = [];
             $quizList = [];
+
 
 
 
@@ -132,30 +134,36 @@ class LessonController extends Controller
 
             foreach ($modelLessonType as $type){
                 $lessonTypeList[$type->id] = $type->type;
-                $model->lesson_type_id = $type->id;
+
             }
+
 
             foreach ($modelQuiz as $quiz){
                 $quizList[$quiz->id] = $quiz->title;
                 $model->quizzes_id = $quiz->id;
-            }
 
-            //$model->quizzes_id = 5;
-            //TODO: quiz
+            }
 
 
             if ($this->request->isPost) {
 
+
                 if ($model->load($this->request->post()) ) {
 
-                    $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
+                    if ($model->lessonType->type == 'video'){
+                        $model->quizzes_id = 23;
+                        $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
 
-                    if ($modelUpload->upload()){
-                        $modelFile->name = $modelUpload->fileName;
+                        if ($modelUpload->upload()){
+                            $modelFile->name = $modelUpload->fileName;
+                        }
+
+                        $modelFile->save();
+                        $model->file_id = $modelFile->id;
+                    }else if ($model->lesson_type_id == 'quiz'){
+                        $model->file_id = 99;
                     }
 
-                    $modelFile->save();
-                    $model->file_id = $modelFile->id;
                     if ($model->save()) {
 
                         return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);

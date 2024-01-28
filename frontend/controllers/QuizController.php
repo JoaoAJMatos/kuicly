@@ -7,6 +7,7 @@ use app\models\QuizSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * QuizController implements the CRUD actions for Quiz model.
@@ -50,13 +51,14 @@ class QuizController extends Controller
     /**
      * Displays a single Quiz model.
      * @param int $id ID
+     * @param int $user_id User ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $user_id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id, $user_id),
         ]);
     }
 
@@ -68,6 +70,8 @@ class QuizController extends Controller
     public function actionCreate($course_id)
     {
         $model = new Quiz();
+        $user_id = Yii::$app->user->id;
+        $model->user_id = $user_id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -86,15 +90,16 @@ class QuizController extends Controller
      * Updates an existing Quiz model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
+     * @param int $user_id User ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $user_id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $user_id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id, 'user_id' => $model->user_id]);
         }
 
         return $this->render('update', [
@@ -106,12 +111,13 @@ class QuizController extends Controller
      * Deletes an existing Quiz model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
+     * @param int $user_id User ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $user_id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id, $user_id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -120,12 +126,13 @@ class QuizController extends Controller
      * Finds the Quiz model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
+     * @param int $user_id User ID
      * @return Quiz the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $user_id)
     {
-        if (($model = Quiz::findOne(['id' => $id])) !== null) {
+        if (($model = Quiz::findOne(['id' => $id, 'user_id' => $user_id])) !== null) {
             return $model;
         }
 

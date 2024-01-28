@@ -14,6 +14,7 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Lessons', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+$userId = Yii::$app->user->id;
 ?>
 <div class="container py-5">
 
@@ -83,8 +84,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php } ?>
         </div>
             <div class="">
+                <?php if ($modelCourse->user_id === $userId){?>
                 <?= Html::a('editar lesson',['lesson/update','id'=>$model->id,'sections_id'=>$model->sections_id,'quizzes_id'=>$model->quizzes_id,'file_id'=>$model->file_id,'lesson_type_id'=>$model->lesson_type_id,'course_id'=>$modelCourse->id],['class'=>'btn btn-primary'])?>
-
+                <?php }?>
             </div>
 
     </div>

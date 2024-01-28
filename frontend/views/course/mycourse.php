@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'itemOptions' => [
         'class' => 'col',
     ],
+    'summary' => '',
 ]);
 ?>
 
@@ -48,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'itemOptions' => [
             'class' => 'col',
         ],
+        'summary' => '',
     ]);
     ?>
 

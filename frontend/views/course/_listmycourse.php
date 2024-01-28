@@ -37,7 +37,7 @@ $userId = Yii::$app->user->id;
 
         <?= Html::a('View Course', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
 
-        <?php if(Yii::$app->user->can('criarcurso')){?>
+        <?php if($model->user_id == $userId){?>
         <?= Html::a('Update', ['course/update', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
         <div class="float-end">
 

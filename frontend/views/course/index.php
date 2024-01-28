@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
+    <br>
 
         <?= ListView::widget([
             'dataProvider' => $dataProvider,
@@ -29,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'itemOptions' => [
                 'class' => 'col',
             ],
+            'summary' => '',
         ]);
         ?>
 
