@@ -58,8 +58,8 @@ use yii\helpers\Url;
 
 </div>
 <script>
-    const VIDEO = 11;
-    const QUIZ = 12;
+    const VIDEO = 13;
+    const QUIZ = 14;
 
     const select = document.getElementById('lesson-lesson_type_id');
     const selection = parseInt(select.value, 10);

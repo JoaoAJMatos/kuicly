@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Course;
+use Yii;
 
 /**
  * CourseSearch represents the model behind the search form of `common\models\Course`.
@@ -49,6 +50,12 @@ class CourseSearch extends Course
             'query' => $query,
 
         ]);
+        if (!Yii::$app->user->isGuest) {
+            $userId = Yii::$app->user->id;
+
+            $query->leftJoin('favorite', 'course.id = favorite.courses_id AND favorite.user_id = :userId', [':userId' => $userId]);
+            $query->orderBy(['favorite.id' => SORT_DESC, 'course.id' => SORT_DESC]);
+        }
 
         $this->load($params);
 

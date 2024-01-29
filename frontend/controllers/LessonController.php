@@ -118,7 +118,7 @@ class LessonController extends Controller
             $modelUpload = new UploadForm();
             $modelSection = Section::find()->where(['courses_id' => $id])->all();
             $modelLessonType = LessonType::find()->all();
-            $modelQuiz = Quiz::find()->where(['user_id' => $userId])->all();
+            $modelQuiz = Quiz::find()->where(['course_id' => $id])->all();
             $modelFile = new File();
             $sectionList = [];
             $lessonTypeList = [];
