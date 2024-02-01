@@ -111,12 +111,22 @@ class CartController extends ActiveController
     public function actionAdditem($id, $course_id)
     {
         $cart = $this->modelClass::find()->where(['user_id' => $id])->one();
-        $item = new \common\models\CartItem();
-        $item->cart_id = $cart->id;
-        $item->courses_id = $course_id;
-        $item->save();
+        $item = \common\models\CartItem::find()->where(['cart_id' => $cart->id, 'courses_id' => $course_id])->one();
 
-        return $item;
+        if ($item) {
+
+            return true;
+        } else {
+
+            $item = new \common\models\CartItem();
+            $item->cart_id = $cart->id;
+            $item->courses_id = $course_id;
+            $item->save();
+
+
+        }
+        return true;
+
     }
 
     public function actionRemoveitem($id, $course_id)
@@ -227,6 +237,18 @@ class CartController extends ActiveController
             'user_id' => $cart->user_id,
             'total' => $total,
         ];
+
+    }
+
+    public function actionHascoursecart($id, $course_id){
+        $cart = $this->modelClass::find()->where(['user_id' => $id])->one();
+        $item = \common\models\CartItem::find()->where(['cart_id' => $cart->id, 'courses_id' => $course_id])->one();
+
+        if($item){
+            return true;
+        }else{
+            return false;
+        }
 
     }
 

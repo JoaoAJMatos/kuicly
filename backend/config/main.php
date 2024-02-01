@@ -17,13 +17,7 @@ return [
                 ],
         ],
     'components' => [
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@app/views' => '@vendor/hail812/yii2-adminlte3/src/views'
-                ],
-            ],
-        ],
+
         'request' => [
             'csrfParam' => '_csrf-backend',
             'parsers' => [
@@ -108,7 +102,8 @@ return [
                         'DELETE {id}/course/{course_id}' => 'removeitem',
                         'POST createcart'=> 'createcart',
                         'GET payment/{id}'=> 'payment',
-                        'GET {id}'=> 'cart',],
+                        'GET {id}'=> 'cart',
+                        'GET {id}/hasitem/{course_id}'=> 'hascoursecart',],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
                         '{course_id}' => '<course_id:\d+>',
@@ -121,6 +116,19 @@ return [
                         'GET {id}/items'=> 'items',
                         'GET {id}'=>'order',
                         'GET allorders'=>'allorders',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                        '{course_id}' => '<course_id:\d+>',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/favorite',
+                    'extraPatterns' => [
+                        'GET {id}/add/{course_id}'=> 'add',
+                        'GET {id}/course/{course_id}'=> 'hasfavorite',
+
                     ],
                     'tokens' => [
                         '{id}' => '<id:\d+>',
