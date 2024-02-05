@@ -43,7 +43,7 @@ $iconClass = $isFavorito ? 'bi-star-fill' : 'bi-star';
 
                     <?= Html::a('<i class="bi ' . $iconClass . ' icon-large"></i>', ['course/addfavourite', 'id' => $model->id], ['class' => $buttonClass, 'style' => 'outline: none;color: #FFD700;']) ?>
 
-                   <!-- --><?php /*= Html::a('favorito',['course/addfavourite','id'=>$model->id],['class'=>'btn btn-primary'])*/?>
+
                 </div>
 
             </div>

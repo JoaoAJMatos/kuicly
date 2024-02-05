@@ -8,7 +8,7 @@ use app\models\QuizSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * QuizController implements the CRUD actions for Quiz model.
  */
@@ -73,11 +73,17 @@ class QuizController extends Controller
     public function actionCreate($course_id)
     {
         $model = new Quiz();
+
         $modelCourse = Course::find()->where(['id' => $course_id])->one();
         $model->course_id = $course_id;
         $model->course_user_id = $modelCourse->user_id;
         $model->course_category_id = $modelCourse->category_id;
         $model->course_file_id = $modelCourse->file_id;
+
+        $model->time_limit = 0;
+        $model->number_questions = 1;
+        $model->max_points = 0;
+
 
 
         if ($this->request->isPost) {

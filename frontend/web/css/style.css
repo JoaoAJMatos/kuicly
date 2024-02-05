@@ -448,15 +448,13 @@
 }
 
 .btn-favorito {
-    color: #fff;
-    background-color: #FFD700; /* Amarelo */
-    border-color: #FFD700;
+    border: none;
 }
 
 .btn-outline-favorito {
     color: #FFD700; /* Amarelo */
-    border-color: #FFD700;
+    border: none;
 }
 .icon-large {
-    font-size: 3em; /* Ajuste o tamanho conforme necessário */
+    font-size: 2em !important; /* Ajuste o tamanho conforme necessário */
 }

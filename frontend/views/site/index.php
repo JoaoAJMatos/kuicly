@@ -16,7 +16,7 @@ $this->title = 'My Yii Application';
                         <div class="col-sm-10 col-lg-8">
                             <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Kuicly</h5>
                             <h1 class="display-3 text-white animated slideInDown">The Best Online Learning Platform</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Torna-te um de nós para teres o teu bugatti.</p>
+                            <p class="fs-5 text-white mb-4 pb-2">Torna-te melhor que ontem.</p>
                             <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Join Now</a>
                         </div>
                     </div>
@@ -31,7 +31,7 @@ $this->title = 'My Yii Application';
                         <div class="col-sm-10 col-lg-8">
                             <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Kuicly</h5>
                             <h1 class="display-3 text-white animated slideInDown">Get Educated Online From Your Home</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Para de ser um brokie e junta-te a nós.</p>
+                            <p class="fs-5 text-white mb-4 pb-2">Os melhores cursos a apenas um passo.</p>
                             <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Join Now</a>
                         </div>
                     </div>

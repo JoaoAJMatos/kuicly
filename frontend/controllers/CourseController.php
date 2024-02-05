@@ -296,6 +296,7 @@ class CourseController extends Controller
             $searchModel = new CourseSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
             $userId = Yii::$app->user->id;
+
             $dataProvider->query->andWhere(['user_id' => $userId]);
 
             $enrolledCourseIds = Enrollment::find()
@@ -303,12 +304,19 @@ class CourseController extends Controller
                 ->where(['user_id' => $userId])
                 ->column();
 
-            if($enrolledCourseIds === null){
+            $dataProvider2 = new \yii\data\ArrayDataProvider([
+                'allModels' => [],  // Passe um array vazio se não houver cursos inscritos
+            ]);
+            if (!empty($enrolledCourseIds)) {
+                $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
+            }
+
+          /*  if($enrolledCourseIds === null){
                 $dataProvider2 = new \yii\data\ArrayDataProvider();
             }else{
 
                 $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
-            }
+            }*/
 
 
             return $this->render('mycourse', [
@@ -335,7 +343,7 @@ class CourseController extends Controller
             if ($favorite) {
                 // Se o curso estiver nos favoritos, remove
                 $favorite->delete();
-                Yii::$app->session->setFlash('success', 'Curso removido dos favoritos com sucesso.');
+                Yii::$app->session->setFlash('error', 'Curso removido dos favoritos com sucesso.');
             } else {
                 // Se o curso não estiver nos favoritos, adiciona
                 $model = new Favorite();

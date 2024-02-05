@@ -35,9 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <hr class="my-0">
                         </div>
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <?= Html::a('Bills',['order/index'],['class'=>'btn btn-primary']) ?>
-                            </div>
+
                             <?php $form = ActiveForm::begin(); ?>
 
 

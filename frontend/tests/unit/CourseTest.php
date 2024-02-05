@@ -45,10 +45,7 @@ class CourseTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testSomeFeature()
-    {
 
-    }
 
     public function testCreateCourseUnsuccessfully()
     {

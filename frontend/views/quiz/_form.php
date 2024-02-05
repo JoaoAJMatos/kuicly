@@ -16,11 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'time_limit')->textInput() ?>
 
-    <?= $form->field($model, 'number_questions')->textInput() ?>
-
-    <?= $form->field($model, 'max_points')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>

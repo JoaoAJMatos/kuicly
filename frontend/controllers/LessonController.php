@@ -83,6 +83,7 @@ class LessonController extends Controller
             $userId = Yii::$app->user->id;
             $enrollment = Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $modelCourse->id])->exists();
             $modelAnswer = new Answer();
+            $modelAnswerSubmit = Answer::find()->where(['questions_quizzes_id' => $quizzes_id , 'user_id' => $userId])->one();
             if ($enrollment || $modelCourse->user_id == $userId) {
 
 
@@ -90,6 +91,7 @@ class LessonController extends Controller
                     'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
                     'modelCourse'=>$modelCourse,
                     'modelAnswer'=>$modelAnswer,
+                    'modelAnswerSubmit'=>$modelAnswerSubmit,
                 ]);
             }
             else {
@@ -151,7 +153,9 @@ class LessonController extends Controller
                 if ($model->load($this->request->post()) ) {
 
                     if ($model->lessonType->type == 'video'){
-                        $model->quizzes_id = 23;
+
+
+                        $model->quizzes_id = 24;
                         $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
 
                         if ($modelUpload->upload()){
@@ -160,9 +164,12 @@ class LessonController extends Controller
 
                         $modelFile->save();
                         $model->file_id = $modelFile->id;
-                    }else if ($model->lesson_type_id == 'quiz'){
-                        $model->file_id = 99;
+
+                    }else if ($model->lessonType->type == 'quiz'){
+                        $model->file_id = 103;
+
                     }
+
 
                     if ($model->save()) {
 

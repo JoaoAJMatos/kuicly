@@ -31,10 +31,6 @@ class CategoryTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testSomeFeature()
-    {
-
-    }
 
     public function testCreateCategoryUnsuccessfully()
     {
