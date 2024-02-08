@@ -295,28 +295,23 @@ class CourseController extends Controller
         if (Yii::$app->user->can('inscreverEmCurso')) {
             $searchModel = new CourseSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
-            $userId = Yii::$app->user->id;
 
-            $dataProvider->query->andWhere(['user_id' => $userId]);
+            $userId = Yii::$app->user->id;
+            $dataProvider->query->andWhere(['course.user_id' => $userId]);
 
             $enrolledCourseIds = Enrollment::find()
                 ->select('courses_id')
                 ->where(['user_id' => $userId])
                 ->column();
 
-            $dataProvider2 = new \yii\data\ArrayDataProvider([
-                'allModels' => [],  // Passe um array vazio se não houver cursos inscritos
-            ]);
-            if (!empty($enrolledCourseIds)) {
-                $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
-            }
-
-          /*  if($enrolledCourseIds === null){
+            if (empty($enrolledCourseIds)) {
                 $dataProvider2 = new \yii\data\ArrayDataProvider();
-            }else{
+            } else {
+                $dataProvider2 = $searchModel->searchCourse(array_merge($this->request->queryParams,['courseIds' => $enrolledCourseIds]));
 
-                $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
-            }*/
+            }
+            /*var_dump($dataProvider2->getModels());
+            die();*/
 
 
             return $this->render('mycourse', [
@@ -327,7 +322,6 @@ class CourseController extends Controller
         }else{
             return $this->redirect(['index']);
         }
-
 
     }
 

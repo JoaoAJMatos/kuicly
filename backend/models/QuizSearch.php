@@ -17,7 +17,7 @@ class QuizSearch extends Quiz
     public function rules()
     {
         return [
-            [['id', 'time_limit', 'number_questions', 'max_points'], 'integer'],
+            [['id', 'time_limit', 'number_questions', 'max_points', 'course_id', 'course_user_id', 'course_category_id', 'course_file_id'], 'integer'],
             [['title', 'description'], 'safe'],
         ];
     }
@@ -62,6 +62,10 @@ class QuizSearch extends Quiz
             'time_limit' => $this->time_limit,
             'number_questions' => $this->number_questions,
             'max_points' => $this->max_points,
+            'course_id' => $this->course_id,
+            'course_user_id' => $this->course_user_id,
+            'course_category_id' => $this->course_category_id,
+            'course_file_id' => $this->course_file_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

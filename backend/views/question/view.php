@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Question $model */
 
-$this->title = $model->id;
+$this->title = $model->text;
 $this->params['breadcrumbs'][] = ['label' => 'Questions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,8 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id, 'quizzes_id' => $model->quizzes_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id, 'quizzes_id' => $model->quizzes_id], [
+         <?= Html::a('Delete', ['delete', 'id' => $model->id, 'quizzes_id' => $model->quizzes_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -31,13 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'text',
-            'type',
             'option_one',
             'option_two',
             'option_three',
             'option_four',
             'correct_answer',
-            'quizzes_id',
         ],
     ]) ?>
 

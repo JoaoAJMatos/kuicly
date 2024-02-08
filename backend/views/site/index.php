@@ -16,59 +16,35 @@ $userCount = User::find()->count();
 
 
     <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-            <div class="small-box bg-gradient-success">
-                <div class="inner">
-                    <h3><?= $userCount ?></h3>
-                    <p>User Registrations</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <?= Html::a('More info <i class="fas fa-arrow-circle-right"></i>', ['user/index' ], ['class'=> 'small-box-footer']) ?>
-            </div>
-
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3><?= $sellsCount ?></h3>
-                    <p>Sells</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-                <?= Html::a('More info <i class="fas fa-arrow-circle-right"></i>', ['order/index'], ['class'=> 'small-box-footer']) ?>
-            </div>
-
+        <div class="col-md-4 col-sm-6 col-12">
+            <?= \hail812\adminlte\widgets\InfoBox::widget([
+                'text' => 'Users Registered',
+                'number' => $userCount,
+                'icon' => 'fas fa-user',
+                'theme' => 'primary'
+            ]) ?>
+            <?= \hail812\adminlte\widgets\InfoBox::widget([
+                'text' => 'Sells Made',
+                'number' => $sellsCount ,
+                'icon' => 'fas fa-shopping-cart',
+                'theme' => 'gradient-warning'
+            ]) ?>
         </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3><?= $createdCoursesCount ?></h3>
-                    <p>Created Courses</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-
-                <?= Html::a('More info <i class="fas fa-arrow-circle-right"></i>', ['course/index'], ['class'=> 'small-box-footer']) ?>
-            </div>
-
+        <div class="col-md-4 col-sm-6 col-12">
+            <?= \hail812\adminlte\widgets\InfoBox::widget([
+                'text' => 'Courses Available',
+                'number' => $createdCoursesCount,
+                'theme' => 'success',
+                'icon' => 'fa fa-book',
+            ]) ?>
         </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3><?= $createdLessonsCount ?></h3>
-                    <p>Created Lessons</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-                <?= Html::a('More info <i class="fas fa-arrow-circle-right"></i>', ['course/index' ], ['class'=> 'small-box-footer']) ?>
-            </div>
-
+        <div class="col-md-4 col-sm-6 col-12">
+            <?= \hail812\adminlte\widgets\InfoBox::widget([
+                'text' => 'Lessons Available',
+                'number' => $createdLessonsCount,
+                'theme' => 'success',
+                'icon' => 'fa fa-scroll',
+            ]) ?>
         </div>
-
     </div>
 </div>

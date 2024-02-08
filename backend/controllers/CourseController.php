@@ -148,35 +148,7 @@ class CourseController extends Controller
     {
         if (Yii::$app->user->can('admin')){
 
-            // Encontre o carrinho do usuário
-            $model = $this->findModel($id, $user_id, $category_id, $file_id);
-            $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
 
-            if ($modelCart) {
-                // Encontre o item do carrinho que corresponde ao curso
-                $modelCartItem = CartItem::find()
-                    ->where(['cart_id' => $modelCart->id, 'courses_id' => $id])
-                    ->one();
-
-                if ($modelCartItem) {
-                    // Se o curso estiver no carrinho de alguém, exclua o item do carrinho
-                    $modelCartItem->delete();
-                }
-            }
-            $sections = Section::find()->where(['courses_id' => $model->id])->all();
-
-            foreach ($sections as $section) {
-                // Encontrar e excluir todas as seções associadas a cada lição
-                $lessons = Lesson::find()->where(['sections_id' => $section->id])->all();
-                foreach ($lessons as $lesson) {
-                    // Excluir todos os quizzes associados a cada seção
-                    //Quiz::deleteAll(['section_id' => $section->id]);
-
-                    $lesson->delete();
-                }
-
-                $section->delete();
-            }
 
             $this->findModel($id, $user_id, $category_id, $file_id)->delete();
 

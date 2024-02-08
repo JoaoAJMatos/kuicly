@@ -20,24 +20,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(Yii::$app->user->can('instrutor')){?>
-    <p>
-        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        <p>
+            <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
 
-<?= ListView::widget([
-    'dataProvider' => $dataProvider,
-    'itemView' => '_listmycourse',
-    'options' => [
-        'class' => 'row row-cols-1 row-cols-md-3 g-3',
-    ],
-    'itemOptions' => [
-        'class' => 'col',
-    ],
-    'summary' => '',
-]);
-?>
+        <?= ListView::widget([
+            'dataProvider' => $dataProvider,
+            'itemView' => '_listmycourse',
+            'options' => [
+                'class' => 'row row-cols-1 row-cols-md-3 g-3',
+            ],
+            'itemOptions' => [
+                'class' => 'col',
+            ],
+            'summary'=>'',
+        ]);
+        ?>
 
-    <hr>
+        <hr>
         <h1>Courses Buyed</h1>
     <?php }?>
     <?= ListView::widget([
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'itemOptions' => [
             'class' => 'col',
         ],
-        'summary' => '',
+        'summary'=>'',
     ]);
     ?>
 

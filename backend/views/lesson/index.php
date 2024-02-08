@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_search', ['model' => $searchModel]); ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -27,8 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'title',
             'context',
-            'sections_id',
-            'quizzes_id',
+            [
+                'attribute' => 'sections_id',
+                'value' => function ($model) {
+                    return $model->sections->title; // Supondo que 'name' seja o atributo que armazena o nome da seção.
+                },
+            ],
+
             //'file_id',
             //'lesson_type_id',
             [

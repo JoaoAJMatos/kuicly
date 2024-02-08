@@ -4,6 +4,7 @@ namespace backend\modules\api\controllers;
 
 use backend\modules\api\components\CustomAuth;
 use common\models\Enrollment;
+use common\models\Favorite;
 use common\models\User;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
@@ -77,9 +78,17 @@ class CourseController extends ActiveController
 
     }
 
-    public function actionAllcourses()
+    public function actionAllcourses($id)
     {
-        $courses = $this->modelClass::find()->all();
+        //$courses = $this->modelClass::find()->all();
+
+
+        // Consulta principal para obter todos os cursos, ordenando pelo favorito do usuário
+        $courses = $this->modelClass::find()
+            ->leftJoin('favorite', 'course.id = favorite.courses_id AND favorite.user_id = :userId', [':userId' => $id])
+            ->orderBy(['favorite.id' => SORT_DESC, 'course.id' => SORT_DESC])
+            ->all();
+
         foreach ($courses as $course) {
             $file = $course->file;
             $course->file_id = $file->name;

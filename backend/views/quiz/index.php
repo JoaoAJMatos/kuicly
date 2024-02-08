@@ -17,6 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <p>
+        <?= Html::a('Create Quiz', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -25,19 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            'id',
             'title',
             'description',
             'time_limit:datetime',
             'number_questions',
             //'max_points',
+            //'course_id',
+            //'course_user_id',
+            //'course_category_id',
+            //'course_file_id',
             [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {delete} {questions}',
-                'buttons' => [
-                    'questions' => function($url, $model, $key) {     // render your custom button
-                        return Html::a('<i class="bi bi-list"></i>Questions', Url::to(['question/index', 'id' => $model->id]), ['class' => 'btn btn-success']);
-                    }
-                ],
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Quiz $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id, 'course_id' => $model->course_id, 'course_user_id' => $model->course_user_id, 'course_category_id' => $model->course_category_id, 'course_file_id' => $model->course_file_id]);
+                 }
             ],
         ],
     ]); ?>

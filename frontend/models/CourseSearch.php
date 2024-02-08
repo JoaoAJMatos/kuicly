@@ -45,26 +45,70 @@ class CourseSearch extends Course
         $query = Course::find();
         $userId = Yii::$app->user->id;
 
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
 
+        ]);
         if (!Yii::$app->user->isGuest) {
             $query->leftJoin('favorite', 'course.id = favorite.courses_id AND favorite.user_id = :userId', [':userId' => $userId]);
-            $query->andWhere(['OR', ['course.user_id' => $userId], ['favorite.user_id' => $userId]]);
             $query->orderBy(['favorite.id' => SORT_DESC, 'course.id' => SORT_DESC]);
         }
 
         $this->load($params);
 
+
+
         if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
         }
 
+
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'price' => $this->price,
+            'skill_level' => $this->skill_level,
+            'user_id' => $this->user_id,
+            'category_id' => $this->category_id,
+            'file_id' => $this->file_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description]);
+
+        return $dataProvider;
+    }
+    public function searchCourse($params)
+    {
+        $query = Course::find();
+        $userId = Yii::$app->user->id;
+
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+
+        ]);
+
+        $this->load($params);
+
+
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
         if (isset($params['courseIds']) && is_array($params['courseIds'])) {
-            $query->andWhere(['in', 'course.id', $params['courseIds']]);
+            $query->andWhere(['in', 'id', $params['courseIds']]);
         }
 
+
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'price' => $this->price,

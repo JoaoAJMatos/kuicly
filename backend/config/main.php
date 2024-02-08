@@ -55,7 +55,7 @@ return [
                     'extraPatterns' => [
                         'GET search/{title}' => 'search',
                         'GET {id}' => 'course',
-                        'GET courses'=> 'allcourses',
+                        'GET courses/{id}'=> 'allcourses',
                         'POST createcourse'=> 'createcourse',
                         'PUT updatecourse/{title}'=> 'updatecoursepricebytitle',
                         'DELETE {title}'=> 'deletecoursebytitle',

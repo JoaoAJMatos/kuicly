@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Answer;
+use common\models\Lesson;
 use common\models\Question;
 use app\models\QuestionSearch;
 use yii\web\Controller;
@@ -107,10 +108,12 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function actionAnswer($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    public function actionAnswer($id, $sections_id, $lesson_type_id)
     {
         $model = new Answer();
         $user_id = Yii::$app->user->id;
+        $modelLesson = Lesson::find()->where(['id' => $id])->one();
+
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -125,7 +128,7 @@ class QuestionController extends Controller
                 }
 
                 $model->user_id = $user_id;
-                $model->questions_quizzes_id = $quizzes_id;
+                $model->questions_quizzes_id = $modelLesson->quiz_id;
 
                 if ($model->save() && $model->validate()) {
 
@@ -136,7 +139,7 @@ class QuestionController extends Controller
                         Yii::$app->session->setFlash('error', 'Resposta errada');
                     }
 
-                    return $this->redirect(['lesson/view', 'id' => $id, 'sections_id' => $sections_id, 'quizzes_id' => $quizzes_id, 'file_id' => $file_id, 'lesson_type_id' => $lesson_type_id]);
+                    return $this->redirect(['lesson/view', 'id' => $id, 'sections_id' => $sections_id, 'lesson_type_id' => $lesson_type_id]);
 
                 }
 

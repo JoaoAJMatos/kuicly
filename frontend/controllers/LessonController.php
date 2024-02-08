@@ -75,20 +75,21 @@ class LessonController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    public function actionView($id, $sections_id,$lesson_type_id)
     {
         if(Yii::$app->user->can('verVideo')){
+            $model = $this->findModel($id, $sections_id,$lesson_type_id);
             $modelSection = Section::find()->where(['id' => $sections_id])->one();
             $modelCourse = Course::find()->where(['id' => $modelSection->courses_id])->one();
             $userId = Yii::$app->user->id;
             $enrollment = Enrollment::find()->where(['user_id' => $userId, 'courses_id' => $modelCourse->id])->exists();
             $modelAnswer = new Answer();
-            $modelAnswerSubmit = Answer::find()->where(['questions_quizzes_id' => $quizzes_id , 'user_id' => $userId])->one();
+            $modelAnswerSubmit = Answer::find()->where(['questions_quizzes_id' => $model->quiz_id, 'user_id' => $userId])->one();
             if ($enrollment || $modelCourse->user_id == $userId) {
 
 
                 return $this->render('view', [
-                    'model' => $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id),
+                    'model' => $this->findModel($id, $sections_id, $lesson_type_id),
                     'modelCourse'=>$modelCourse,
                     'modelAnswer'=>$modelAnswer,
                     'modelAnswerSubmit'=>$modelAnswerSubmit,
@@ -142,7 +143,7 @@ class LessonController extends Controller
 
             foreach ($modelQuiz as $quiz){
                 $quizList[$quiz->id] = $quiz->title;
-                $model->quizzes_id = $quiz->id;
+                $model->quiz_id = $quiz->id;
 
             }
 
@@ -152,10 +153,10 @@ class LessonController extends Controller
 
                 if ($model->load($this->request->post()) ) {
 
-                    if ($model->lessonType->type == 'video'){
+                    if ($model->lessonType->type == 'Video'){
 
 
-                        $model->quizzes_id = 24;
+                        $model->quiz_id = null;
                         $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
 
                         if ($modelUpload->upload()){
@@ -165,15 +166,15 @@ class LessonController extends Controller
                         $modelFile->save();
                         $model->file_id = $modelFile->id;
 
-                    }else if ($model->lessonType->type == 'quiz'){
-                        $model->file_id = 103;
+                    }else if ($model->lessonType->type == 'Quiz'){
+                        $model->file_id = null;
 
                     }
 
 
                     if ($model->save()) {
 
-                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'lesson_type_id' => $model->lesson_type_id]);
                     }
 
                 }
@@ -211,10 +212,10 @@ class LessonController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id, $course_id)
+    public function actionUpdate($id, $sections_id, $lesson_type_id, $course_id)
     {
         if(Yii::$app->user->can('editarVideo')) {
-            $model = $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id);
+            $model = $this->findModel($id, $sections_id, $lesson_type_id);
             $modelUpload = new UploadForm();
             $modelSection = Section::find()->where(['courses_id' => $course_id])->all();
             $modelLessonType = LessonType::find()->all();
@@ -243,7 +244,7 @@ class LessonController extends Controller
                     $model->file_id = $modelFile->id;
                     if ($model->save()) {
 
-                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]);
+                        return $this->redirect(['view', 'id' => $model->id, 'sections_id' => $model->sections_id, 'lesson_type_id' => $model->lesson_type_id]);
                     }
                 }
             }
@@ -276,9 +277,9 @@ class LessonController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    public function actionDelete($id, $sections_id,$lesson_type_id)
     {
-        $this->findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)->delete();
+        $this->findModel($id, $sections_id, $lesson_type_id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -294,9 +295,9 @@ class LessonController extends Controller
      * @return Lesson the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    protected function findModel($id, $sections_id, $lesson_type_id)
     {
-        if (($model = Lesson::findOne(['id' => $id, 'sections_id' => $sections_id, 'quizzes_id' => $quizzes_id, 'file_id' => $file_id, 'lesson_type_id' => $lesson_type_id])) !== null) {
+        if (($model = Lesson::findOne(['id' => $id, 'sections_id' => $sections_id, 'lesson_type_id' => $lesson_type_id])) !== null) {
             return $model;
         }
 

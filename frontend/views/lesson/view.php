@@ -21,7 +21,7 @@ $userId = Yii::$app->user->id;
 
     <div class="row">
         <div class="col-md-8">
-            <?php if ($model->lessonType->type === 'video') { ?>
+            <?php if ($model->lessonType->type === 'Video') { ?>
                 <video id='myVideo' width="640" height="360" controls autoplay
                        src="<?= Yii::$app->urlManager->createUrl('uploads/' . $model->file->name) ?>"
                        style="border: 1px solid black"></video>
@@ -35,11 +35,11 @@ $userId = Yii::$app->user->id;
                 <h1><?= Html::encode($this->title) ?></h1>
                 <p> <?= $model->context ?> </p>
 
-                <h2><?= $model->quizzes->title ?> </h2>
+                <h2><?= $model->quiz->title ?> </h2>
 
-                <p><?= $model->quizzes->description ?></p>
+                <p><?= $model->quiz->description ?></p>
 
-                <?php foreach ($model->quizzes->questions as $question) { ?>
+                <?php foreach ($model->quiz->questions as $question) { ?>
                     <h3><?= $question->text ?></h3>
 
                     <p>Option 1 : <?= $question->option_one ?></p>
@@ -52,7 +52,7 @@ $userId = Yii::$app->user->id;
                         <p><strong>Your Answer</strong>  : Option <?= $modelAnswerSubmit->text ?></p>
                     <?php } else { ?>
 
-                        <?php $form = ActiveForm::begin(['action' => ['question/answer', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id]]); ?>
+                        <?php $form = ActiveForm::begin(['action' => ['question/answer', 'id' => $model->id, 'sections_id' => $model->sections_id, 'lesson_type_id' => $model->lesson_type_id]]); ?>
                         <?= $form->field($modelAnswer, 'questions_id')->hiddenInput(['value' => $question->id])->label(false) ?>
                         <?= $form->field($modelAnswer, 'text')->textInput(['maxlength' => true]) ?>
 
@@ -86,7 +86,7 @@ $userId = Yii::$app->user->id;
                                 <ul class="list-group list-group-flush">
                                     <?php foreach ($section->lessons as $lesson) { ?>
                                         <!--<li class="list-group-item"><?php /*= $lesson->title */ ?> </li>-->
-                                        <?= Html::a('' . $lesson->title . '-' . $lesson->lessonType->type, ['lesson/view', 'id' => $lesson->id, 'sections_id' => $lesson->sections_id, 'quizzes_id' => $lesson->quizzes_id, 'file_id' => $lesson->file_id, 'lesson_type_id' => $lesson->lesson_type_id], ['class' => 'list-group-item']) ?>
+                                        <?= Html::a('' . $lesson->title . '-' . $lesson->lessonType->type, ['lesson/view', 'id' => $lesson->id, 'sections_id' => $lesson->sections_id, 'lesson_type_id' => $lesson->lesson_type_id], ['class' => 'list-group-item']) ?>
                                     <?php } ?>
                                 </ul>
                             </div>
@@ -96,7 +96,7 @@ $userId = Yii::$app->user->id;
             </div>
             <div class="">
                 <?php if ($modelCourse->user_id === $userId) { ?>
-                    <?= Html::a('editar lesson', ['lesson/update', 'id' => $model->id, 'sections_id' => $model->sections_id, 'quizzes_id' => $model->quizzes_id, 'file_id' => $model->file_id, 'lesson_type_id' => $model->lesson_type_id, 'course_id' => $modelCourse->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('editar lesson', ['lesson/update', 'id' => $model->id, 'sections_id' => $model->sections_id, 'lesson_type_id' => $model->lesson_type_id, 'course_id' => $modelCourse->id], ['class' => 'btn btn-primary']) ?>
                 <?php } ?>
             </div>
 

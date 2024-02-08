@@ -2,7 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?=\yii\helpers\Url::home()?>" class="brand-link">
-        <img src="frontend/web/img/logokuicly.png"  alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+
+        <img src="<?= Yii::getAlias('@web') ?>/../../public/img/logokuicly.png"  alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Kuicly</span>
     </a>
 
@@ -37,16 +38,16 @@
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
                     ['label' => 'USER DETAILS', 'header' => true],
-                    ['label' => 'User', 'url' => ['user/index'], 'icon' => 'sign-in-alt'],
+                    ['label' => 'User', 'url' => ['user/index'], 'icon' => 'fas fa-user'],
 
                     ['label' => 'COURSE DETAILS', 'header' => true],
-                    ['label' => 'Course', 'url' => ['course/index'], 'icon' => 'sign-in-alt'],
+                    ['label' => 'Course', 'url' => ['course/index'], 'icon' => 'fa-solid fa-book'],
                     //['label' => 'Quizzes', 'url' => ['site/login'], 'icon' => 'sign-in-alt'],
-                    ['label' => 'Categories', 'url' => ['category/index'], 'icon' => 'sign-in-alt'],
+                    ['label' => 'Categories', 'url' => ['category/index'], 'icon' => 'fa-solid fa-list'],
 
                     ['label' => 'SELLS', 'header' => true],
-                    ['label' => 'Orders', 'url' => ['order/index'], 'icon' => 'sign-in-alt'],
-                    ['label' => 'Iva', 'url' => ['iva/index'], 'icon' => 'sign-in-alt'],
+                    ['label' => 'Orders', 'url' => ['order/index'], 'icon' => 'fa-solid fa-receipt'],
+                    ['label' => 'Iva', 'url' => ['iva/index'], 'icon' => 'fa-solid fa-percent'],
 
                 ],
             ]);
