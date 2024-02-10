@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use common\models\User;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -24,13 +25,14 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['error', 'index','logout'],
                         'allow' => true,
+                        'roles' => ['admin'],
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['login','error'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -80,7 +82,16 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if(!Yii::$app->user->can('loginBO'))
+            {
+                Yii::$app->user->logout();
+                $this->redirect(['http://localhost:8080/kuicly/frontend/web/index.php?r=site%2Flogin']);
+            }
+            else
+            {
+                return $this->goBack();
+            }
+
         }
 
         $model->password = '';

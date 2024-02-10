@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
 /**
  * Site controller
  */
@@ -32,7 +33,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['error','signup','login','signupInstrutor'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -86,6 +87,8 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
+           /* var_dump(Yii::$app->user->isGuest);
+            die();*/
             return $this->goHome();
         }
 
@@ -118,22 +121,24 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
+    public function actionCart()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
 
-            return $this->refresh();
+        return $this->render('cart');
+    }
+    public function actionSignupinstrutor()
+    {
+
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signupinstrutor()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            return $this->redirect('login');
         }
 
-        return $this->render('contact', [
+        return $this->render('signupInstrutor', [
             'model' => $model,
         ]);
+
     }
 
     /**
@@ -141,10 +146,6 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 
     /**
      * Signs user up.
@@ -156,7 +157,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return $this->redirect('login');
         }
 
         return $this->render('signup', [
