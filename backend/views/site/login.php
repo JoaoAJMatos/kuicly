@@ -44,7 +44,7 @@ use yii\helpers\Html;
 
 
         <!-- /.social-auth-links -->
-        
+
     </div>
     <!-- /.login-card-body -->
 </div>

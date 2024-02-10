@@ -17,9 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Iva', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -32,10 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'iva',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Iva $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update}  ',
+
             ],
         ],
     ]); ?>
