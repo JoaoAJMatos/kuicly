@@ -103,7 +103,7 @@ class IvaController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can('restrito')){
+        if (Yii::$app->user->can('admin')){
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {

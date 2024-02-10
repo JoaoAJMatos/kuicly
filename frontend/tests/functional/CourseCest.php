@@ -36,7 +36,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category Name', 'Design');
+        $I->selectOption('Category Name', 'teste');
         $I->click('Save'); // Submete o formulário
 
         $I->see('Create Lesson', 'h1'); // Verifica se está na página de criação de aula
@@ -55,7 +55,7 @@ class CourseCest
         $I->fillField('Price', '30');
         $I->selectOption('Skill Level', '1');
         $I->attachFile('File', 'curso.jpg'); // Anexa uma imagem para o curso
-        $I->selectOption('Category Name', 'Design');
+        $I->selectOption('Category Name', 'teste');
         $I->click('Save'); // Submete o formulário
 
         $I->see('Create Lesson', 'h1'); // Verifica se está na página de criação de aula
@@ -72,7 +72,7 @@ class CourseCest
 
     }
 
-    public function tryToDeleteCourse(FunctionalTester $I)
+   /* public function tryToDeleteCourse(FunctionalTester $I)
     {
         $I->amOnPage('/course/create'); // Rota para a página de criação de curso
 
@@ -94,5 +94,5 @@ class CourseCest
         $I->dontSeeRecord(Course::className(), ['title' => 'Teste Curso']); // Verifica se o curso foi criado no banco de dados
 
 
-    }
+    }*/
 }

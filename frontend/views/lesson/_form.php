@@ -41,12 +41,14 @@ use yii\helpers\Url;
 
     <?= $form->field($modelUpload, 'imageFile')->fileInput() ?>
 
-    <?= $form->field($model, 'quizzes_id')->dropDownList(
+    <?= $form->field($model, 'quiz_id')->dropDownList(
         $quizList,
         ['prompt' => 'Select Quiz']
     ); ?>
+
     <?= Html::a('Create Quiz',['quiz/create','course_id'=>$id],['class'=> 'btn btn-primary'])?>
 
+    <br>
     <br>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -56,23 +58,42 @@ use yii\helpers\Url;
 
 </div>
 <script>
-    const VIDEO = 9;
-    const QUIZ = 10;
+    const VIDEO = 15;
+    const QUIZ = 16;
 
     const select = document.getElementById('lesson-lesson_type_id');
+    const selection = parseInt(select.value, 10);
+
+    if (selection === VIDEO){
+
+        document.getElementsByClassName('field-lesson-quiz_id')[0].style.display = 'none';
+        document.getElementsByClassName('btn btn-primary')[2].style.visibility = 'hidden';
+        document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'block';
+    } else if(selection === QUIZ){
+
+        document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'none';
+        document.getElementsByClassName('field-lesson-quiz_id')[0].style.display = 'block';
+        document.getElementsByClassName('btn btn-primary')[2].style.visibility = 'visible';
+    }else {
+        document.getElementsByClassName('field-lesson-quiz_id')[0].style.display = 'none';
+        document.getElementsByClassName('btn btn-primary')[2].style.visibility = 'hidden';
+        document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'none';
+    }
 
     select.addEventListener('change', (event) => {
-        const selection = event.target.value;
+        const selection = parseInt(event.target.value, 10);
         console.log(selection);
         console.log(VIDEO);
         if (selection === VIDEO){
-            console.log(selection);
-            document.getElementsByClassName('field-lesson-quizzes_id')[0].style.display = 'none';
+
+            document.getElementsByClassName('field-lesson-quiz_id')[0].style.display = 'none';
+            document.getElementsByClassName('btn btn-primary')[2].style.visibility = 'hidden';
             document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'block';
         } else if(selection === QUIZ){
-            console.log(selection);
+
             document.getElementsByClassName('field-uploadform-imagefile')[0].style.display = 'none';
-            document.getElementsByClassName('field-lesson-quizzes_id')[0].style.display = 'block';
+            document.getElementsByClassName('field-lesson-quiz_id')[0].style.display = 'block';
+            document.getElementsByClassName('btn btn-primary')[2].style.visibility = 'visible';
         }
     });
 

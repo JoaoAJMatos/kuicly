@@ -31,13 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="card border-0">
                         <div class="card-header service-item ">
                             <h2 class="card-title space ">Checkout</h2>
-                            <p class="card-text text-muted mt-4  space">SHIPPING DETAILS</p>
+
                             <hr class="my-0">
                         </div>
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <?= Html::a('Bills',['order/index'],['class'=>'btn btn-primary']) ?>
-                            </div>
+
                             <?php $form = ActiveForm::begin(); ?>
 
 
@@ -83,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-5">
                     <div class="card border-0 ">
                         <div class="card-header card-2 service-item ">
-                            <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+                            <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER  </p>
                             <hr class="my-2">
                         </div>
                         <div class="card-body pt-0">
@@ -99,18 +97,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed-1">1</p></div>
+                                    <div class="pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed-1"><?= Html::a('<i class="bi bi-x"></i>', ['deletecartitem', 'id' => $cartitem->id,'user_id'=>$model->user_id], [
+                                                'class' => 'btn btn-danger',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to delete this item?',
+                                                    'method' => 'post',
+                                                ],
+                                            ]) ?></p></div>
                                     <div class="pl-0 flex-sm-col col-auto my-auto"><p><b><?= $cartitem->courses->price ?> EUR</b></p></div>
-                                    <div class="float-end">
 
-                                        <?= Html::a('<i class="bi bi-x"></i>', ['deletecartitem', 'id' => $cartitem->id,'user_id'=>$model->user_id], [
-                                            'class' => 'btn btn-danger',
-                                            'data' => [
-                                                'confirm' => 'Are you sure you want to delete this item?',
-                                                'method' => 'post',
-                                            ],
-                                        ]) ?>
-                                    </div>
                                 </div>
                                 <hr class="my-2">
                             <?php } ?>
@@ -136,11 +131,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col">
                                     <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>SubTotal</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $subtotal?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $subtotal?>EUR</b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col"><p class="mb-1"><b>IVA</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?></b></p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1"><b><?= $ivatotal?>EUR</b></p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="col-4"><p ><b>Total</b></p></div>

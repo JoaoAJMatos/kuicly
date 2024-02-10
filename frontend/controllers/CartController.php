@@ -51,7 +51,7 @@ class CartController extends Controller
         if (Yii::$app->user->can('comprarCurso')){
             $model = Cart::find()->where(['user_id' => $user_id])->one();
             $modelCardPayment = new CardPayment();
-            $modelIva = Iva::find()->where(['id' => 1])->one();
+            $modelIva = Iva::find()->one();
 
             $total = 0;
             if($model === null){
@@ -114,7 +114,7 @@ class CartController extends Controller
             $user_id = Yii::$app->user->id;
             $modelCart = Cart::find()->where(['user_id' => $user_id])->one();
             $modelOrder = new Order();
-            $modelIva = Iva::find()->where(['id' => 1])->one();
+            $modelIva = Iva::find()->one();
             // iva
 
             if(empty($modelCart->cartItems)){
@@ -140,7 +140,7 @@ class CartController extends Controller
                 $modelOrderItem->courses_id = $cartItem->courses_id;
                 $modelOrderItem->price = $cartItem->courses->price;
                 $modelOrderItem->iva_price = $cartItem->courses->price * ($modelIva->iva / 100);
-                //todo: mudar iva_price para float
+
 
                 // Outros dados do OrderItem (preço, quantidade, etc.) podem ser definidos aqui
                 $modelOrderItem->save();
@@ -152,6 +152,7 @@ class CartController extends Controller
                 $modelEnrollment->save();
 
                 $cartItem->delete();
+
             }
 
             return $this->redirect(['order/view', 'id' => $modelOrder->id, 'user_id' => $user_id, 'iva_id' => $modelIva->id]);

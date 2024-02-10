@@ -295,20 +295,23 @@ class CourseController extends Controller
         if (Yii::$app->user->can('inscreverEmCurso')) {
             $searchModel = new CourseSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
+
             $userId = Yii::$app->user->id;
-            $dataProvider->query->andWhere(['user_id' => $userId]);
+            $dataProvider->query->andWhere(['course.user_id' => $userId]);
 
             $enrolledCourseIds = Enrollment::find()
                 ->select('courses_id')
                 ->where(['user_id' => $userId])
                 ->column();
 
-            if($enrolledCourseIds === null){
+            if (empty($enrolledCourseIds)) {
                 $dataProvider2 = new \yii\data\ArrayDataProvider();
-            }else{
+            } else {
+                $dataProvider2 = $searchModel->searchCourse(array_merge($this->request->queryParams,['courseIds' => $enrolledCourseIds]));
 
-                $dataProvider2 = $searchModel->search(array_merge($this->request->queryParams, ['courseIds' => $enrolledCourseIds]));
             }
+            /*var_dump($dataProvider2->getModels());
+            die();*/
 
 
             return $this->render('mycourse', [
@@ -320,20 +323,31 @@ class CourseController extends Controller
             return $this->redirect(['index']);
         }
 
-
     }
 
     public function actionAddfavourite($id){
 
         if(Yii::$app->user->can('marcarCursoFavorito')){
-            $model = new Favorite();
+
             $userId = Yii::$app->user->id;
 
-            $model->user_id = $userId;
-            $model->courses_id = $id;
-            $model->save();
+            // Verifica se o curso já está nos favoritos do usuário
+            $favorite = Favorite::find()->where(['courses_id' => $id, 'user_id' => $userId])->one();
 
-            Yii::$app->session->setFlash('success', 'Curso adicionado aos favoritos com sucesso.');
+            if ($favorite) {
+                // Se o curso estiver nos favoritos, remove
+                $favorite->delete();
+                Yii::$app->session->setFlash('error', 'Curso removido dos favoritos com sucesso.');
+            } else {
+                // Se o curso não estiver nos favoritos, adiciona
+                $model = new Favorite();
+                $model->user_id = $userId;
+                $model->courses_id = $id;
+                $model->save();
+
+                Yii::$app->session->setFlash('success', 'Curso adicionado aos favoritos com sucesso.');
+            }
+
             return $this->redirect(['index']);
         }else{
             return $this->redirect(['index']);

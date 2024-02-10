@@ -11,15 +11,15 @@ use Yii;
  * @property string|null $title
  * @property string|null $context
  * @property int $sections_id
- * @property int $quizzes_id
- * @property int $file_id
  * @property int $lesson_type_id
+ * @property int|null $quiz_id
+ * @property int|null $file_id
  *
  * @property CompletedLesson[] $completedLessons
  * @property File $file
  * @property LessonType $lessonType
  * @property Note[] $notes
- * @property Quiz $quizzes
+ * @property Quiz $quiz
  * @property Section $sections
  */
 class Lesson extends \yii\db\ActiveRecord
@@ -38,15 +38,14 @@ class Lesson extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['sections_id', 'quizzes_id', 'file_id', 'lesson_type_id'], 'required'],
-            [['sections_id', 'quizzes_id', 'file_id', 'lesson_type_id'], 'integer'],
+            [['sections_id', 'lesson_type_id'], 'required'],
+            [['sections_id', 'lesson_type_id', 'quiz_id', 'file_id'], 'integer'],
             [['title'], 'string', 'max' => 70],
             [['context'], 'string', 'max' => 100],
-            [['title','context'],'required'],
-            [['quizzes_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quiz::class, 'targetAttribute' => ['quizzes_id' => 'id']],
             [['sections_id'], 'exist', 'skipOnError' => true, 'targetClass' => Section::class, 'targetAttribute' => ['sections_id' => 'id']],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],
             [['lesson_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => LessonType::class, 'targetAttribute' => ['lesson_type_id' => 'id']],
+            [['quiz_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quiz::class, 'targetAttribute' => ['quiz_id' => 'id']],
         ];
     }
 
@@ -59,10 +58,10 @@ class Lesson extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'context' => 'Context',
-            'sections_id' => 'Section',
-            'quizzes_id' => 'Quiz',
-            'file_id' => 'File ID',
+            'sections_id' => 'Sections',
             'lesson_type_id' => 'Lesson Type',
+            'quiz_id' => 'Quiz',
+            'file_id' => 'File',
         ];
     }
 
@@ -73,7 +72,7 @@ class Lesson extends \yii\db\ActiveRecord
      */
     public function getCompletedLessons()
     {
-        return $this->hasMany(CompletedLesson::class, ['lessons_id' => 'id', 'sections_id' => 'sections_id', 'quizzes_id' => 'quizzes_id']);
+        return $this->hasMany(CompletedLesson::class, ['lessons_id' => 'id', 'sections_id' => 'sections_id']);
     }
 
     /**
@@ -107,13 +106,13 @@ class Lesson extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Quizzes]].
+     * Gets query for [[Quiz]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getQuizzes()
+    public function getQuiz()
     {
-        return $this->hasOne(Quiz::class, ['id' => 'quizzes_id']);
+        return $this->hasOne(Quiz::class, ['id' => 'quiz_id']);
     }
 
     /**

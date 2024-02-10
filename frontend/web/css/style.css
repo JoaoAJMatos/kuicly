@@ -446,3 +446,15 @@
     width: 100%;
     height: 300px;
 }
+
+.btn-favorito {
+    border: none;
+}
+
+.btn-outline-favorito {
+    color: #FFD700; /* Amarelo */
+    border: none;
+}
+.icon-large {
+    font-size: 2em !important; /* Ajuste o tamanho conforme necessário */
+}

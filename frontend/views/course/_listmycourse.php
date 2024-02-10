@@ -15,7 +15,10 @@ use yii\data\ActiveDataProvider;
 $this->title = 'Courses';
 $this->params['breadcrumbs'][] = $this->title;
 $userId = Yii::$app->user->id;
+$isFavorito = \common\models\Favorite::find()->where(['courses_id' => $model->id, 'user_id' => Yii::$app->user->id])->exists();
 
+$buttonClass = $isFavorito ? 'btn btn-favorito' : 'btn btn-outline-favorito';
+$iconClass = $isFavorito ? 'bi-star-fill' : 'bi-star';
 ?>
 
 
@@ -37,7 +40,8 @@ $userId = Yii::$app->user->id;
 
         <?= Html::a('View Course', ['course/view', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
 
-        <?php if(Yii::$app->user->can('criarcurso')){?>
+
+        <?php if($model->user_id == $userId){?>
         <?= Html::a('Update', ['course/update', 'id'=> $model->id, 'user_id'=> $model->user_id, 'category_id'=> $model->category_id, 'file_id'=> $model->file_id], ['class'=> 'btn btn-primary']) ?>
         <div class="float-end">
 
@@ -49,7 +53,15 @@ $userId = Yii::$app->user->id;
                 ],
             ]) ?>
         </div>
+        <?php }else{?>
+        <div class="float-end">
+
+            <?= Html::a('<i class="bi ' . $iconClass . ' icon-large"></i>', ['course/addfavourite', 'id' => $model->id], ['class' => $buttonClass, 'style' => 'outline: none;color: #FFD700;']) ?>
+
+
+        </div>
         <?php }?>
+
     </div>
 </div>
 

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Update Quiz: ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Quizzes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id, 'course_id' => $model->course_id, 'course_user_id' => $model->course_user_id, 'course_category_id' => $model->course_category_id, 'course_file_id' => $model->course_file_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="quiz-update">

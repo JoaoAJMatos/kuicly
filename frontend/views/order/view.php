@@ -10,6 +10,7 @@ use yii\widgets\DetailView;
 /** @var common\models\Order $modelProfile */
 /** @var common\models\Order $modelUser */
 /** @var common\models\Order $totaliva */
+/** @var common\models\Order $subtotal*/
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
@@ -20,27 +21,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-12">
-            <h1 class="">Factura</h1>
+            <h1 class="">Invoice</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3 class="">Dados do cliente</h3>
+                <h3 class="">Customer Information</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="">Nome: <?= $modelProfile->name ?></h5>
+            <h5 class="">Name: <?= $modelProfile->name ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="">Adress: <?= $modelProfile->address ?></h5>
+            <h5 class="">Address: <?= $modelProfile->address ?></h5>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="">Telefone: <?= $modelProfile->phone_number ?></h5>
+            <h5 class="">Phone Number: <?= $modelProfile->phone_number ?></h5>
         </div>
     </div>
     <div class="row">
@@ -50,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3 class="">Productos</h3>
+            <h3 class="">Products</h3>
         </div>
     </div>
     <div class="row">
@@ -58,9 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Preço</th>
-                    <th>iva Price</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Iva Price</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
                 </tbody>
             </table>
-                <h3 class="">SubTotal: <?= $totaliva ?>€</h3>
+                <h3 class="">SubTotal: <?= $subtotal ?>€</h3>
             <h3 class="">Total IVA: <?= $totaliva ?>€</h3>
             <h3 class="">Total: <?= $model->total_price ?>€</h3>
         </div>

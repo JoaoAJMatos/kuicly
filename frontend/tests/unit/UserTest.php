@@ -29,10 +29,6 @@ class UserTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testSomeFeature()
-    {
-
-    }
 
     public function testValidation()
     {

@@ -29,25 +29,23 @@ class LoginCest
     }
     public function _before(FunctionalTester $I)
     {
-        //  Check the content of fixtures in db
-        $I->seeRecord(User::className(), ['username'=>'Admin']);
+        $I->amOnPage('/');
     }
     /**
      * @param FunctionalTester $I
      */
     public function tryToLogin(FunctionalTester $I)
     {
-        $I->amOnPage('site/login');
+
         $I->fillField('LoginForm[username]', 'Admin');
         $I->fillField('LoginForm[password]', '12345678');
         $I->click('Sign in');
-        $I->seeCurrentUrlEquals('/index-test.php');
+        $I->seeCurrentUrlEquals('/');
         $I->see('Admin','.d-block');
     }
 
     public function tryToEmptyLogin(FunctionalTester $I)
     {
-        $I->amOnRoute('site/login');
         $I->fillField('LoginForm[username]', '');
         $I->fillField('LoginForm[password]', '');
         $I->click('Sign in');
@@ -57,7 +55,7 @@ class LoginCest
 
     public function tryToWrongDataLogin(FunctionalTester $I)
     {
-        $I->amOnRoute('site/login');
+
         $I->fillField('LoginForm[username]', 'Admin');
         $I->fillField('LoginForm[password]', '12345678');
         $I->click('Sign in');

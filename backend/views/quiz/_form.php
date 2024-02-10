@@ -22,6 +22,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'max_points')->textInput() ?>
 
+    <?= $form->field($model, 'course_id')->textInput() ?>
+
+    <?= $form->field($model, 'course_user_id')->textInput() ?>
+
+    <?= $form->field($model, 'course_category_id')->textInput() ?>
+
+    <?= $form->field($model, 'course_file_id')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

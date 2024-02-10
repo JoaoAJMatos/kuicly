@@ -3,11 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\Answer;
+use common\models\Lesson;
 use common\models\Question;
 use app\models\QuestionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * QuestionController implements the CRUD actions for Question model.
@@ -67,7 +69,7 @@ class QuestionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($id,$course_id)
+    public function actionCreate($id, $course_id)
     {
         $model = new Question();
         $model->quizzes_id = $id;
@@ -106,25 +108,51 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function actionAnswer($id, $sections_id, $quizzes_id, $file_id, $lesson_type_id)
+    public function actionAnswer($id, $sections_id, $lesson_type_id)
     {
         $model = new Answer();
+        $user_id = Yii::$app->user->id;
+        $modelLesson = Lesson::find()->where(['id' => $id])->one();
 
 
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+
+                $modelQuestion = Question::findOne(['id' => $model->questions_id]);
+
+                if ($modelQuestion->correct_answer == $model->text) {
+                    $model->is_correct = 1;
+
+                } else {
+                    $model->is_correct = 0;
+                }
+
+                $model->user_id = $user_id;
+                $model->questions_quizzes_id = $modelLesson->quiz_id;
+
+                if ($model->save() && $model->validate()) {
+
+                    if ($model->is_correct == 1) {
+                        Yii::$app->session->setFlash('success', 'Rsposta certa');
+
+                    }else{
+                        Yii::$app->session->setFlash('error', 'Resposta errada');
+                    }
+
+                    return $this->redirect(['lesson/view', 'id' => $id, 'sections_id' => $sections_id, 'lesson_type_id' => $lesson_type_id]);
+
+                }
 
 
-        $modelQuestion = Question::findOne(['id' => $model->questions_id]);
-
-        if ($modelQuestion->correct_answer == $model->text){
-            $model->is_correct = true;
-            $model->save();
-        }else{
-            $model->is_correct = false;
-            $model->save();
+            } else {
+                $model->loadDefaultValues();
+            }
         }
 
-        return $this->redirect(['lesson/view', 'id' => $id, 'sections_id' => $sections_id, 'quizzes_id' => $quizzes_id, 'file_id' => $file_id, 'lesson_type_id' => $lesson_type_id]);
 
+        return $this->render('answer', [
+            'model' => $model,
+        ]);
 
 
     }

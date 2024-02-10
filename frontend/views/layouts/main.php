@@ -70,97 +70,11 @@ AppAsset::register($this);
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-       <!-- <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-        </a>-->
-        <?= Html::a('<i class="fa fa-book me-3"></i>Kuilcy', ['/'], ['class'=> 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
 
-            <!--<div class="container-fluid">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <?= Html::a('<img src="' . Yii::$app->urlManager->createUrl('img/logokuicly.png') . '" width="30" height="30"> Kuicly', ['/'], ['class' => 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
 
-                </form>
-            </div>-->
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Categories
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Arte</a></li>
-                    <li><a class="dropdown-item" href="#">Negócios</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </li>
-        </ul>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <div class="input-group">
 
-                            <input type="hidden" name="search_param" value="all" id="search_param">
-                            <input type="text" class="form-control" name="x" placeholder="Search term...">
-                            <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
-                </span>
-                        </div>
-                    </div>
-                <!-- Dropdown -->
-                <!--<li class="nav-item dropdown">
-                    <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                       data-mdb-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <a class="dropdown-item" href="#">Action</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                Submenu &raquo;
-                            </a>
-                            <ul class="dropdown-menu dropdown-submenu">
-                                <li>
-                                    <a class="dropdown-item" href="#">Submenu item 1</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Submenu item 2</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                                    <ul class="dropdown-menu dropdown-submenu">
-                                        <li>
-                                            <a class="dropdown-item" href="#">Multi level 1</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Multi level 2</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Submenu item 4</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Submenu item 5</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>-->
 
-            </div>
-           <!-- <div class="input-group rounded">
-                    <span class="input-group-text border-0" id="search-addon">
-                        <i class="fas fa-search"></i>
-                    </span>
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-
-            </div>-->
-        </div>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <?php if (Yii::$app->user->can('instrutor')){?>
@@ -170,7 +84,7 @@ AppAsset::register($this);
                 <?php }?>
 
                 <?php if(!Yii::$app->user->isGuest){?>
-
+                    <?= Html::a('History Payment', ['order/index '], ['class'=> 'nav-item nav-link']) ?>
                     <?= Html::a('My Courses', ['course/mycourse '], ['class'=> 'nav-item nav-link']) ?>
 
                 <?php }?>
@@ -210,6 +124,7 @@ AppAsset::register($this);
     </div>
 </main>
 
+<footer>
 
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -288,6 +203,8 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
+</footer>
+
 
 
 <?php $this->endBody() ?>

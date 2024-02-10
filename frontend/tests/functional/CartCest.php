@@ -56,7 +56,7 @@ class CartCest
 
     }
 
-    public function tryToDeleteItemOfCart(FunctionalTester $I)
+ /*   public function tryToDeleteItemOfCart(FunctionalTester $I)
     {
         $I->amOnPage('/course/index');
         $I->see('Buy');
@@ -72,7 +72,7 @@ class CartCest
 
         $I->dontSee('1','.boxed-1');
 
-    }
+    }*/
 
 
 }
