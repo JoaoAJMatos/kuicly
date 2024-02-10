@@ -69,7 +69,7 @@ $userId = Yii::$app->user->id;
 
         </div>
         <div class="col-md-4 ">
-            <h2>Conteúdo do Curso</h2>
+            <h2>Course Content</h2>
             <div class="accordion" id="accordionExample">
                 <?php foreach ($modelCourse->sections as $section) { ?>
                     <div class="accordion-item">

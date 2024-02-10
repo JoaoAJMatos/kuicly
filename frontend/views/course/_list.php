@@ -39,13 +39,14 @@ $iconClass = $isFavorito ? 'bi-star-fill' : 'bi-star';
                 <?php if(!$userEnrolled && $model->user_id !== $userId){?>
                 <?= Html::a('Buy for ' .$model->price. '$',['course/additemcard', 'id' => $model->id], ['class' => 'btn btn-primary' ]) ?>
                 <?php }?>
+                <?php if(!Yii::$app->user->isGuest){?>
                 <div class="float-end">
 
                     <?= Html::a('<i class="bi ' . $iconClass . ' icon-large"></i>', ['course/addfavourite', 'id' => $model->id], ['class' => $buttonClass, 'style' => 'outline: none;color: #FFD700;']) ?>
 
 
                 </div>
-
+                <?php }?>
             </div>
         </div>
 

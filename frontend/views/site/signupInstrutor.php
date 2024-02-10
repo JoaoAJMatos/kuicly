@@ -11,7 +11,7 @@ $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container py-5">
-    <h1>Torne-se um instrutor do Kuicly</h1>
+    <h1>Become an Instructor at Kuicly</h1>
 
     <p>Please fill out the following fields to signup:</p>
 

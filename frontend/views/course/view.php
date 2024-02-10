@@ -28,14 +28,8 @@ $enrollment = \common\models\Enrollment::find()->where(['user_id' => $userId, 'c
                 <div class="col-md-6">
                     <h1 class="display-5 text-white"> <?= $model->title ?> </h1>
                     <p class="lead text-white"> <?= $model->description ?> </p>
-                    <p class="lead text-white">Classificação: <?php for ($i = 1; $i <= 5; $i++) {
-                            if ($i <= $totalRating) { ?>
-                                <i class="fas fa-star"></i>
-                            <?php } else {?>
-                                <i class="far fa-star"></i>
-                            <?php }
-                        }?> Alunos:<?= $totalAlunos?></p>
-                    <p class="lead text-white">Criado: <?= $model->user->username ?> </p>
+                    <p class="lead text-white"> Alunos:<?= $totalAlunos?></p>
+                    <p class="lead text-white">Created by: <?= $model->user->username ?> </p>
 
 
 
@@ -53,7 +47,7 @@ $enrollment = \common\models\Enrollment::find()->where(['user_id' => $userId, 'c
     <div class="row">
         <div class="col-md-6">
             <div class="d-flex align-items-center">
-                <h2 style="margin-right: 20px; margin-bottom: 0;">Conteúdo do Curso</h2>
+                <h2 style="margin-right: 20px; margin-bottom: 0;">Course Content</h2>
                 <?php if(Yii::$app->user->can('instrutor')){?>
                 <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?php }?>

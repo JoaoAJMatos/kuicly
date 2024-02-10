@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="card border-0">
                         <div class="card-header service-item ">
                             <h2 class="card-title space ">Checkout</h2>
-                            <p class="card-text text-muted mt-4  space">SHIPPING DETAILS</p>
+
                             <hr class="my-0">
                         </div>
                         <div class="card-body">
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-5">
                     <div class="card border-0 ">
                         <div class="card-header card-2 service-item ">
-                            <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+                            <p class="card-text text-muted mt-md-4  mb-2 space">YOUR ORDER  </p>
                             <hr class="my-2">
                         </div>
                         <div class="card-body pt-0">

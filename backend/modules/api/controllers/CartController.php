@@ -88,6 +88,7 @@ class CartController extends ActiveController
         $courses = [];
         foreach ($items as $item) {
             $course = \common\models\Course::find()->where(['id' => $item->courses_id])->one();
+            $file = $course->file;
 
             if ($course) {
                 $courses[] = [
@@ -98,7 +99,7 @@ class CartController extends ActiveController
                     'price' => $course->price,
                     'skill_level' => $course->skill_level,
                     'cart_id' => $cart->id,
-                    'file_id' => $course->file_id,
+                    'file_id' => $file->name,
 
                     // Add other course attributes as needed
                 ];

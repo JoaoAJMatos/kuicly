@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <thead>
         <tr>
 
-            <th>Título do Curso</th>
-            <th>Qtd</th>
-            <th>Montante</th>
+            <th>Course Title</th>
+            <th>Qtt</th>
+            <th>Amount</th>
         </tr>
         </thead>
         <tbody>
@@ -31,15 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr>
                 <td><?= $curso->title ?></td>
                 <td><?= $quantidade ?></td>
-                <?php foreach ($eachprice as $price): ?>
-                    <td><?= $price ?></td>
-                <?php endforeach; ?>
-
+                <?php foreach ($eachprice as $price){
+                    $totalprice =+ $price;
+                 } ?>
+                 <td><?= $totalprice ?> €</td>
             </tr>
 
         <?php endforeach; ?>
         </tbody>
     </table>
 
-    <h2>Total de Vendas: <?= $totalVendas ?></h2>
+    <h2>Total Sales: <?= $totalVendas ?> €</h2>
 </div>

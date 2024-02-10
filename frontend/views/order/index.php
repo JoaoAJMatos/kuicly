@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container py-5">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Invoices</h1>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

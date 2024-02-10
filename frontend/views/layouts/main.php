@@ -71,7 +71,7 @@ AppAsset::register($this);
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
 
-        <?= Html::a('<img src="' . Yii::$app->urlManager->createUrl('img/logokuicly.png') . '" width="30" height="30">', ['/'], ['class' => 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
+        <?= Html::a('<img src="' . Yii::$app->urlManager->createUrl('img/logokuicly.png') . '" width="30" height="30"> Kuicly', ['/'], ['class' => 'navbar-brand d-flex align-items-center px-4 px-lg-5']) ?>
 
 
 
