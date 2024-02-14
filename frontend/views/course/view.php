@@ -49,7 +49,7 @@ $enrollment = \common\models\Enrollment::find()->where(['user_id' => $userId, 'c
             <div class="d-flex align-items-center">
                 <h2 style="margin-right: 20px; margin-bottom: 0;">Course Content</h2>
                 <?php if(Yii::$app->user->can('instrutor')){?>
-                <?= Html::a('Add Lessons', ['lesson/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Add Lessons', ['lesson/create', 'course_id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?php }?>
             </div>
             <div class="accordion" id="accordionExample">

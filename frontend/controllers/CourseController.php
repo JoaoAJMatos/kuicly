@@ -198,7 +198,7 @@ class CourseController extends Controller
 
             foreach ($categories as $category) {
                 $categoryList[$category->id] = $category->category_name;
-                
+
             }
 
             $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
@@ -206,6 +206,7 @@ class CourseController extends Controller
                 $modelFile->name = $modelUpload->fileName;
 
             }
+
             $modelFile->save();
             $model->file_id = $modelFile->id;
 

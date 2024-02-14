@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if(Yii::$app->user->can('instrutor')){?>
         <p>
-            <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-primary']) ?>
         </p>
 
         <?= ListView::widget([
