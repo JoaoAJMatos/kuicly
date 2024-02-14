@@ -113,15 +113,15 @@ class LessonController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($id)
+    public function actionCreate($course_id)
     {
         if (Yii::$app->user->can('criarVideo')){
             $userId = Yii::$app->user->id;
             $model = new Lesson();
             $modelUpload = new UploadForm();
-            $modelSection = Section::find()->where(['courses_id' => $id])->all();
+            $modelSection = Section::find()->where(['courses_id' => $course_id])->all();
             $modelLessonType = LessonType::find()->all();
-            $modelQuiz = Quiz::find()->where(['course_id' => $id])->all();
+            $modelQuiz = Quiz::find()->where(['course_id' => $course_id])->all();
             $modelFile = new File();
             $sectionList = [];
             $lessonTypeList = [];
@@ -189,7 +189,7 @@ class LessonController extends Controller
                 'lessonTypeList' => $lessonTypeList,
                 'modelFile' => $modelFile,
                 'modelUpload' => $modelUpload,
-                'id' => $id,
+                'course_id' => $course_id,
                 'quizList' => $quizList,
 
 
@@ -222,6 +222,10 @@ class LessonController extends Controller
             $modelFile = File::find()->where(['id' => $model->file_id])->one();
             $sectionList = [];
             $lessonTypeList = [];
+            $course_id = $model->sections->courses_id;
+            $modelQuiz = Quiz::find()->where(['course_id' => $course_id])->all();
+            $quizList = [];
+
 
             foreach ($modelSection as $section) {
                 $sectionList[$section->id] = $section->title;
@@ -229,6 +233,12 @@ class LessonController extends Controller
 
             foreach ($modelLessonType as $type) {
                 $lessonTypeList[$type->id] = $type->type;
+            }
+
+            foreach ($modelQuiz as $quiz){
+                $quizList[$quiz->id] = $quiz->title;
+                $model->quiz_id = $quiz->id;
+
             }
 
             if ($this->request->isPost) {
@@ -256,7 +266,8 @@ class LessonController extends Controller
                 'lessonTypeList' => $lessonTypeList,
                 'modelFile' => $modelFile,
                 'modelUpload' => $modelUpload,
-                'id' => $id,
+                'course_id' => $course_id,
+                'quizList' => $quizList,
             ]);
 
         }else{

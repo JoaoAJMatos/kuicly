@@ -9,7 +9,7 @@ use yii\helpers\Html;
 /** @var common\models\LessonType $lessonTypeList */
 /** @var common\models\File $modelFile */
 /** @var common\models\UploadForm $modelUpload */
-/** @var common\models\Lesson $id */
+/** @var common\models\Lesson $course_id */
 /** @var common\models\Section $quizList */
 
 $this->title = 'Create Lesson';
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'lessonTypeList' => $lessonTypeList,
         'modelFile' => $modelFile,
         'modelUpload' => $modelUpload,
-        'id' => $id,
+        'course_id' => $course_id,
         'quizList' => $quizList,
 
     ]) ?>

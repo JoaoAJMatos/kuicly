@@ -83,7 +83,7 @@ class LessonController extends ActiveController
         foreach ($modelSection as $section) {
             $lessons = $this->modelClass::find()
                 ->select(['id','title', 'context', 'file_id']) // Exclude 'id' and 'sections_id'
-                ->where(['sections_id' => $section->id, 'lesson_type_id' => 13])
+                ->where(['sections_id' => $section->id, 'lesson_type_id' => 15])
                 ->all();
 
             foreach ($lessons as $lesson) {

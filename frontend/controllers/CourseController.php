@@ -126,6 +126,7 @@ class CourseController extends Controller
             $categories = Category::find()->all();
             $categoryList = [];
 
+
             foreach ($categories as $category) {
                 $categoryList[$category->id] = $category->category_name;
                 $model->category_id = $category->id;
@@ -135,6 +136,7 @@ class CourseController extends Controller
 
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) ) {
+
 
 
                     $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');
@@ -147,7 +149,7 @@ class CourseController extends Controller
                     $model->file_id = $modelFile->id;
                     if ($model->save()) {
 
-                        return $this->redirect(['lesson/create', 'id' => $model->id]);
+                        return $this->redirect(['lesson/create', 'course_id' => $model->id]);
                     }
                 }
             } else {
@@ -196,6 +198,7 @@ class CourseController extends Controller
 
             foreach ($categories as $category) {
                 $categoryList[$category->id] = $category->category_name;
+                
             }
 
             $modelUpload->imageFile = UploadedFile::getInstance($modelUpload, 'imageFile');

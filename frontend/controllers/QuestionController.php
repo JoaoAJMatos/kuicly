@@ -76,7 +76,7 @@ class QuestionController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['lesson/create', 'id' => $course_id]);
+                return $this->redirect(['lesson/create', 'course_id' => $course_id]);
             }
         } else {
             $model->loadDefaultValues();

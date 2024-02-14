@@ -74,6 +74,7 @@ class QuizController extends Controller
     {
         $model = new Quiz();
 
+
         $modelCourse = Course::find()->where(['id' => $course_id])->one();
         $model->course_id = $course_id;
         $model->course_user_id = $modelCourse->user_id;

@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
         <?= $form->field($modelUpload, 'imageFile')->fileInput() ?>
 
-        <?= $form->field($modelCategory, 'category_name')->dropDownList(
+        <?= $form->field($model, 'category_id')->dropDownList(
             $categoryList,
         ); ?>
 

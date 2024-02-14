@@ -70,7 +70,7 @@ class Course extends \yii\db\ActiveRecord
             'price' => 'Price',
             'skill_level' => 'Skill Level',
             'user_id' => 'User ID',
-            'category_id' => 'Category ID',
+            'category_id' => 'Category Name',
             'file_id' => 'File ID',
         ];
     }

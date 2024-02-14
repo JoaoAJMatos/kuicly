@@ -14,7 +14,7 @@ use yii\helpers\Url;
 /** @var common\models\LessonType $quizList */
 /** @var common\models\Lesson $modelFile */
 /** @var common\models\UploadForm $modelUpload */
-/** @var common\models\Lesson $id */
+/** @var common\models\Lesson $course_id */
 
 
 ?>
@@ -32,7 +32,7 @@ use yii\helpers\Url;
         ['prompt' => 'Select Section']
     ); ?>
 
-    <?= Html::a('Create Section',['section/create','id'=>$id],['class'=> 'btn btn-primary'])?>
+    <?= Html::a('Create Section',['section/create','id'=>$course_id],['class'=> 'btn btn-primary'])?>
 
     <?= $form->field($model, 'lesson_type_id')->dropDownList(
             $lessonTypeList,
@@ -46,7 +46,7 @@ use yii\helpers\Url;
         ['prompt' => 'Select Quiz']
     ); ?>
 
-    <?= Html::a('Create Quiz',['quiz/create','course_id'=>$id],['class'=> 'btn btn-primary'])?>
+    <?= Html::a('Create Quiz',['quiz/create','course_id'=>$course_id],['class'=> 'btn btn-primary'])?>
 
     <br>
     <br>
